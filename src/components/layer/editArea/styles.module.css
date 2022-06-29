@@ -1,0 +1,17 @@
+.edit-textarea {
+    font: 12px / 1.2 Arial;
+    width: 100%;
+    height: 100%;
+    padding: 0px 1px;
+    margin: 0px;
+    box-sizing: border-box;
+    border-width: 0px;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    vertical-align: top;
+    background: transparent;
+    pointer-events: all;
+    line-height: 15px;
+    text-indent: 1px;
+}
