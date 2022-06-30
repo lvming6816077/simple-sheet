@@ -1,20 +1,25 @@
 import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 
-import { CellAttrs, MouseEventStoreContext } from "@/stores/MouseEventStore";
+import {  MouseEventStoreContext } from "@/stores/MouseEventStore";
 import styles from "./styles.module.css";
 import { observer } from 'mobx-react-lite'
+import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
+
+import _ from 'lodash'
+
+import {getCurrentCellByXY} from '@/utils/index'
 
 interface IProps {
-  src: string[];
-  currentIndex?: number;
-  backgroundStyle?: CSSProperties;
-  disableScroll?: boolean;
-  closeOnClickOutside?: boolean;
-  onClose?: () => void;
-  closeComponent?: JSX.Element;
-  leftArrowComponent?: JSX.Element;
-  rightArrowComponent?: JSX.Element;
+    src: string[];
+    currentIndex?: number;
+    backgroundStyle?: CSSProperties;
+    disableScroll?: boolean;
+    closeOnClickOutside?: boolean;
+    onClose?: () => void;
+    closeComponent?: JSX.Element;
+    leftArrowComponent?: JSX.Element;
+    rightArrowComponent?: JSX.Element;
 }
 
 const EditAreaLayer = (props: any) => {
@@ -24,51 +29,62 @@ const EditAreaLayer = (props: any) => {
 
 
 
-    const rowStartIndex = 0, rowStopIndex = 30, columnStartIndex = 0, columnStopIndex = 9,
-    cellHeight = 20, cellWidth = 100
-
-
-
-    
-    const mouseEventStore =  useContext(MouseEventStoreContext)
+    const mouseEventStore = useContext(MouseEventStoreContext)
     const dbc = mouseEventStore.dbcCellAttr
-
-    const [editCell,setEditCell] = useState<CellAttrs>(null)
     
-    useEffect(()=>{
+
+    const cellStore = useContext(CellStoreContext)
+
+    const cells = cellStore.cells
+
+
+    // const { rowStartIndex, rowStopIndex, columnStartIndex, columnStopIndex,cellHeight, cellWidth} = cellStore
+
+
+    const [editCell, setEditCell] = useState<CellAttrs>(null)
+
+    useEffect(() => {
         setEditCell(dbc)
-    },[dbc])
+    }, [dbc])
 
-    useEffect(()=>{
+    useEffect(() => {
         setEditCell(null)
-    },[mouseEventStore.downCellAttr])
+    }, [mouseEventStore.downCellAttr])
 
 
-    const editCellRenderer = (o:any) => {
-        const style:CSSProperties = {
-            position:'absolute',
-            left:o.x,
-            top:o.y,
-            borderWidth:o.strokeWidth,
-            borderColor:o.stroke,
-            width:o.width+1,
-            height:o.height+1,
+    const editCellRenderer = (o: any) => {
+        const style: CSSProperties = {
+            position: 'absolute',
+            left: o.x,
+            top: o.y,
+            borderWidth: o.strokeWidth,
+            borderColor: o.stroke,
+            width: o.width + 1,
+            height: o.height + 1,
             borderStyle: 'solid',
             boxSizing: 'border-box',
-            boxShadow:'rgb(60 64 67 / 15%) 0px 2px 6px 2px',
+            boxShadow: 'rgb(60 64 67 / 15%) 0px 2px 6px 2px',
             backgroundColor: '#fff'
         }
 
-        
+
+
+
         return (
-        
+
             <div style={style}>
-                <textarea className={styles['edit-textarea']} autoFocus onBlur={()=>console.log('blue')}></textarea>
+                <textarea defaultValue={o.value} className={styles['edit-textarea']} autoFocus onBlur={(e) => {
+                    let cur = getCurrentCellByXY(o.x,o.y,cells)
+                    if (cur) {
+                        cur!.value = e.target.value
+                        // cur.height = 50
+                    }
+                }}></textarea>
             </div>
         )
     }
 
-    const getEditCellSelection = useCallback(()=>{
+    const getEditCellSelection = useCallback(() => {
         if (!editCell) return null
 
         const cell = editCellRenderer({
@@ -77,44 +93,44 @@ const EditAreaLayer = (props: any) => {
             fill: "transparent",
             x: editCell.x,
             y: editCell.y,
-            width: cellWidth,
-            height: cellHeight,
-          });
+            width: editCell.width,
+            height: editCell.height,
+            value:editCell.value
+        });
 
-        
-          return cell
 
-    },[editCell])
+        return cell
+
+    }, [editCell])
 
 
 
     return (
         <div
-        style={{
-            pointerEvents: "none",
-          }}
-        >
-          <div
             style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              right: 0,
-              bottom: 0,
-              zIndex:3,
-              overflow: "hidden",
+                pointerEvents: "none",
             }}
-          >
+        >
             <div
-              style={{
-                transform: `translate(-${scrollLeft + 0}px, -${
-                  scrollTop + 0
-                }px)`,
-              }}
+                style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 3,
+                    overflow: "hidden",
+                }}
             >
-              {getEditCellSelection()}
+                <div
+                    style={{
+                        transform: `translate(-${scrollLeft + 0}px, -${scrollTop + 0
+                            }px)`,
+                    }}
+                >
+                    {getEditCellSelection()}
+                </div>
             </div>
-          </div>
         </div>
     )
 };

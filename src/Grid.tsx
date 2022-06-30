@@ -6,9 +6,10 @@ import Cell from "@/components/cell/Cell";
 import { KonvaEventObject } from "konva/lib/Node";
 import SelectAreaLayer from "@/components/layer/selectArea/SelectAreaLayer";
 
-import { CellAttrs, MouseEventStoreContext } from "@/stores/MouseEventStore";
+import { MouseEventStoreContext } from "@/stores/MouseEventStore";
 import { observer } from 'mobx-react-lite'
 import EditAreaLayer from "./components/layer/editArea/EditAreaLayer";
+import { CellAttrs, CellStoreContext } from "./stores/CellStore";
 
 interface IProps {
     src: string[];
@@ -26,79 +27,40 @@ interface IProps {
 
 const Grid = (props: any) => {
 
-    const mouseEventStore =  useContext(MouseEventStoreContext)
+    const width = 901
+    const height = 601
+    const scrollLeft = 0
+    const scrollTop = 0
+
+    const mouseEventStore = useContext(MouseEventStoreContext)
     const setDV = mouseEventStore.mouseDown
     const setUV = mouseEventStore.mouseUp
     const setMV = mouseEventStore.mouseMove
     const setDBC = mouseEventStore.mouseDBC
-    const rowStartIndex: number = 0, rowStopIndex: number = 30, columnStartIndex: number = 0, columnStopIndex: number = 9,
-        cellHeight: number = 20, cellWidth: number = 100
 
-    const getRowOffset = (index: number) => {
+    const cellStore = useContext(CellStoreContext)
 
-        return index * cellHeight
-    }
-    const getColumnOffset = (index: number) => {
-        return index * cellWidth
-    }
 
-    const getRowHeight = () => {
-        return cellHeight
-    }
 
-    const getColumnWidth = () => {
-        return cellWidth
-    }
 
-    const itemRenderer = (o: any) => {
-        return <Cell {...o}></Cell>
-    }
 
-    const width = 901;
-    const height = 601
+    const cells = cellStore.cells
 
-    const scrollTop = 0
-    const scrollLeft = 0
 
-    const cells = []
 
-    for (let rowIndex: number = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
 
-        for (let columnIndex: number = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
-
-            const y = getRowOffset(rowIndex);
-
-            const x = getColumnOffset(columnIndex);
-
-            const width = getColumnWidth()
-
-            const height = getRowHeight()
-
-            cells.push(
-                itemRenderer({
-                    x,
-                    y,
-                    width,
-                    height,
-                    value: '',
-                    key: rowIndex + ':' + columnIndex,
-                })
-            );
-
-        }
-    }
-
-//{(e)=>setEditCell(e.target)}
     return (
         <div style={{ width: width, height: height, position: 'relative' }}>
-            <Stage width={width} height={height} 
-            onDblClick={(e: KonvaEventObject<MouseEvent>) => setDBC({ x: e.target.attrs.x, y: e.target.attrs.y })} 
-            onMouseUp={(e: KonvaEventObject<MouseEvent>) => setUV({ x: e.target.attrs.x, y: e.target.attrs.y })} 
-            onMouseMove={(e: KonvaEventObject<MouseEvent>) => setMV({ x: e.target.attrs.x, y: e.target.attrs.y })} 
-            onMouseDown={(e: KonvaEventObject<MouseEvent>) => setDV({ x: e.target.attrs.x, y: e.target.attrs.y })} >
+            <Stage width={width} height={height}
+                onDblClick={(e: KonvaEventObject<MouseEvent>) => {
+                    setDBC({ ...e.target.attrs , value: e.target.attrs.text } as CellAttrs)
+                }}
+                onMouseUp={(e: KonvaEventObject<MouseEvent>) => setUV( { ...e.target.attrs , value: e.target.attrs.text } as CellAttrs)}
+                onMouseMove={(e: KonvaEventObject<MouseEvent>) => setMV( { ...e.target.attrs , value: e.target.attrs.text } as CellAttrs )}
+                onMouseDown={(e: KonvaEventObject<MouseEvent>) => setDV({ ...e.target.attrs , value: e.target.attrs.text } as CellAttrs)} >
                 <Layer>
                     <Group offsetY={scrollTop} offsetX={scrollLeft}>
-                        {cells}
+                        {cells.map((o) => <Cell {...o}></Cell>)}
                     </Group>
                 </Layer>
             </Stage>

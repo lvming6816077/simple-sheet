@@ -1,35 +1,20 @@
 import React, { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
 import { Stage, Text, Group, Rect } from "react-konva";
-import HeaderCell from "./HeaderCell";
-import LeftCell from "./LeftCell";
 
-interface IProps {
-  src: string[];
-  currentIndex?: number;
-  backgroundStyle?: CSSProperties;
-  disableScroll?: boolean;
-  closeOnClickOutside?: boolean;
-  onClose?: () => void;
-  closeComponent?: JSX.Element;
-  leftArrowComponent?: JSX.Element;
-  rightArrowComponent?: JSX.Element;
-}
 
-export const isNull = (value:any) =>
-    value === void 0 || value === null || value === "";
 
-const Cell = React.memo((props:any) => {
-    const {
+const LeftCell = React.memo((props:any) => {
+    let {
         x = 0,
         y = 0,
         width,
         height,
-        value,
-        fill = "white",
-        strokeWidth = 1,
-        stroke = "#d9d9d9",
-        align = "left",
+        ownKey,
+        fill = "#f8f9fa",
+        strokeWidth = 1.5,
+        stroke = "#c6c6c6",
+        align = "center",
         verticalAlign = "middle",
         textColor = "#333",
         padding = 5,
@@ -43,40 +28,33 @@ const Cell = React.memo((props:any) => {
         alpha = 1,
         strokeEnabled = true,
         globalCompositeOperation = "multiply",
-        isOverlay,
-        type = 'normal',
-        ...rest
     } = props;
 
-    const fillEnabled = !!fill;
+    // const width = 60,height = 20
+
+    let text = ownKey.split(':')[0]
+
+
+
     const textStyle = `${fontWeight} ${fontStyle}`;
-    if (type == 'header') return <HeaderCell {...props}></HeaderCell>
-    if (type == 'left') return <LeftCell {...props}></LeftCell>
-    if (type == 'single') return <Rect {...props}></Rect>
+
     return (
         <Group>
             <Rect
+                stroke={stroke}
+                strokeWidth={strokeWidth}
                 x={x+0.5}
                 y={y+0.5}
                 height={height}
                 width={width}
                 fill={fill}
-                stroke={stroke}
-                strokeWidth={strokeWidth}
-                shadowForStrokeEnabled={false}
-                strokeScaleEnabled={true}
-                hitStrokeWidth={0}
-                alpha={alpha}
-                fillEnabled={fillEnabled}
-                strokeEnabled={strokeEnabled}
-            />
-            {isNull(value) ? null : (
-                <Text
+            ></Rect>
+            <Text
                     x={x+0.5}
                     y={y+0.5}
                     height={height}
                     width={width}
-                    text={value}
+                    text={text}
                     fill={textColor}
                     verticalAlign={verticalAlign}
                     align={align}
@@ -88,10 +66,8 @@ const Cell = React.memo((props:any) => {
                     fontSize={fontSize}
                     hitStrokeWidth={0}
                 />
-            )}
-            {children}
         </Group>
     );
 });
 
-export default Cell;
+export default LeftCell;

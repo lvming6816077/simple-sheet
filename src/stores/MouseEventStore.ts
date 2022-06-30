@@ -1,10 +1,8 @@
 import { observable, action, computed } from 'mobx'
 import { createContext } from 'react'
+import { CellAttrs } from './CellStore'
 
-export type CellAttrs = {
-    x: number,
-    y: number
-} | null
+
 
 class MouseEventStore {
     @observable

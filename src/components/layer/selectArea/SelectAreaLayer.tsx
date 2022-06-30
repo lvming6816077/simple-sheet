@@ -1,9 +1,10 @@
 import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 
-import { CellAttrs, MouseEventStoreContext } from "@/stores/MouseEventStore";
+import {  MouseEventStoreContext } from "@/stores/MouseEventStore";
 import styles from "./styles.module.css";
 import { observer } from 'mobx-react-lite'
+import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
 
 interface IProps {
   src: string[];
@@ -28,21 +29,24 @@ const SelectAreaLayer = (props: any) => {
 
 
 
-    // const cellWidth = 
 
-    const rowStartIndex = 0, rowStopIndex = 30, columnStartIndex = 0, columnStopIndex = 9,
-    cellHeight = 20, cellWidth = 100
+
+    const cellStore = useContext(CellStoreContext)
+
+
+
 
     const selectAreaRenderer = (o:any) => {
         const style:CSSProperties = {
             position:'absolute',
             left:o.left,
             top:o.top,
-            width:o.right-o.left+cellWidth,
-            height:o.bottom-o.top+cellHeight,
+            width:o.right-o.left+o.width,
+            height:o.bottom-o.top+o.height,
             border:''
             
         }
+
         if (o.border) {
             style.border = '1px solid rgb(26, 115, 232)'
         } else {
@@ -77,7 +81,7 @@ const SelectAreaLayer = (props: any) => {
     },[selectArea,selectEnd])
 
 
-    const [activeCell,setActiveCell] = useState<any>({})
+    const [activeCell,setActiveCell] = useState<CellAttrs>(null)
     
 
 
@@ -101,16 +105,16 @@ const SelectAreaLayer = (props: any) => {
 
         if (!activeCell) return null
 
+
         const cell = activeCellRenderer({
             stroke: "#1a73e8",
             strokeWidth: 2,
             fill: "transparent",
             x: activeCell.x,
             y: activeCell.y,
-            width: cellWidth,
-            height: cellHeight,
+            width: activeCell.width,
+            height: activeCell.height,
           });
-
         
           return cell
 
@@ -125,6 +129,8 @@ const SelectAreaLayer = (props: any) => {
 
     
     useEffect(()=>{
+        console.log(dv)
+        if (dv?.type == 'header' || dv?.type == 'left') return
         setActiveCell(dv)
         setSelectArea(null)
         isSelecting.current = true
@@ -156,7 +162,7 @@ const SelectAreaLayer = (props: any) => {
             let left = Math.min(start.x, cur.x);
             let right = Math.max(start.x, cur.x);
 
-            const o = JSON.stringify({top,bottom,left,right})
+            const o = JSON.stringify({top,bottom,left,right,width:mv.width,height:mv.height})
 
             setSelectArea(o)
         }
