@@ -35,7 +35,7 @@ const EditAreaLayer = (props: any) => {
 
     const cellStore = useContext(CellStoreContext)
 
-    const cells = cellStore.cells
+
 
 
     // const { rowStartIndex, rowStopIndex, columnStartIndex, columnStopIndex,cellHeight, cellWidth} = cellStore
@@ -74,7 +74,7 @@ const EditAreaLayer = (props: any) => {
 
             <div style={style}>
                 <textarea defaultValue={o.value} className={styles['edit-textarea']} autoFocus onBlur={(e) => {
-                    let cur = getCurrentCellByXY(o.x,o.y,cells)
+                    let cur = getCurrentCellByXY(o.x,o.y,cellStore.cellsMap)
                     if (cur) {
                         cur!.value = e.target.value
                         // cur.height = 50

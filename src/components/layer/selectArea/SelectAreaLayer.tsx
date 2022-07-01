@@ -5,6 +5,8 @@ import {  MouseEventStoreContext } from "@/stores/MouseEventStore";
 import styles from "./styles.module.css";
 import { observer } from 'mobx-react-lite'
 import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
+import { getCurrentCellByXY } from "@/utils";
+import _ from 'lodash'
 
 interface IProps {
   src: string[];
@@ -105,6 +107,9 @@ const SelectAreaLayer = (props: any) => {
 
         if (!activeCell) return null
 
+        let cur = getCurrentCellByXY(activeCell.x,activeCell.y,cellStore.cellsMap)
+
+
 
         const cell = activeCellRenderer({
             stroke: "#1a73e8",
@@ -112,8 +117,8 @@ const SelectAreaLayer = (props: any) => {
             fill: "transparent",
             x: activeCell.x,
             y: activeCell.y,
-            width: activeCell.width,
-            height: activeCell.height,
+            width: cur?.width,
+            height: cur?.height,
           });
         
           return cell
@@ -126,7 +131,7 @@ const SelectAreaLayer = (props: any) => {
     const uv = mouseEventStore.upCellAttr
     const mv = mouseEventStore.moveCellAttr
 
-
+    // const cellsMap = cellStore.cellsMap
     
     useEffect(()=>{
         if (dv?.type == 'header' || dv?.type == 'left') return
@@ -138,6 +143,12 @@ const SelectAreaLayer = (props: any) => {
             x:dv.x,
             y:dv.y
         } : null
+
+        
+
+        dv && cellStore.activeHeader(dv!.x,dv!.x)
+        dv && cellStore.activeLeft(dv!.y,dv!.y)
+
     },[dv])
 
     useEffect(()=>{
@@ -162,6 +173,9 @@ const SelectAreaLayer = (props: any) => {
             let right = Math.max(start.x, cur.x);
 
             const o = JSON.stringify({top,bottom,left,right,width:mv.width,height:mv.height})
+
+            cellStore.activeHeader(left,right)
+            cellStore.activeLeft(top,bottom)
 
             setSelectArea(o)
         }

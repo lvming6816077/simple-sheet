@@ -46,7 +46,7 @@ const Cell = React.memo(observer((props:any) => {
         globalCompositeOperation = "multiply",
         isOverlay,
         type = 'normal',
-        ...rest
+        ownKey
     } = props;
 
     const fillEnabled = !!fill;
@@ -57,13 +57,16 @@ const Cell = React.memo(observer((props:any) => {
     return (
         <Group>
             <Rect
-                x={x+0.5}
-                y={y+0.5}
+                x={x+0}
+                y={y+0}
+                ownKey={ownKey}
                 height={height}
                 width={width}
                 fill={fill}
                 stroke={stroke}
-                strokeWidth={strokeWidth}
+                // strokeWidth={strokeWidth}
+                
+                strokeWidth={0.5}
                 shadowForStrokeEnabled={false}
                 strokeScaleEnabled={true}
                 hitStrokeWidth={0}
@@ -73,8 +76,9 @@ const Cell = React.memo(observer((props:any) => {
             />
             {isNull(value) ? null : (
                 <Text
-                    x={x+0.5}
-                    y={y+0.5}
+                    ownKey={ownKey}
+                    x={x+0}
+                    y={y+0}
                     height={height}
                     width={width}
                     text={value}

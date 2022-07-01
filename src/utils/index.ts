@@ -1,45 +1,36 @@
-import { CellAttrs, CellStoreContext } from "@/stores/CellStore"
+import { CellAttrs, CellMap, CellStoreContext } from "@/stores/CellStore"
 import _ from 'lodash'
 import { useContext } from "react"
 
-export const getCurrentCellByXY = (x: number, y: number, cells: CellAttrs[]) => {
-    // cells
-    return cells[_.findIndex<CellAttrs>(cells, {
-        x: x-0.5,
-        y: y-0.5
+export const getCurrentCellByXY = (x: number, y: number, cellsMap: CellMap) => {
+    var _cells = _.values(cellsMap)
+    return _cells[_.findIndex<CellAttrs>(_cells, {
+        x: x,
+        y: y
     })]
 }
 
-export const getCurrentCellByOwnKey = (key:string, cells: CellAttrs[]) => {
-    // cells
-    return cells[_.findIndex<CellAttrs>(cells, {
-        ownKey:key
-    })]
+export const getCurrentCellByOwnKey = (key:string, cellsMap: CellMap) => {
+
+    return cellsMap[key]
 }
 
 
-export const generaCell = (prev:CellAttrs[] = [])=>{
-
-    // const cellStore = useContext(CellStoreContext)
-
-    // const cells = cellStore.cells
-
-    // console.log(cells)
-
-    const getRowOffset = (rowIndex:number,columnIndex:number,arr:CellAttrs[]) => {
+export const generaCell = (prev:CellMap = {})=>{
 
 
-        const cur = _.find(arr,{
-            ownKey:(rowIndex-1)+':'+(columnIndex)
-        })
+    const getRowOffset = (rowIndex:number,columnIndex:number,map:CellMap) => {
+
+        const _ownKey = (rowIndex-1)+':'+(columnIndex)
+        const cur = map[_ownKey]
     
         return cur ? (cur.y + (cur.height||0)) : 0
     }
-    const getColumnOffset = (rowIndex:number,columnIndex:number,arr:CellAttrs[]) => {
-    
-        const cur = _.find(arr,{
-            ownKey:(rowIndex)+':'+(columnIndex-1)
-        })
+    const getColumnOffset = (rowIndex:number,columnIndex:number,map:CellMap) => {
+
+        const _ownKey = (rowIndex)+':'+(columnIndex-1)
+
+        const cur = map[_ownKey]
     
         return cur ? (cur.x + (cur.width||0)) : 0
     }
@@ -60,10 +51,10 @@ export const generaCell = (prev:CellAttrs[] = [])=>{
 
             v = cellHeight
         }
-        const cur = _.find(prev,{
-            ownKey:k
-        })
+
+        const cur = prev[k]
         return cur ? cur.height : v
+
     }
     
     const getColumnWidth = (type:string,k:string) => {
@@ -82,10 +73,10 @@ export const generaCell = (prev:CellAttrs[] = [])=>{
 
             v = cellWidth
         }
-        const cur = _.find(prev,{
-            ownKey:k
-        })
+
+        const cur = prev[k]
         return cur ? cur.width : v
+
     }
     
     const getType = (rowIndex:number,columnIndex:number) => {
@@ -113,40 +104,40 @@ export const generaCell = (prev:CellAttrs[] = [])=>{
 
     const cellWidth: number = 100
 
-    var count = 0,arr = []
+    var count = 0
+    var map:CellMap = {}
     for (let rowIndex: number = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
 
         for (let columnIndex: number = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
             
-            
-            const x = getColumnOffset(rowIndex,columnIndex,arr);
+            const type = getType(rowIndex,columnIndex)
 
-            const y = getRowOffset(rowIndex,columnIndex,arr);
+            const x = getColumnOffset(rowIndex,columnIndex,map);
+
+            const y = getRowOffset(rowIndex,columnIndex,map);
 
             const k = rowIndex + ':' + columnIndex
 
-            const type = getType(rowIndex,columnIndex)
+
 
             const width = getColumnWidth(type,k)
 
             const height = getRowHeight(type,k)
 
+            map[k] = {
+                x,
+                y,
+                width,
+                height,
+                value: rowIndex + ':' + columnIndex + ':' + count++,
+                type:type,
+                key: k,
+                ownKey:k,
+            }
 
-            arr.push(
-                {
-                    x,
-                    y,
-                    width,
-                    height,
-                    value: rowIndex + ':' + columnIndex + ':' + count++,
-                    type:type,
-                    key: k,
-                    ownKey:k,
-                }
-            );
 
         }
     }
 
-    return arr
+    return map
 }

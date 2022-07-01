@@ -7,12 +7,13 @@ import DraggableRect from "./DraggableRect";
 
 
 
-const LeftCell = React.memo(observer((props:any) => {
+const LeftCell = React.memo(((props:any) => {
     let {
 
         width,
         height,
         ownKey,
+        
         fill = "#f8f9fa",
         strokeWidth = 1.5,
         stroke = "#c6c6c6",
@@ -32,23 +33,23 @@ const LeftCell = React.memo(observer((props:any) => {
         globalCompositeOperation = "multiply",
     } = props;
 
-    let x = props.x+0.5,y = props.y+0.5
+    let x = props.x+0,y = props.y+0
 
     const mouseEventStore =  useContext(MouseEventStoreContext)
     
 
     const [ownFill,setOwnFill] = useState<string>(fill)
     
-    const dv = mouseEventStore.getdownCellAttr
-    useEffect(()=>{
-        if (!dv) return
-        // console.log(x,y)
-        if (dv.y == y) {
-            setOwnFill('blue')
-        } else {
-            setOwnFill(fill)
-        }
-    },[dv])
+    // const dv = mouseEventStore.getdownCellAttr
+    // useEffect(()=>{
+    //     if (!dv) return
+    //     // console.log(x,y)
+    //     if (dv.y == y) {
+    //         setOwnFill('blue')
+    //     } else {
+    //         setOwnFill(fill)
+    //     }
+    // },[dv])
 
     // const width = 60,height = 20
 
@@ -62,12 +63,12 @@ const LeftCell = React.memo(observer((props:any) => {
         <Group>
             <Rect
                 stroke={stroke}
-                strokeWidth={strokeWidth}
+                strokeWidth={0.5}
                 x={x}
                 y={y}
                 height={height}
                 width={width}
-                fill={ownFill}
+                fill={fill}
             ></Rect>
             <Text
                     x={x}

@@ -10,6 +10,7 @@ import { MouseEventStoreContext } from "@/stores/MouseEventStore";
 import { observer } from 'mobx-react-lite'
 import EditAreaLayer from "./components/layer/editArea/EditAreaLayer";
 import { CellAttrs, CellStoreContext } from "./stores/CellStore";
+import _ from 'lodash'
 
 interface IProps {
     src: string[];
@@ -40,12 +41,13 @@ const Grid = (props: any) => {
 
     const cellStore = useContext(CellStoreContext)
 
+    // cellStore.generaCell()
+
+    const cellsMap = cellStore.cellsMap
 
 
 
-
-    const cells = cellStore.cells
-
+    const cells = _.values(cellsMap)
 
 
 
