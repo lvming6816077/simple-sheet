@@ -1,15 +1,17 @@
 import { CellStoreContext } from "@/stores/CellStore";
+import { MouseEventStoreContext } from "@/stores/MouseEventStore";
 import { KonvaEventObject } from "konva/lib/Node";
+import { observer } from "mobx-react-lite";
 import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { Stage, Text, Group, Rect, Line } from "react-konva";
+import DraggableRect from "./DraggableRect";
 
 
 
-const HeaderCell = React.memo((props:any) => {
+const HeaderCell = (observer((props:any) => {
     let {
-        x = 0,
-        y = 0,
+
         width,
         height,
         ownKey,
@@ -31,15 +33,30 @@ const HeaderCell = React.memo((props:any) => {
         strokeEnabled = true,
         globalCompositeOperation = "multiply",
         type,
-        ...rest
     } = props;
+
+    let x = props.x+0.5,y = props.y+0.5
 
 
     let text = String.fromCharCode(Number(ownKey.split(':')[1])+64)
 
     const cellStore = useContext(CellStoreContext)
 
+    const mouseEventStore =  useContext(MouseEventStoreContext)
+    
 
+    const [ownFill,setOwnFill] = useState<string>(fill)
+    
+    const dv = mouseEventStore.getdownCellAttr
+    useEffect(()=>{
+        if (!dv) return
+        // console.log(x,y)
+        if (dv.x == x) {
+            setOwnFill('blue')
+        } else {
+            setOwnFill(fill)
+        }
+    },[dv])
 
 
     const textStyle = `${fontWeight} ${fontStyle}`;
@@ -47,43 +64,23 @@ const HeaderCell = React.memo((props:any) => {
 
     const isFirst = ownKey == '0:1'
     const dragHandleWidth = 5
-    const DraggableRect = (props:any) => {
-        return (
-            <>
-          <Rect
-            fill="blue"
-            type={type}
-            draggable
-            hitStrokeWidth={20}
-            onMouseEnter={() => (document.body.style.cursor = "ew-resize")}
-            onMouseLeave={() => (document.body.style.cursor = "default")}
-            dragBoundFunc={(pos) => {
-              return {
-                ...pos,
-                y: 0,
-              };
-            }}
-            {...props}
-          />
-            </>
-        );
-      };
+
 
     return (
-        <Group>
+        <>
             <Rect
                 stroke={stroke}
                 strokeWidth={0.5}
-                x={x+0.5}
-                y={y+0.5}
+                x={x}
+                y={y}
                 height={height}
                 width={width}
-                fill={fill}
+                fill={ownFill}
                 
             ></Rect>
             <Text
-                x={x+0.5}
-                y={y+0.5}
+                x={x}
+                y={y}
                 height={height}
                 width={width}
                 text={text+'.'+ownKey}
@@ -102,22 +99,17 @@ const HeaderCell = React.memo((props:any) => {
             
             {false ? null : 
             <DraggableRect
+                {...props}
                 x={x-3 + width}
                 y={y}
                 height={height}
                 width={dragHandleWidth}
-                onDragMove={(e:KonvaEventObject<DragEvent>) => {
-                    const node = e.target;
-                    const newWidth = node.x() - x + dragHandleWidth;
-                    const k = ownKey
-                    // onResize(columnIndex, newWidth);
-                    // console.log(k)
-                    cellStore.changeWidth(k,newWidth)
-                  }}
+                ownx={props.x}
+                
             ></DraggableRect>}
             
-        </Group>
+        </>
     );
-});
+}));
 
 export default HeaderCell;

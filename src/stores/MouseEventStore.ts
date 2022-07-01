@@ -37,10 +37,10 @@ class MouseEventStore {
         this.dbcCellAttr = obj
     }
 
-    //   @computed
-    //   get doubleCount() {
-    //     return this.count * 2
-    //   }
+      @computed
+      get getdownCellAttr() {
+        return this.downCellAttr
+      }
 }
 
 export const MouseEventStoreContext = createContext(new MouseEventStore())

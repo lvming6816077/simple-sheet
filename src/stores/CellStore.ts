@@ -29,12 +29,26 @@ class CellStore {
         //     // cur!.value = e.target.value
         //     cur.width = newwidth
         // }
+
         this.cells.forEach(item=>{
             let lk = item?.ownKey?.split(':')[1]
             let rk = ownKey.split(':')[1]
             // console.log(newwidth)
             if (lk == rk) {
                 item!.width = newwidth
+            }
+        })
+
+        this.cells = generaCell(this.cells)
+    }
+    @action.bound
+    changeHeight(ownKey:string,newheight:number) {
+        this.cells.forEach(item=>{
+            let lk = item?.ownKey?.split(':')[0]
+            let rk = ownKey.split(':')[0]
+            // console.log(newwidth)
+            if (lk == rk) {
+                item!.height = newheight
             }
         })
 

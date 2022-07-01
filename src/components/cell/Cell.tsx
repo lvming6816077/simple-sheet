@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React, { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
 import { Stage, Text, Group, Rect } from "react-konva";
@@ -19,7 +20,7 @@ interface IProps {
 export const isNull = (value:any) =>
     value === void 0 || value === null || value === "";
 
-const Cell = React.memo((props:any) => {
+const Cell = React.memo(observer((props:any) => {
     const {
         x = 0,
         y = 0,
@@ -92,6 +93,6 @@ const Cell = React.memo((props:any) => {
             {children}
         </Group>
     );
-});
+}));
 
 export default Cell;

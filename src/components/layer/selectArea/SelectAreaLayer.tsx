@@ -129,7 +129,6 @@ const SelectAreaLayer = (props: any) => {
 
     
     useEffect(()=>{
-        console.log(dv)
         if (dv?.type == 'header' || dv?.type == 'left') return
         setActiveCell(dv)
         setSelectArea(null)

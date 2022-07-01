@@ -1,13 +1,15 @@
-import React, { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
+import { MouseEventStoreContext } from "@/stores/MouseEventStore";
+import { observer } from "mobx-react-lite";
+import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { Stage, Text, Group, Rect } from "react-konva";
+import DraggableRect from "./DraggableRect";
 
 
 
-const LeftCell = React.memo((props:any) => {
+const LeftCell = React.memo(observer((props:any) => {
     let {
-        x = 0,
-        y = 0,
+
         width,
         height,
         ownKey,
@@ -30,11 +32,29 @@ const LeftCell = React.memo((props:any) => {
         globalCompositeOperation = "multiply",
     } = props;
 
+    let x = props.x+0.5,y = props.y+0.5
+
+    const mouseEventStore =  useContext(MouseEventStoreContext)
+    
+
+    const [ownFill,setOwnFill] = useState<string>(fill)
+    
+    const dv = mouseEventStore.getdownCellAttr
+    useEffect(()=>{
+        if (!dv) return
+        // console.log(x,y)
+        if (dv.y == y) {
+            setOwnFill('blue')
+        } else {
+            setOwnFill(fill)
+        }
+    },[dv])
+
     // const width = 60,height = 20
 
     let text = ownKey.split(':')[0]
 
-
+    const dragHandleHeight = 4
 
     const textStyle = `${fontWeight} ${fontStyle}`;
 
@@ -43,15 +63,15 @@ const LeftCell = React.memo((props:any) => {
             <Rect
                 stroke={stroke}
                 strokeWidth={strokeWidth}
-                x={x+0.5}
-                y={y+0.5}
+                x={x}
+                y={y}
                 height={height}
                 width={width}
-                fill={fill}
+                fill={ownFill}
             ></Rect>
             <Text
-                    x={x+0.5}
-                    y={y+0.5}
+                    x={x}
+                    y={y}
                     height={height}
                     width={width}
                     text={text}
@@ -66,8 +86,18 @@ const LeftCell = React.memo((props:any) => {
                     fontSize={fontSize}
                     hitStrokeWidth={0}
                 />
+                {false ? null : 
+            <DraggableRect
+                {...props}
+                x={x}
+                y={y-3 + height}
+                height={dragHandleHeight}
+                width={width}
+                owny={props.y}
+                
+            ></DraggableRect>}
         </Group>
     );
-});
+}));
 
 export default LeftCell;
