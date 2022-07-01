@@ -2,6 +2,23 @@ import { CellAttrs, CellMap, CellStoreContext } from "@/stores/CellStore"
 import _ from 'lodash'
 import { useContext } from "react"
 
+const rowStartIndex: number = 0
+    
+
+const rowStopIndex: number = 30
+
+
+const columnStartIndex: number = 0
+
+
+const  columnStopIndex: number = 8
+
+
+const cellHeight: number = 20
+
+
+const cellWidth: number = 100
+
 export const getCurrentCellByXY = (x: number, y: number, cellsMap: CellMap) => {
     var _cells = _.values(cellsMap)
     return _cells[_.findIndex<CellAttrs>(_cells, {
@@ -13,6 +30,17 @@ export const getCurrentCellByXY = (x: number, y: number, cellsMap: CellMap) => {
 export const getCurrentCellByOwnKey = (key:string, cellsMap: CellMap) => {
 
     return cellsMap[key]
+}
+
+export const getScrollWidthAndHeight = (cellsMap: CellMap) => {
+    var key1 = '0:'+ columnStopIndex
+    var key2 = rowStopIndex +':0'
+    var w:any = cellsMap[key1]
+    var h:any = cellsMap[key2]
+    return {
+        swidth:w.x+w.width,
+        sheight:h.y+h.height,
+    }
 }
 
 
@@ -87,22 +115,7 @@ export const generaCell = (prev:CellMap = {})=>{
     }
 
 
-    const rowStartIndex: number = 0
-    
 
-    const rowStopIndex: number = 30
-    
-
-    const columnStartIndex: number = 0
-    
-
-    const  columnStopIndex: number = 8
-
-
-    const cellHeight: number = 20
-    
-
-    const cellWidth: number = 100
 
     var count = 0
     var map:CellMap = {}

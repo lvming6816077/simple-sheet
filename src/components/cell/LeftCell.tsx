@@ -31,6 +31,7 @@ const LeftCell = React.memo(((props:any) => {
         alpha = 1,
         strokeEnabled = true,
         globalCompositeOperation = "multiply",
+        type,
     } = props;
 
     let x = props.x+0,y = props.y+0
@@ -55,7 +56,7 @@ const LeftCell = React.memo(((props:any) => {
 
     let text = ownKey.split(':')[0]
 
-    const dragHandleHeight = 4
+    const dragHandleHeight = 3
 
     const textStyle = `${fontWeight} ${fontStyle}`;
 
@@ -66,6 +67,7 @@ const LeftCell = React.memo(((props:any) => {
                 strokeWidth={0.5}
                 x={x}
                 y={y}
+                type={type}
                 height={height}
                 width={width}
                 fill={fill}
@@ -84,6 +86,7 @@ const LeftCell = React.memo(((props:any) => {
                     textDecoration={textDecoration}
                     padding={padding}
                     wrap={wrap}
+                    type={type}
                     fontSize={fontSize}
                     hitStrokeWidth={0}
                 />
@@ -91,7 +94,7 @@ const LeftCell = React.memo(((props:any) => {
             <DraggableRect
                 {...props}
                 x={x}
-                y={y-3 + height}
+                y={y-dragHandleHeight + height}
                 height={dragHandleHeight}
                 width={width}
                 owny={props.y}

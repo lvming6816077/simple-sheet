@@ -108,7 +108,7 @@ const HeaderCell = (((props:any) => {
 
 
     const isFirst = ownKey == '0:1'
-    const dragHandleWidth = 5
+    const dragHandleWidth = 3
 
 
     return (
@@ -142,16 +142,16 @@ const HeaderCell = (((props:any) => {
                 type={type}
             />
             
-            {false ? null : 
+            
             <DraggableRect
                 {...props}
-                x={x-3 + width}
+                x={x-dragHandleWidth + width}
                 y={y}
                 height={height}
                 width={dragHandleWidth}
                 ownx={props.x}
                 
-            ></DraggableRect>}
+            ></DraggableRect>
             
         </>
     );

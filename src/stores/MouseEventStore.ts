@@ -37,10 +37,16 @@ class MouseEventStore {
         this.dbcCellAttr = obj
     }
 
-      @computed
-      get getdownCellAttr() {
-        return this.downCellAttr
-      }
+
+    @observable
+    scrollLeft: number = 0
+
+    @observable
+    scrollTop: number = 0
+
+
+
+
 }
 
 export const MouseEventStoreContext = createContext(new MouseEventStore())

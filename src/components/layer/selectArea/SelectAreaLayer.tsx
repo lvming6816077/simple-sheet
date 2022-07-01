@@ -134,6 +134,7 @@ const SelectAreaLayer = (props: any) => {
     // const cellsMap = cellStore.cellsMap
     
     useEffect(()=>{
+
         if (dv?.type == 'header' || dv?.type == 'left') return
         setActiveCell(dv)
         setSelectArea(null)
@@ -198,15 +199,11 @@ const SelectAreaLayer = (props: any) => {
     },[uv])
 
 
-
-
     return (
-        <div style={{
-                pointerEvents: "none",
-              }}
-            >
+
               <div
                 style={{
+                    pointerEvents: "none",
                   position: "absolute",
                   left: 0,
                   top: 0,
@@ -217,8 +214,8 @@ const SelectAreaLayer = (props: any) => {
               >
                 <div
                   style={{
-                    transform: `translate(-${scrollLeft + 0}px, -${
-                      scrollTop + 0
+                    transform: `translate(-${mouseEventStore.scrollLeft + 0}px, -${
+                        mouseEventStore.scrollTop + 0
                     }px)`,
                   }}
                 >
@@ -226,7 +223,6 @@ const SelectAreaLayer = (props: any) => {
                   {getActiveCellSelection()}
                 </div>
               </div>
-            </div>
     )
 };
 

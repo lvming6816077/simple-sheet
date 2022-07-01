@@ -5,14 +5,23 @@ import { observer } from "mobx-react-lite";
 import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
 import _ from 'lodash'
 import { Stage, Text, Group, Rect, Line } from "react-konva";
-const DraggableRect = ((props: any) => {
+const DraggableRect = React.memo((props: any) => {
     const cellStore = useContext(CellStoreContext)
     const {
-        type
+        type,
+        x,
+        y,
+        height,
+        width,
     } = props
     return (
         <>
             {type == 'header' ? <Rect
+                x={x}
+                y={y}
+                width={width}
+                height={height}
+
                 fill="blue"
                 type={props.type}
                 opacity={0}
@@ -25,16 +34,20 @@ const DraggableRect = ((props: any) => {
                     const k = props.ownKey
                     // onResize(columnIndex, newWidth);
 
-                    cellStore.changeWidth(k, newWidth,node.x())
-                },30)}
+                    cellStore.changeWidth(k, newWidth, node.x())
+                }, 30)}
                 hitStrokeWidth={20}
                 onMouseEnter={(e) => {
-                    (document.body.style.cursor = "ew-resize")
+
                     e.target.opacity(1)
+                    document.body.style.cursor = "ew-resize"
+
+                    // e.target.fill
                 }}
-                onMouseLeave={(e) =>{
-                    (document.body.style.cursor = "default")
+                onMouseLeave={(e) => {
                     e.target.opacity(0)
+                    document.body.style.cursor = "default"
+
                 }}
                 dragBoundFunc={_.throttle((pos) => {
                     // console.log(pos)
@@ -42,10 +55,13 @@ const DraggableRect = ((props: any) => {
                         ...pos,
                         y: 0,
                     };
-                },30)}
+                }, 30)}
 
-                {...props}
             /> : <Rect
+                x={x}
+                y={y}
+                width={width}
+                height={height}
                 fill="blue"
                 type={type}
                 opacity={0}
@@ -60,13 +76,13 @@ const DraggableRect = ((props: any) => {
                     // console.log(newHeight)
 
                     cellStore.changeHeight(k, newHeight)
-                },30)}
+                }, 30)}
                 hitStrokeWidth={20}
                 onMouseEnter={(e) => {
                     (document.body.style.cursor = "ns-resize")
                     e.target.opacity(1)
                 }}
-                onMouseLeave={(e) =>{
+                onMouseLeave={(e) => {
                     (document.body.style.cursor = "default")
                     e.target.opacity(0)
                 }}
@@ -76,9 +92,8 @@ const DraggableRect = ((props: any) => {
                         ...pos,
                         x: 0,
                     };
-                },50)}
+                }, 50)}
 
-                {...props}
             />}
 
         </>

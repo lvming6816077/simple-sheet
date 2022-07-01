@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useContext, useEffect, useState } from "react";
+import React, { CSSProperties, useCallback, useContext, useEffect, useMemo, useState } from "react";
 // import styles from "./styles.module.css";
 
 import { Stage, Layer, Group, Line } from "react-konva";
@@ -11,6 +11,8 @@ import { observer } from 'mobx-react-lite'
 import EditAreaLayer from "./components/layer/editArea/EditAreaLayer";
 import { CellAttrs, CellStoreContext } from "./stores/CellStore";
 import _ from 'lodash'
+import ScrollArea from "./components/layer/scrollArea/ScrollArea";
+import { getScrollWidthAndHeight } from "./utils";
 
 interface IProps {
     src: string[];
@@ -28,10 +30,9 @@ interface IProps {
 
 const Grid = (props: any) => {
 
-    const width = 901
-    const height = 601
-    const scrollLeft = 0
-    const scrollTop = 0
+    const width = 861
+    const height = 621
+
 
     const mouseEventStore = useContext(MouseEventStoreContext)
     const setDV = mouseEventStore.mouseDown
@@ -46,28 +47,40 @@ const Grid = (props: any) => {
     const cellsMap = cellStore.cellsMap
 
 
-
     const cells = _.values(cellsMap)
 
+    let { swidth, sheight } = useMemo(() => getScrollWidthAndHeight(cellsMap), [cellsMap])
 
 
+    const onScroll = (e: any) => {
+
+        mouseEventStore.scrollLeft = e.target.scrollLeft
+        mouseEventStore.scrollTop = e.target.scrollTop
+    }
     return (
-        <div style={{ width: width, height: height, position: 'relative' }}>
-            <Stage width={width} height={height}
-                onDblClick={(e: KonvaEventObject<MouseEvent>) => {
-                    setDBC({ ...e.target.attrs , value: e.target.attrs.text } as CellAttrs)
-                }}
-                onMouseUp={(e: KonvaEventObject<MouseEvent>) => setUV( { ...e.target.attrs , value: e.target.attrs.text } as CellAttrs)}
-                onMouseMove={(e: KonvaEventObject<MouseEvent>) => setMV( { ...e.target.attrs , value: e.target.attrs.text } as CellAttrs )}
-                onMouseDown={(e: KonvaEventObject<MouseEvent>) => setDV({ ...e.target.attrs , value: e.target.attrs.text } as CellAttrs)} >
-                <Layer>
-                    <Group offsetY={scrollTop} offsetX={scrollLeft}>
-                        {cells.map((o) => <Cell {...o}></Cell>)}
-                    </Group>
-                </Layer>
-            </Stage>
-            <SelectAreaLayer></SelectAreaLayer>
-            <EditAreaLayer></EditAreaLayer>
+        <div style={{ width: width, height: height, position: 'relative' }} >
+            <div style={{ width: width, height: height, position: 'relative',zIndex:3 }} onScroll={onScroll}>
+                <Stage width={width} height={height}
+                    onDblClick={(e: KonvaEventObject<MouseEvent>) => {
+                        setDBC({ ...e.target.attrs, value: e.target.attrs.text } as CellAttrs)
+                    }}
+                    onMouseUp={(e: KonvaEventObject<MouseEvent>) => setUV({ ...e.target.attrs, value: e.target.attrs.text } as CellAttrs)}
+                    onMouseMove={(e: KonvaEventObject<MouseEvent>) => setMV({ ...e.target.attrs, value: e.target.attrs.text } as CellAttrs)}
+                    onMouseDown={(e: KonvaEventObject<MouseEvent>) => setDV({ ...e.target.attrs, value: e.target.attrs.text } as CellAttrs)} >
+                    <Layer>
+                        <Group offsetY={mouseEventStore.scrollTop} offsetX={mouseEventStore.scrollLeft}>
+                            {cells.map((o) => <Cell {...o}></Cell>)}
+                        </Group>
+                    </Layer>
+                </Stage>
+                <SelectAreaLayer></SelectAreaLayer>
+                <EditAreaLayer></EditAreaLayer>
+
+
+            </div>
+            <div style={{ width: width+20, height: height+20, position: 'absolute',left:0,top:0, overflow: 'auto' ,zIndex:1}} onScroll={onScroll}>
+                <ScrollArea swidth={swidth} sheight={sheight}></ScrollArea>
+            </div>
         </div>
     )
 };
