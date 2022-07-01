@@ -83,6 +83,7 @@ const Cell = React.memo(observer((props:any) => {
                     width={width}
                     text={value}
                     fill={textColor}
+                    lineHeight={1.5}
                     verticalAlign={verticalAlign}
                     align={align}
                     fontFamily={fontFamily}

@@ -59,7 +59,7 @@ const Grid = (props: any) => {
     }
     return (
         <div style={{ width: width, height: height, position: 'relative' }} >
-            <div style={{ width: width, height: height, position: 'relative',zIndex:3 }} onScroll={onScroll}>
+            <div style={{ width: width, height: height, position: 'relative',zIndex:3 }}>
                 <Stage width={width} height={height}
                     onDblClick={(e: KonvaEventObject<MouseEvent>) => {
                         setDBC({ ...e.target.attrs, value: e.target.attrs.text } as CellAttrs)
@@ -78,7 +78,7 @@ const Grid = (props: any) => {
 
 
             </div>
-            <div style={{ width: width+20, height: height+20, position: 'absolute',left:0,top:0, overflow: 'auto' ,zIndex:1}} onScroll={onScroll}>
+            <div style={{ width: width+20, height: height+20, position: 'absolute',left:0,top:0, overflow: 'auto' ,zIndex:1}} onScroll={(onScroll)}>
                 <ScrollArea swidth={swidth} sheight={sheight}></ScrollArea>
             </div>
         </div>

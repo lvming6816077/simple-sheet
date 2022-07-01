@@ -106,13 +106,10 @@ const EditAreaLayer = (props: any) => {
 
 
     return (
-        <div
-            style={{
-                pointerEvents: "none",
-            }}
-        >
+
             <div
                 style={{
+                    pointerEvents: "none",
                     position: "absolute",
                     left: 0,
                     top: 0,
@@ -124,14 +121,13 @@ const EditAreaLayer = (props: any) => {
             >
                 <div
                     style={{
-                        transform: `translate(-${scrollLeft + 0}px, -${scrollTop + 0
+                        transform: `translate(-${mouseEventStore.scrollLeft + 0}px, -${mouseEventStore.scrollTop + 0
                             }px)`,
                     }}
                 >
                     {getEditCellSelection()}
                 </div>
             </div>
-        </div>
     )
 };
 
