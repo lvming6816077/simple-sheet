@@ -142,7 +142,7 @@ export const generaCell = (prev:CellMap = {})=>{
                 y,
                 width,
                 height,
-                value: rowIndex + ':' + columnIndex + ':' + count++,
+                value: prev[k]?.value || (rowIndex + ':' + columnIndex),
                 type:type,
                 key: k,
                 ownKey:k,

@@ -14,6 +14,10 @@ const DraggableRect = React.memo((props: any) => {
         height,
         width,
     } = props
+
+    const minWidth = 40
+
+    const minHeight = 18
     return (
         <>
             {type == 'header' ? <Rect
@@ -34,6 +38,7 @@ const DraggableRect = React.memo((props: any) => {
                     const k = props.ownKey
                     // onResize(columnIndex, newWidth);
 
+
                     cellStore.changeWidth(k, newWidth, node.x())
                 }, 30)}
                 hitStrokeWidth={20}
@@ -51,6 +56,12 @@ const DraggableRect = React.memo((props: any) => {
                 }}
                 dragBoundFunc={_.throttle((pos) => {
                     // console.log(pos)
+                    if (pos.x - props.ownx < minWidth) {
+                        return {
+                            x:props.ownx+minWidth,
+                            y: 0,
+                        };
+                    }
                     return {
                         ...pos,
                         y: 0,
@@ -87,7 +98,12 @@ const DraggableRect = React.memo((props: any) => {
                     e.target.opacity(0)
                 }}
                 dragBoundFunc={_.throttle((pos) => {
-                    // console.log(pos)
+                    if (pos.y - props.owny < minHeight) {
+                        return {
+                            y:props.owny+minHeight,
+                            x: 0,
+                        };
+                    }
                     return {
                         ...pos,
                         x: 0,
