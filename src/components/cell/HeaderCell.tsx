@@ -107,7 +107,7 @@ const HeaderCell = (((props:any) => {
 
 
     const isFirst = ownKey == '0:1'
-    const dragHandleWidth = 3
+    const dragHandleWidth = 13
 
 
 

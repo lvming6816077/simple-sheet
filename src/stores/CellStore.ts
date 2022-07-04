@@ -57,18 +57,11 @@ export class CellStore {
 
     @action.bound
     changeWidth(ownKey:string,newwidth:number,newx:number) {
-        // let cur = getCurrentCellByOwnKey(ownKey,this._cells)
-        // // console.log(newwidth)
-        // if (cur) {
-        //     // cur!.value = e.target.value
-        //     cur.width = newwidth
-        // }
-        // this.tempx = this.activeCell!.x
+
 
         var copy:CellMap = this.cellsMap
 
-        var oriwidth = copy[ownKey]!.width
-        var orix = copy[ownKey]!.x
+
 
         for (var key in copy) {
             var item = copy[key]
@@ -78,29 +71,10 @@ export class CellStore {
             // console.log(ownKey)
             if (lk == rk) {
                 item!.width = newwidth
+                // console.log(item?.width)
             }
         }
 
-        if (this.activeCell) {
-            const cur = getCurrentCellByOwnKey(this.activeCell.ownKey,this.cellsMap) // 待优化
-            var type = checkIntervals([[this.activeCell.x, this.activeCell.x+this.activeCell.width],[orix,orix+oriwidth]])
-            if (type == 'trans') {
-                this.setActiveCell({
-                    ...this.activeCell,
-                    x:cur!.x,
-                    
-                } as CellAttrs)
-            }
-            else if (type == 'distance') {
-                this.setActiveCell({
-                    ...this.activeCell,
-                    // x:newx,
-                    
-                    width: newwidth+(this.activeCell.width-oriwidth),
-                } as CellAttrs)
-            }
-
-        }
 
         this.cellsMap = generaCell(copy)
     }
@@ -109,7 +83,6 @@ export class CellStore {
 
         var copy:CellMap = this.cellsMap
 
-        var oriheight = copy[ownKey]!.height
 
         for (var key in copy) {
             var item = copy[key]
@@ -123,12 +96,7 @@ export class CellStore {
 
         }
 
-        if (this.activeCell) {
-            this.setActiveCell({
-                ...this.activeCell,
-                height: newheight+(this.activeCell.height-oriheight),
-            } as CellAttrs)
-        }
+
 
         this.cellsMap = generaCell(copy)
     }

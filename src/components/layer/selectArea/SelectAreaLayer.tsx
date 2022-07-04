@@ -80,10 +80,10 @@ const SelectAreaLayer = (props: any) => {
 
     }, [selectArea, selectEnd])
 
-    // const [activeCell,setActiveCell] = useState<CellAttrs>(null)
+    const [activeCell,setActiveCell] = useState<CellAttrs>(null)
 
-    const activeCell = cellStore.activeCell
-    const setActiveCell = cellStore.setActiveCell
+    // const activeCell = cellStore.activeCell
+    // const setActiveCell = cellStore.setActiveCell
 
 
 
@@ -123,6 +123,10 @@ const SelectAreaLayer = (props: any) => {
 
     }, [activeCell])
 
+    // const c = getCurrentCellByOwnKey('4:5', cellStore.cellsMap)
+
+
+
 
     const mouseEventStore = useContext(MouseEventStoreContext)
     const dv = mouseEventStore.downCellAttr
@@ -132,33 +136,51 @@ const SelectAreaLayer = (props: any) => {
     // const cellsMap = cellStore.cellsMap
 
     useEffect(() => {
+        
 
-        if (dv?.type == 'header' || dv?.type == 'left') return
+        if (dv?.type == 'header' || dv?.type == 'left')  {
+            if (activeCell) {
+                isSelecting.current = true
+                let cur = getCurrentCellByOwnKey(activeCell?.ownKey || '', cellStore.cellsMap)
+                setActiveCell(cur)
+            }
+        } else {
 
-        let cur = getCurrentCellByOwnKey(dv?.ownKey || '', cellStore.cellsMap)
+            let cur = getCurrentCellByOwnKey(dv?.ownKey || '', cellStore.cellsMap)
+    
+            setActiveCell(cur)
+            setSelectArea(null)
+            isSelecting.current = true
+            setSelectEnd(null)
+            selectStart.current = cur ? {
+                ...cur,
+                x: cur.x,
+                y: cur.y,
+            } : null
+    
+    
+    
+            cur && cellStore.activeHeader(cur!.x, cur!.x+cur!.width)
+            cur && cellStore.activeLeft(cur!.y, cur!.y+cur.height)
+        }
 
-        setActiveCell(cur)
-        setSelectArea(null)
-        isSelecting.current = true
-        setSelectEnd(null)
-        selectStart.current = cur ? {
-            ...cur,
-            x: cur.x,
-            y: cur.y,
-        } : null
 
-
-
-        cur && cellStore.activeHeader(cur!.x, cur!.x+cur!.width)
-        cur && cellStore.activeLeft(cur!.y, cur!.y+cur.height)
-
-    }, [dv])
+    }, [dv,cellStore.cellsMap])
 
     useEffect(() => {
         let cur = getCurrentCellByOwnKey(mv?.ownKey || '', cellStore.cellsMap)
+        if (mv?.type == 'header' || mv?.type == 'left')  {
+
+            if (selectEnd) {
+                cur = getCurrentCellByOwnKey(selectEnd?.ownKey || '', cellStore.cellsMap)
+                
+            }
+        }
+        
         // console.log(cur)
         if (isSelecting.current && cur) {
 
+            // console.log(cur)
             const start = selectStart.current
 
             if (start == null) return
@@ -184,7 +206,7 @@ const SelectAreaLayer = (props: any) => {
 
             setSelectArea(o)
         }
-    }, [mv])
+    }, [cellStore.cellsMap,mv])
 
 
 
@@ -192,13 +214,23 @@ const SelectAreaLayer = (props: any) => {
 
 
     useEffect(() => {
+
+        if (!uv?.ownKey && isSelecting.current)  {
+            // setSelectEnd(null)
+            isSelecting.current = false
+            return
+        }
+        console.log(uv)
         if (isSelecting.current && uv) {
             isSelecting.current = false
 
-            // setSelectEnd({
-            //     x: uv.x,
-            //     y: uv.y
-            // })
+            setSelectEnd({
+                x: uv.x,
+                y: uv.y,
+                ownKey:uv.ownKey,
+                width: uv.width,
+                height: uv.height
+            })
         }
     }, [uv])
 
@@ -222,6 +254,7 @@ const SelectAreaLayer = (props: any) => {
                         }px)`,
                 }}
             >
+                {activeCell?.width}
                 {getSelectAreaCell()}
                 {getActiveCellSelection()}
             </div>
