@@ -1,52 +1,50 @@
 import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 
-import {  MouseEventStoreContext } from "@/stores/MouseEventStore";
+import { MouseEventStoreContext } from "@/stores/MouseEventStore";
 import styles from "./styles.module.css";
 import { observer } from 'mobx-react-lite'
 import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
-import { getCurrentCellByXY } from "@/utils";
+import { getCurrentCellByOwnKey, getCurrentCellByXY } from "@/utils";
 import _ from 'lodash'
 
 interface IProps {
-  src: string[];
-  currentIndex?: number;
-  backgroundStyle?: CSSProperties;
-  disableScroll?: boolean;
-  closeOnClickOutside?: boolean;
-  onClose?: () => void;
-  closeComponent?: JSX.Element;
-  leftArrowComponent?: JSX.Element;
-  rightArrowComponent?: JSX.Element;
+    src: string[];
+    currentIndex?: number;
+    backgroundStyle?: CSSProperties;
+    disableScroll?: boolean;
+    closeOnClickOutside?: boolean;
+    onClose?: () => void;
+    closeComponent?: JSX.Element;
+    leftArrowComponent?: JSX.Element;
+    rightArrowComponent?: JSX.Element;
 }
 
 const SelectAreaLayer = (props: any) => {
 
-    const scrollLeft = 0
-    const scrollTop = 0
+
     const isSelecting = useRef(false);
     const selectStart = useRef<CellAttrs>(null);
-    const [selectEnd,setSelectEnd] = useState<CellAttrs>(null);
-    const [selectArea,setSelectArea] = useState<string|null>(null)
-
-
+    const [selectEnd, setSelectEnd] = useState<CellAttrs>(null);
 
 
 
     const cellStore = useContext(CellStoreContext)
 
+    const selectArea = cellStore.selectArea
+    const setSelectArea = cellStore.setSelectArea
 
 
 
-    const selectAreaRenderer = (o:any) => {
-        const style:CSSProperties = {
-            position:'absolute',
-            left:o.left,
-            top:o.top,
-            width:o.right-o.left+o.width,
-            height:o.bottom-o.top+o.height,
-            border:''
-            
+    const selectAreaRenderer = (o: any) => {
+        const style: CSSProperties = {
+            position: 'absolute',
+            left: o.left,
+            top: o.top,
+            width: o.right-o.left,
+            height: o.bottom-o.top,
+            border: ''
+
         }
 
         if (o.border) {
@@ -55,19 +53,19 @@ const SelectAreaLayer = (props: any) => {
             style.border = 'none'
         }
 
-        
+
         return (
-        
+
             <div style={style} className={styles['select-area']}>
             </div>
         )
     }
 
-    
-    const getSelectAreaCell = useCallback(()=>{
+
+    const getSelectAreaCell = useCallback(() => {
         if (!selectArea) return null
 
-        const o = JSON.parse(selectArea)
+        const o = selectArea
 
         if (selectEnd) {
             o.border = true
@@ -77,25 +75,28 @@ const SelectAreaLayer = (props: any) => {
 
         const cell = selectAreaRenderer(o);
 
-        
+
         return cell
 
-    },[selectArea,selectEnd])
+    }, [selectArea, selectEnd])
+
+    // const [activeCell,setActiveCell] = useState<CellAttrs>(null)
+
+    const activeCell = cellStore.activeCell
+    const setActiveCell = cellStore.setActiveCell
 
 
-    const [activeCell,setActiveCell] = useState<CellAttrs>(null)
-    
 
+    const activeCellRenderer = (o: any) => {
 
-    const activeCellRenderer = (o:any) => {
-        const style:CSSProperties = {
-            position:'absolute',
-            left:o.x,
-            top:o.y,
-            borderWidth:o.strokeWidth,
-            borderColor:o.stroke,
-            width:o.width+1,
-            height:o.height+1,
+        const style: CSSProperties = {
+            position: 'absolute',
+            left: o.x,
+            top: o.y,
+            borderWidth: o.strokeWidth,
+            borderColor: o.stroke,
+            width: o.width + 1,
+            height: o.height + 1,
             borderStyle: 'solid',
             boxSizing: 'border-box'
 
@@ -103,13 +104,10 @@ const SelectAreaLayer = (props: any) => {
         return <div style={style}></div>
     }
 
-    const getActiveCellSelection = useCallback(()=>{
+    const getActiveCellSelection = useCallback(() => {
 
         if (!activeCell) return null
-
-        let cur = getCurrentCellByXY(activeCell.x,activeCell.y,cellStore.cellsMap)
-
-
+        
 
         const cell = activeCellRenderer({
             stroke: "#1a73e8",
@@ -117,48 +115,50 @@ const SelectAreaLayer = (props: any) => {
             fill: "transparent",
             x: activeCell.x,
             y: activeCell.y,
-            width: cur?.width,
-            height: cur?.height,
-          });
-        
-          return cell
+            width: activeCell?.width,
+            height: activeCell?.height,
+        });
 
-    },[activeCell])
+        return cell
 
-    
-    const mouseEventStore =  useContext(MouseEventStoreContext)
+    }, [activeCell])
+
+
+    const mouseEventStore = useContext(MouseEventStoreContext)
     const dv = mouseEventStore.downCellAttr
     const uv = mouseEventStore.upCellAttr
     const mv = mouseEventStore.moveCellAttr
 
     // const cellsMap = cellStore.cellsMap
-    
-    useEffect(()=>{
+
+    useEffect(() => {
 
         if (dv?.type == 'header' || dv?.type == 'left') return
-        setActiveCell(dv)
+
+        let cur = getCurrentCellByOwnKey(dv?.ownKey || '', cellStore.cellsMap)
+
+        setActiveCell(cur)
         setSelectArea(null)
         isSelecting.current = true
         setSelectEnd(null)
-        selectStart.current = dv ? {
-            x:dv.x,
-            y:dv.y
+        selectStart.current = cur ? {
+            ...cur,
+            x: cur.x,
+            y: cur.y,
         } : null
 
-        
 
-        dv && cellStore.activeHeader(dv!.x,dv!.x)
-        dv && cellStore.activeLeft(dv!.y,dv!.y)
 
-    },[dv])
+        cur && cellStore.activeHeader(cur!.x, cur!.x+cur!.width)
+        cur && cellStore.activeLeft(cur!.y, cur!.y+cur.height)
 
-    useEffect(()=>{
-        if (isSelecting.current && mv) {
-            
-            const cur = {
-                x:mv.x,
-                y:mv.y
-            }
+    }, [dv])
+
+    useEffect(() => {
+        let cur = getCurrentCellByOwnKey(mv?.ownKey || '', cellStore.cellsMap)
+        // console.log(cur)
+        if (isSelecting.current && cur) {
+
             const start = selectStart.current
 
             if (start == null) return
@@ -169,60 +169,63 @@ const SelectAreaLayer = (props: any) => {
             }
 
             let top = Math.min(start.y, cur.y);
-            let bottom = Math.max(start.y, cur.y);
+            let bottom = Math.max(start.y+start.height, cur.y+cur.height);
             let left = Math.min(start.x, cur.x);
-            let right = Math.max(start.x, cur.x);
+            let right = Math.max(start.x+start.width, cur.x+cur.width);
 
-            const o = JSON.stringify({top,bottom,left,right,width:mv.width,height:mv.height})
+            
 
-            cellStore.activeHeader(left,right)
-            cellStore.activeLeft(top,bottom)
+            const o = { top, bottom, left, right }
+
+
+
+            cellStore.activeHeader(left, right)
+            cellStore.activeLeft(top, bottom)
 
             setSelectArea(o)
         }
-    },[mv])
+    }, [mv])
 
 
 
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
         if (isSelecting.current && uv) {
             isSelecting.current = false
-            
-            setSelectEnd({
-                x:uv.x,
-                y:uv.y
-            })
+
+            // setSelectEnd({
+            //     x: uv.x,
+            //     y: uv.y
+            // })
         }
-    },[uv])
+    }, [uv])
 
 
     return (
 
-              <div
+        <div
+            style={{
+                pointerEvents: "none",
+                position: "absolute",
+                left: 0,
+                top: 0,
+                right: 0,
+                bottom: 0,
+                overflow: "hidden",
+            }}
+        >
+            <div
                 style={{
-                    pointerEvents: "none",
-                  position: "absolute",
-                  left: 0,
-                  top: 0,
-                  right: 0,
-                  bottom: 0,
-                  overflow: "hidden",
+                    transform: `translate(-${mouseEventStore.scrollLeft + 0}px, -${mouseEventStore.scrollTop + 0
+                        }px)`,
                 }}
-              >
-                <div
-                  style={{
-                    transform: `translate(-${mouseEventStore.scrollLeft + 0}px, -${
-                        mouseEventStore.scrollTop + 0
-                    }px)`,
-                  }}
-                >
-                  {getSelectAreaCell()}
-                  {getActiveCellSelection()}
-                </div>
-              </div>
+            >
+                {getSelectAreaCell()}
+                {getActiveCellSelection()}
+            </div>
+        </div>
     )
 };
 

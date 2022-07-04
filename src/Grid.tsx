@@ -13,6 +13,7 @@ import { CellAttrs, CellStoreContext } from "./stores/CellStore";
 import _ from 'lodash'
 import ScrollArea from "./components/layer/scrollArea/ScrollArea";
 import { getScrollWidthAndHeight } from "./utils";
+import ToolBar from "./components/toolbar/ToolBar";
 
 interface IProps {
     src: string[];
@@ -61,8 +62,14 @@ const Grid = (props: any) => {
 
         mouseEventStore.scrollLeft = e.target.scrollLeft
         mouseEventStore.scrollTop = e.target.scrollTop
+
+        // console.log(mouseEventStore.scrollLeft,mouseEventStore.scrollTop)
     }
     return (
+        <>
+            
+            <ToolBar></ToolBar>
+        
         <div style={{ width: width, height: height, position: 'relative' }} >
             <div style={{ width: width, height: height, position: 'relative',zIndex:3 }}>
                 <Stage width={width} height={height}
@@ -77,7 +84,6 @@ const Grid = (props: any) => {
                         <Group offsetY={mouseEventStore.scrollTop} offsetX={mouseEventStore.scrollLeft}>
                             {normal.map((o) => <Cell {...o}></Cell>)}
                         </Group>
-                        
                         <Group offsetX={mouseEventStore.scrollLeft}>
                             {header.map((o) => <Cell {...o}></Cell>)}
                         </Group>
@@ -94,6 +100,7 @@ const Grid = (props: any) => {
                 <ScrollArea swidth={swidth} sheight={sheight}></ScrollArea>
             </div>
         </div>
+        </>
     )
 };
 

@@ -27,7 +27,6 @@ const Cell = React.memo(observer((props:any) => {
         y = 0,
         width,
         height,
-        value,
         fill = "white",
         strokeWidth = 1,
         stroke = "#d9d9d9",
@@ -47,8 +46,12 @@ const Cell = React.memo(observer((props:any) => {
         globalCompositeOperation = "multiply",
         isOverlay,
         type = 'normal',
-        ownKey
+        ownKey,
+        ismerge
     } = props;
+
+    let value = ismerge ? '' : props.value
+
 
     const fillEnabled = !!fill;
     const textStyle = `${fontWeight} ${fontStyle}`;
@@ -67,7 +70,8 @@ const Cell = React.memo(observer((props:any) => {
                 stroke={stroke}
                 // strokeWidth={strokeWidth}
                 
-                strokeWidth={0.5}
+                strokeWidth={ismerge ? 0: 0.5}
+                ismerge={ismerge}
                 shadowForStrokeEnabled={false}
                 strokeScaleEnabled={true}
                 hitStrokeWidth={0}
@@ -84,6 +88,7 @@ const Cell = React.memo(observer((props:any) => {
                     width={width}
                     text={value}
                     fill={textColor}
+                    ismerge={ismerge}
                     lineHeight={1.5}
                     verticalAlign={verticalAlign}
                     align={align}

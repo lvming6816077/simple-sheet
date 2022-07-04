@@ -15,15 +15,9 @@ interface IProps {
 
 const ScrollArea = (props: IProps) => {
 
-
-
-
-
-
     return (
         <div
             style={{
-                pointerEvents: "none",
                 position: "absolute",
                 left: 0,
                 top: 0,
@@ -36,4 +30,4 @@ const ScrollArea = (props: IProps) => {
     )
 };
 
-export default observer(ScrollArea);
+export default (ScrollArea);

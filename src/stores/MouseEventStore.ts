@@ -24,7 +24,9 @@ class MouseEventStore {
 
     @action.bound
     mouseDown(obj: CellAttrs) {
+
         this.downCellAttr = obj
+        
     }
 
     @action.bound

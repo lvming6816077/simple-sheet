@@ -1,5 +1,6 @@
 import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
 import { MouseEventStoreContext } from "@/stores/MouseEventStore";
+import { headerCell } from "@/utils/constants";
 import { KonvaEventObject } from "konva/lib/Node";
 import { observer } from "mobx-react-lite";
 import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -15,7 +16,7 @@ const HeaderCell = (((props:any) => {
         width,
         height,
         ownKey,
-        fill = "#f8f9fa",
+        fill = headerCell.fill,
         strokeWidth = 1.5,
         stroke = "#c6c6c6",
         align = "center",
@@ -35,6 +36,7 @@ const HeaderCell = (((props:any) => {
         type,
     } = props;
 
+
     let x = props.x+0,y = props.y+0
 
 
@@ -42,11 +44,8 @@ const HeaderCell = (((props:any) => {
 
 
 
-    const mouseEventStore =  useContext(MouseEventStoreContext)
     
     
-
-    const [ownFill,setOwnFill] = useState<string>(fill)
     
     // const dv = mouseEventStore.getdownCellAttr
     // const mv = mouseEventStore.moveCellAttr
@@ -110,7 +109,6 @@ const HeaderCell = (((props:any) => {
     const isFirst = ownKey == '0:1'
     const dragHandleWidth = 3
 
-    console.log(fill)
 
 
     return (

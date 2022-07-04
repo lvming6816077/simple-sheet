@@ -1,4 +1,5 @@
 import { MouseEventStoreContext } from "@/stores/MouseEventStore";
+import { leftCell } from "@/utils/constants";
 import { observer } from "mobx-react-lite";
 import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
 
@@ -13,8 +14,7 @@ const LeftCell = React.memo(((props:any) => {
         width,
         height,
         ownKey,
-        
-        fill = "#f8f9fa",
+        fill = leftCell.fill,
         strokeWidth = 1.5,
         stroke = "#c6c6c6",
         align = "center",
@@ -39,7 +39,7 @@ const LeftCell = React.memo(((props:any) => {
     const mouseEventStore =  useContext(MouseEventStoreContext)
     
 
-    const [ownFill,setOwnFill] = useState<string>(fill)
+
     
     // const dv = mouseEventStore.getdownCellAttr
     // useEffect(()=>{
@@ -53,6 +53,7 @@ const LeftCell = React.memo(((props:any) => {
     // },[dv])
 
     // const width = 60,height = 20
+
 
     let text = ownKey.split(':')[0]
 

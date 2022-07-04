@@ -39,7 +39,7 @@ const DraggableRect = React.memo((props: any) => {
                     // onResize(columnIndex, newWidth);
 
 
-                    cellStore.changeWidth(k, newWidth, node.x())
+                    cellStore.changeWidth(k, newWidth, node.x()+props.width)
                 }, 30)}
                 hitStrokeWidth={20}
                 onMouseEnter={(e) => {

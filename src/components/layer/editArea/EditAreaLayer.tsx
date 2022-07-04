@@ -8,7 +8,7 @@ import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
 
 import _ from 'lodash'
 
-import {getCurrentCellByXY} from '@/utils/index'
+import {getCurrentCellByOwnKey, getCurrentCellByXY} from '@/utils/index'
 
 interface IProps {
     src: string[];
@@ -74,7 +74,7 @@ const EditAreaLayer = (props: any) => {
 
             <div style={style}>
                 <textarea defaultValue={o.value} className={styles['edit-textarea']} autoFocus onBlur={(e) => {
-                    let cur = getCurrentCellByXY(o.x,o.y,cellStore.cellsMap)
+                    let cur = getCurrentCellByOwnKey(o.ownKey,cellStore.cellsMap)
                     if (cur) {
                         cur!.value = e.target.value
                         // cur.height = 50
@@ -95,7 +95,8 @@ const EditAreaLayer = (props: any) => {
             y: editCell.y,
             width: editCell.width,
             height: editCell.height,
-            value:editCell.value
+            value:editCell.value,
+            ownKey:editCell.ownKey
         });
 
 

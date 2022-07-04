@@ -1,0 +1,9 @@
+.tool-bar-wrap {
+    height: 40px;
+}
+.merge-cell {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/merge-cells.png');
+    background-size: cover;
+}

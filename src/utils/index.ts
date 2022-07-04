@@ -1,6 +1,8 @@
-import { CellAttrs, CellMap, CellStoreContext } from "@/stores/CellStore"
+import { CellAttrs, CellMap, CellStoreContext, SelectArea } from "@/stores/CellStore"
 import _ from 'lodash'
 import { useContext } from "react"
+
+import { headerCell,leftCell,normalCell  } from "./constants"
 
 const rowStartIndex: number = 0
     
@@ -14,10 +16,7 @@ const columnStartIndex: number = 0
 const  columnStopIndex: number = 8
 
 
-const cellHeight: number = 20
 
-
-const cellWidth: number = 100
 
 export const getCurrentCellByXY = (x: number, y: number, cellsMap: CellMap) => {
     var _cells = _.values(cellsMap)
@@ -28,8 +27,35 @@ export const getCurrentCellByXY = (x: number, y: number, cellsMap: CellMap) => {
 }
 
 export const getCurrentCellByOwnKey = (key:string, cellsMap: CellMap) => {
+    var obj = cellsMap[key]
 
-    return cellsMap[key]
+    if (obj?.ismerge) {
+        const [firstkey,endkey] = obj?.ismerge
+        return {
+            ...obj,
+            x:cellsMap[firstkey]!.x,
+            y:cellsMap[firstkey]!.y,
+            width:cellsMap[endkey]!.x-cellsMap[firstkey]!.x+cellsMap[endkey]!.width,
+            height:cellsMap[endkey]!.y-cellsMap[firstkey]!.y+cellsMap[endkey]!.height,
+        }
+    } else {
+        return obj
+    }
+}
+
+export const getCurrentCellsByArea = (o:SelectArea, cellsMap: CellMap) => {
+    var _cells = _.values(cellsMap)
+    if (!o) return []
+
+    return _cells.filter(i=>{
+        if (i && o) {
+            return i.x>=o.left && i.x<o.right && i.y>=o.top && i.y <o.bottom
+        } else {
+            return false
+        }
+        
+    })
+
 }
 
 export const getScrollWidthAndHeight = (cellsMap: CellMap) => {
@@ -66,18 +92,18 @@ export const generaCell = (prev:CellMap = {})=>{
     const getRowHeight = (type:string,k:string) => {
         let v = 0
         if (type == 'header') {
-            v = 20
+            v = headerCell.height
         }
         
         else if (type == 'left') {
-            v = 20
+            v = leftCell.height
         }
     
         else if (type == 'single') {
             v  = 20
         } else {
 
-            v = cellHeight
+            v = normalCell.height
         }
 
         const cur = prev[k]
@@ -88,18 +114,18 @@ export const generaCell = (prev:CellMap = {})=>{
     const getColumnWidth = (type:string,k:string) => {
         let v = 0
         if (type == 'header') {
-            v = 100
+            v = headerCell.width
         }
         
         else if (type == 'left') {
-            v = 60
+            v = leftCell.width
         }
     
         else if (type == 'single') {
             v  = 60
         } else {
 
-            v = cellWidth
+            v = normalCell.width
         }
 
         const cur = prev[k]
@@ -115,9 +141,6 @@ export const generaCell = (prev:CellMap = {})=>{
     }
 
 
-
-
-    var count = 0
     var map:CellMap = {}
     for (let rowIndex: number = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
 
@@ -130,7 +153,6 @@ export const generaCell = (prev:CellMap = {})=>{
             const y = getRowOffset(rowIndex,columnIndex,map);
 
             const k = rowIndex + ':' + columnIndex
-
 
 
             const width = getColumnWidth(type,k)
@@ -146,6 +168,7 @@ export const generaCell = (prev:CellMap = {})=>{
                 type:type,
                 key: k,
                 ownKey:k,
+                ismerge: prev[k]?.ismerge == undefined ? undefined : prev[k]?.ismerge,
             }
 
 
@@ -153,4 +176,27 @@ export const generaCell = (prev:CellMap = {})=>{
     }
 
     return map
+}
+
+export const checkIntervals = (arr:number[][])=>{
+    // arr.sort((a,b)=>a[0]-b[0])
+
+    if (arr[1][1] <= arr[0][1] && arr[1][0] >= arr[0][0]) {
+        return 'distance'
+    } else {
+        
+        return 'trans'
+    }
+
+
+    // for (var i = 0 ; i < arr.length-1 ; i++) {
+    //     if (arr[i][1] == arr[i+1][0]) {
+    //         return 'trans'
+    //     }
+    //     if (arr[i][1] > arr[i+1][0]) {
+    //         return 'distance'
+    //     }
+    // }
+
+    return false
 }
