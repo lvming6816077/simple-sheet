@@ -49,6 +49,11 @@ const Grid = (props: any) => {
 
     const cells = _.values(cellsMap)
 
+    const header = cells.filter(i=>i?.type == 'header')
+    const left = cells.filter(i=>i?.type == 'left')
+    const single = cells.filter(i=>i?.type == 'single')
+    const normal = cells.filter(i=>i?.type == 'normal')
+
     let { swidth, sheight } = useMemo(() => getScrollWidthAndHeight(cellsMap), [cellsMap])
 
 
@@ -68,15 +73,22 @@ const Grid = (props: any) => {
                     onMouseMove={(e: KonvaEventObject<MouseEvent>) => setMV({ ...e.target.attrs, value: e.target.attrs.text } as CellAttrs)}
                     onMouseDown={(e: KonvaEventObject<MouseEvent>) => setDV({ ...e.target.attrs, value: e.target.attrs.text } as CellAttrs)} >
                     <Layer>
+ 
                         <Group offsetY={mouseEventStore.scrollTop} offsetX={mouseEventStore.scrollLeft}>
-                            {cells.map((o) => <Cell {...o}></Cell>)}
+                            {normal.map((o) => <Cell {...o}></Cell>)}
                         </Group>
+                        
+                        <Group offsetX={mouseEventStore.scrollLeft}>
+                            {header.map((o) => <Cell {...o}></Cell>)}
+                        </Group>
+                        <Group offsetY={mouseEventStore.scrollTop} >
+                            {left.map((o) => <Cell {...o}></Cell>)}
+                        </Group>
+                        {single.map((o) => <Cell {...o}></Cell>)}
                     </Layer>
                 </Stage>
                 <SelectAreaLayer></SelectAreaLayer>
                 <EditAreaLayer></EditAreaLayer>
-
-
             </div>
             <div style={{ width: width+20, height: height+20, position: 'absolute',left:0,top:0, overflow: 'auto' ,zIndex:1}} onScroll={onScroll}>
                 <ScrollArea swidth={swidth} sheight={sheight}></ScrollArea>

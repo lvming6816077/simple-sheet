@@ -4,6 +4,7 @@ import React, { CSSProperties, useCallback, useEffect, useRef, useState } from "
 import { Stage, Text, Group, Rect } from "react-konva";
 import HeaderCell from "./HeaderCell";
 import LeftCell from "./LeftCell";
+import SingleCell from "./SingleCell";
 
 interface IProps {
   src: string[];
@@ -53,7 +54,7 @@ const Cell = React.memo(observer((props:any) => {
     const textStyle = `${fontWeight} ${fontStyle}`;
     if (type == 'header') return <HeaderCell {...props}></HeaderCell>
     if (type == 'left') return <LeftCell {...props}></LeftCell>
-    if (type == 'single') return <Rect {...props}></Rect>
+    if (type == 'single') return <SingleCell {...props}></SingleCell>
     return (
         <Group>
             <Rect

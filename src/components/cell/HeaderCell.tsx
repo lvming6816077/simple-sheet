@@ -110,6 +110,8 @@ const HeaderCell = (((props:any) => {
     const isFirst = ownKey == '0:1'
     const dragHandleWidth = 3
 
+    console.log(fill)
+
 
     return (
         <>
