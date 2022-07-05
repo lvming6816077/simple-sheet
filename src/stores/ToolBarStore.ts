@@ -27,6 +27,8 @@ class ToolBarStore {
             height: last!.y - first!.y + last!.height,
         } as CellAttrs)
 
+        cellStore.setSelectArea(null)
+
 
     }
 

@@ -42,6 +42,36 @@ export const getCurrentCellByOwnKey = (key:string, cellsMap: CellMap) => {
         return obj
     }
 }
+export const getCurrentCellsByCol = (colkey:string, cellsMap: CellMap) => {
+    
+    var _cells = _.values(cellsMap)
+
+    return _cells.filter(i=>{
+        return i?.ownKey.split(':')[1] == colkey
+    })
+
+}
+export const getCurrentCellsByRow = (rowkey:string, cellsMap: CellMap) => {
+    
+    var _cells = _.values(cellsMap)
+
+    return _cells.filter(i=>{
+        return i?.ownKey.split(':')[0] == rowkey
+    })
+
+}
+
+export const getAreaBounds = (start:CellAttrs,cur:CellAttrs, cellsMap: CellMap) => {
+
+    if (start && cur) {
+        let top = Math.min(start.y, cur.y);
+        let bottom = Math.max(start.y+start.height, cur.y+cur.height);
+        let left = Math.min(start.x, cur.x);
+        let right = Math.max(start.x+start.width, cur.x+cur.width);
+    }
+
+
+}
 
 export const getCurrentCellsByArea = (o:SelectArea, cellsMap: CellMap) => {
     var _cells = _.values(cellsMap)
@@ -168,7 +198,8 @@ export const generaCell = (prev:CellMap = {})=>{
                 type:type,
                 key: k,
                 ownKey:k,
-                ismerge: prev[k]?.ismerge == undefined ? undefined : prev[k]?.ismerge,
+                fill:prev[k]?.fill || undefined,
+                ismerge: prev[k]?.ismerge || undefined
             }
 
 
@@ -184,7 +215,7 @@ export const checkIntervals = (arr:number[][])=>{
     if (arr[1][1] <= arr[0][1] && arr[1][0] >= arr[0][0]) {
         return 'distance'
     } else {
-        
+
         return 'trans'
     }
 
