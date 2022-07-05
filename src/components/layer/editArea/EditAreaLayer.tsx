@@ -44,6 +44,20 @@ const EditAreaLayer = (props: any) => {
     const [editCell, setEditCell] = useState<CellAttrs>(null)
 
     useEffect(() => {
+        // console.log(dbc)
+        if (!dbc || !dbc.ownKey) return
+        var cur = getCurrentCellByOwnKey(dbc!.ownKey,cellStore.cellsMap,true)
+        // dbc.value = '222'
+        if (cur?.ismerge) {
+            
+            setEditCell({
+                ...cur,
+                ownKey:cellStore.cellsMap[cur.ismerge[1]]!.ownKey,
+                value:cellStore.cellsMap[cur.ismerge[1]]?.value
+            })
+            return
+        }
+        // console.log(dbc)
         setEditCell(dbc)
     }, [dbc])
 
@@ -74,9 +88,12 @@ const EditAreaLayer = (props: any) => {
 
             <div style={style}>
                 <textarea defaultValue={o.value} className={styles['edit-textarea']} autoFocus onBlur={(e) => {
+                    
                     let cur = getCurrentCellByOwnKey(o.ownKey,cellStore.cellsMap)
                     if (cur) {
+                        console.log(cur)
                         cur!.value = e.target.value
+                        // console.log(cur)
                         // cur.height = 50
                     }
                 }}></textarea>
@@ -86,6 +103,8 @@ const EditAreaLayer = (props: any) => {
 
     const getEditCellSelection = useCallback(() => {
         if (!editCell) return null
+
+        // console.log(editCell)
 
         const cell = editCellRenderer({
             stroke: "#1a73e8",

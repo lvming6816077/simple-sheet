@@ -9,7 +9,7 @@ import { Stage, Text, Group, Rect, Line } from "react-konva";
 
 
 
-const SingleCell = (((props:any) => {
+const SingleCell = React.memo(((props:any) => {
     let {
 
         width,

@@ -10,7 +10,7 @@ import DraggableRect from "./DraggableRect";
 
 
 
-const HeaderCell = (((props:any) => {
+const HeaderCell = React.memo(((props:any) => {
     let {
 
         width,
@@ -107,7 +107,7 @@ const HeaderCell = (((props:any) => {
 
 
     const isFirst = ownKey == '0:1'
-    const dragHandleWidth = 13
+    const dragHandleWidth = 3
 
 
 

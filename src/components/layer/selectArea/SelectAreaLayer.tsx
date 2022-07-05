@@ -123,7 +123,6 @@ const SelectAreaLayer = (props: any) => {
 
     }, [activeCell])
 
-    // const c = getCurrentCellByOwnKey('4:5', cellStore.cellsMap)
 
 
 
@@ -137,30 +136,42 @@ const SelectAreaLayer = (props: any) => {
 
     useEffect(()=>{
         if (activeCell) {
-            let cur = getCurrentCellByOwnKey(activeCell?.ownKey || '', cellStore.cellsMap)
+            let cur = getCurrentCellByOwnKey(activeCell?.ownKey || '', cellStore.cellsMap,true)
             setActiveCell(cur)
         }
         if (selectArea) {
 
-
-            var first = getCurrentCellByOwnKey(selectStart.current!.ownKey,cellStore.cellsMap)
-            var last = getCurrentCellByOwnKey(selectEnd.current!.ownKey,cellStore.cellsMap)
+            var first = getCurrentCellByOwnKey(selectStart.current!.ownKey,cellStore.cellsMap,true)
+            var last = getCurrentCellByOwnKey(selectEnd.current!.ownKey,cellStore.cellsMap,true)
             // console.log(first,last)
             const o = { top:first!.y, bottom:last!.y+last!.height, left:first!.x, right:last!.x+last!.width }
 
             
             setSelectArea(o)
         }
+
+        // let arr = _.values(cellStore.cellsMap)
+        // arr.filter(i=>{
+        //     if (i?.ismerge) {
+        //         if(i.ismerge[0] == i.ownKey){
+        //             console.log(i.ownKey)
+        //         }
+        //     }
+        // })
     },[cellStore.cellsMap])
 
     useEffect(() => {
+
         
         let cur = null;
 
         if (dv?.type == 'header' || dv?.type == 'left') return 
 
+        
 
-        cur = getCurrentCellByOwnKey(dv?.ownKey || '', cellStore.cellsMap)
+        cur = getCurrentCellByOwnKey(dv?.ownKey || '', cellStore.cellsMap,true)
+
+        // console.log(cur)
     
         setActiveCell(cur)
         setSelectArea(null)
@@ -180,7 +191,7 @@ const SelectAreaLayer = (props: any) => {
     }, [dv])
 
     useEffect(() => {
-        let cur = getCurrentCellByOwnKey(mv?.ownKey || '', cellStore.cellsMap)
+        let cur = getCurrentCellByOwnKey(mv?.ownKey || '', cellStore.cellsMap,true)
         
         
         // if (mv?.type == 'header' || mv?.type == 'left')  {
@@ -216,7 +227,7 @@ const SelectAreaLayer = (props: any) => {
             let arr = getCurrentCellsByArea(o,cellStore.cellsMap).filter(i=>i?.ismerge)
 
             arr.forEach(item=>{
-                var cur = getCurrentCellByOwnKey(item!.ownKey,cellStore.cellsMap)
+                var cur = getCurrentCellByOwnKey(item!.ownKey,cellStore.cellsMap,true)
                 o.top = Math.min(o.top,cur!.y)
                 o.bottom = Math.max(o.bottom,cur!.y+cur!.height)
                 o.left = Math.min(o.left,cur!.x)

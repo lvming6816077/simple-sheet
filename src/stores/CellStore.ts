@@ -42,6 +42,11 @@ export class CellStore {
     mergeCell(list:CellAttrs[]) {
         // console.log(list[0],list[list.length-1])
         var mergekey:string[] = [list[0]!.ownKey,list[list.length-1]!.ownKey]
+        list.forEach((i,index)=>{
+            if (index != list.length-1) {
+                i!.value = ''
+            }
+        })
         // console.log(mergekey)
         for (var key in this.cellsMap) {
             if (_.find(list,{ownKey:key})) {

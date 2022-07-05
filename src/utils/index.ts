@@ -26,17 +26,31 @@ export const getCurrentCellByXY = (x: number, y: number, cellsMap: CellMap) => {
     })]
 }
 
-export const getCurrentCellByOwnKey = (key:string, cellsMap: CellMap) => {
+export const getCurrentCellByOwnKey = (key:string, cellsMap: CellMap, useMerge: boolean = false) => {
     var obj = cellsMap[key]
+    
+    // if (obj?.ismerge && useMerge) {
+    //     const [firstkey,endkey] = obj?.ismerge
+    //     obj.x = cellsMap[firstkey]!.x
+    //     obj.y = cellsMap[firstkey]!.y
+    //     obj.width = cellsMap[endkey]!.x-cellsMap[firstkey]!.x+cellsMap[endkey]!.width
+    //     obj.height = cellsMap[endkey]!.y-cellsMap[firstkey]!.y+cellsMap[endkey]!.height
 
-    if (obj?.ismerge) {
+    //     return obj
+    // } else {
+    //     return obj
+    // }
+    if (obj?.ismerge&&useMerge) {
         const [firstkey,endkey] = obj?.ismerge
-        return {
-            ...obj,
+        const o = ({
             x:cellsMap[firstkey]!.x,
             y:cellsMap[firstkey]!.y,
             width:cellsMap[endkey]!.x-cellsMap[firstkey]!.x+cellsMap[endkey]!.width,
             height:cellsMap[endkey]!.y-cellsMap[firstkey]!.y+cellsMap[endkey]!.height,
+        })
+        return {
+            ...obj,
+            ...o,
         }
     } else {
         return obj
@@ -194,7 +208,7 @@ export const generaCell = (prev:CellMap = {})=>{
                 y,
                 width,
                 height,
-                value: prev[k]?.value || (rowIndex + ':' + columnIndex),
+                value: prev[k]?.value || '',
                 type:type,
                 key: k,
                 ownKey:k,

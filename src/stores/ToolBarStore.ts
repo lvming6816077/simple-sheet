@@ -16,10 +16,15 @@ class ToolBarStore {
     mergeCell(cellStore: CellStore) {
         let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
 
-
         cellStore.mergeCell(cells)
         let first = cells[0]
         let last = cells[cells.length - 1]
+
+        // first!.width = last!.x - first!.x + last!.width
+        // first!.height = last!.y - first!.y + last!.height
+        // cells.forEach(i=>{
+        //     i!.fill = 'red'
+        // })
 
         cellStore.setActiveCell({
             ...first,
