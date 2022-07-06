@@ -1,3 +1,4 @@
+import { CellStoreContext } from "@/stores/CellStore";
 import { MouseEventStoreContext } from "@/stores/MouseEventStore";
 import { leftCell } from "@/utils/constants";
 import { observer } from "mobx-react-lite";
@@ -39,7 +40,7 @@ const LeftCell = React.memo(((props:any) => {
     const mouseEventStore =  useContext(MouseEventStoreContext)
     
 
-
+    const cellStore = useContext(CellStoreContext)
     
     // const dv = mouseEventStore.getdownCellAttr
     // useEffect(()=>{
@@ -60,6 +61,11 @@ const LeftCell = React.memo(((props:any) => {
     const dragHandleHeight = 3
 
     const textStyle = `${fontWeight} ${fontStyle}`;
+
+    const clickHeader = ()=>{
+        console.log(ownKey)
+        cellStore.areaLeftCell(ownKey)
+    }
 
     return (
         <Group>
@@ -82,6 +88,13 @@ const LeftCell = React.memo(((props:any) => {
                     fill={textColor}
                     verticalAlign={verticalAlign}
                     align={align}
+                    onClick={clickHeader}
+                    onMouseEnter={(e) => {
+                        (document.body.style.cursor = "pointer")
+                    }}
+                    onMouseLeave={(e) => {
+                        (document.body.style.cursor = "default")
+                    }}
                     fontFamily={fontFamily}
                     fontStyle={textStyle}
                     textDecoration={textDecoration}

@@ -96,6 +96,7 @@ const Cell = React.memo(((props:any) => {
                 width={width}
                 fill={fill}
                 stroke={stroke}
+                type={type}
                 // strokeWidth={strokeWidth}
 
                 strokeWidth={ismerge ? 0: 0.5}
@@ -114,7 +115,7 @@ const Cell = React.memo(((props:any) => {
                     x={x+0}
                     y={y+0}
                     height={height}
-                    xx={'xxx'}
+                    type={type}
                     width={width}
                     text={value}
                     fill={textColor}
@@ -133,6 +134,7 @@ const Cell = React.memo(((props:any) => {
             )}
                     {mergeRect.width ? <Text
                     ownKey={ownKey}
+                    type={type}
                     x={mergeRect.x}
                     y={mergeRect.y}
                     height={mergeRect.height}

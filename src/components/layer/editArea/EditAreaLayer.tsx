@@ -131,8 +131,8 @@ const EditAreaLayer = (props: any) => {
                 style={{
                     pointerEvents: "none",
                     position: "absolute",
-                    left: 0,
-                    top: 0,
+                    left: -60,
+                    top: -20,
                     right: 0,
                     bottom: 0,
                     zIndex: 3,

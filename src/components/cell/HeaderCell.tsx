@@ -43,7 +43,7 @@ const HeaderCell = React.memo(((props:any) => {
     let text = String.fromCharCode(Number(ownKey.split(':')[1])+64)
 
 
-
+    const cellStore = useContext(CellStoreContext)
     
     
     
@@ -109,7 +109,10 @@ const HeaderCell = React.memo(((props:any) => {
     const isFirst = ownKey == '0:1'
     const dragHandleWidth = 3
 
-
+    const clickHeader = ()=>{
+        console.log(ownKey)
+        cellStore.areaHeaderCell(ownKey)
+    }
 
     return (
         <>
@@ -128,8 +131,15 @@ const HeaderCell = React.memo(((props:any) => {
                 y={y}
                 height={height}
                 width={width}
-                text={text+'.'+ownKey}
+                text={text}
                 fill={textColor}
+                onClick={clickHeader}
+                onMouseEnter={(e) => {
+                    (document.body.style.cursor = "pointer")
+                }}
+                onMouseLeave={(e) => {
+                    (document.body.style.cursor = "default")
+                }}
                 verticalAlign={verticalAlign}
                 align={align}
                 fontFamily={fontFamily}

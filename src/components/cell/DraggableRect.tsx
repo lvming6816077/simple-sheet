@@ -7,6 +7,8 @@ import _ from 'lodash'
 import { Stage, Text, Group, Rect, Line } from "react-konva";
 const DraggableRect = React.memo((props: any) => {
     const cellStore = useContext(CellStoreContext)
+    const mouseEventStore = useContext(MouseEventStoreContext)
+    // console.log(mouseEventStore.scrollLeft,mouseEventStore.scrollTop)
     const {
         type,
         x,
@@ -26,20 +28,21 @@ const DraggableRect = React.memo((props: any) => {
                 width={width}
                 height={height}
 
-                fill="blue"
+                fill="rgb(26, 115, 232)"
                 type={props.type}
                 opacity={0}
                 draggable
                 onDragMove={_.throttle((e) => {
                     // console.log('sss')
                     const node = e.target;
+                    // console.log(node)
                     node.opacity(0)
                     const newWidth = node.x() - props.ownx + props.width;
                     const k = props.ownKey
                     // onResize(columnIndex, newWidth);
+                    // console.log(Math.min(newWidth,minWidth))
 
-
-                    cellStore.changeWidth(k, newWidth, node.x()+props.width)
+                    cellStore.changeWidth(k, Math.max(newWidth,minWidth), node.x()+props.width)
                 }, 30)}
                 hitStrokeWidth={20}
                 onMouseEnter={(e) => {
@@ -55,25 +58,26 @@ const DraggableRect = React.memo((props: any) => {
 
                 }}
                 dragBoundFunc={_.throttle((pos) => {
-                    // console.log(pos)
-                    if (pos.x - props.ownx < minWidth) {
+                    var rx = props.ownx-mouseEventStore.scrollLeft
+                    if ((pos.x - rx)< minWidth) {
                         return {
-                            x:props.ownx+minWidth,
+                            x:minWidth+rx,
                             y: 0,
                         };
                     }
+
                     return {
                         ...pos,
                         y: 0,
                     };
-                }, 30)}
+                },50)}
 
             /> : <Rect
                 x={x}
                 y={y}
                 width={width}
                 height={height}
-                fill="blue"
+                fill="rgb(26, 115, 232)"
                 type={type}
                 opacity={0}
                 draggable
@@ -86,7 +90,7 @@ const DraggableRect = React.memo((props: any) => {
                     // onResize(columnIndex, newWidth);
                     // console.log(newHeight)
 
-                    cellStore.changeHeight(k, newHeight)
+                    cellStore.changeHeight(k, Math.max(newHeight,minHeight))
                 }, 30)}
                 hitStrokeWidth={20}
                 onMouseEnter={(e) => {
@@ -98,9 +102,10 @@ const DraggableRect = React.memo((props: any) => {
                     e.target.opacity(0)
                 }}
                 dragBoundFunc={_.throttle((pos) => {
-                    if (pos.y - props.owny < minHeight) {
+                    var ry = props.ownx-mouseEventStore.scrollTop
+                    if (pos.y - ry < minHeight) {
                         return {
-                            y:props.owny+minHeight,
+                            y:ry+minHeight,
                             x: 0,
                         };
                     }

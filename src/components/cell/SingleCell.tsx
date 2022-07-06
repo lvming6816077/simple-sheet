@@ -9,7 +9,7 @@ import { Stage, Text, Group, Rect, Line } from "react-konva";
 
 
 
-const SingleCell = React.memo(((props:any) => {
+const SingleCell = React.memo(observer((props:any) => {
     let {
 
         width,
@@ -37,11 +37,20 @@ const SingleCell = React.memo(((props:any) => {
 
     let x = props.x+0,y = props.y+0
 
+    
+    const cellStore = useContext(CellStoreContext)
 
-    let text = String.fromCharCode(Number(ownKey.split(':')[1])+64)
+    const activeCell = cellStore.activeCell
+
+    let text1 = activeCell?.ownKey.split(':')[0]
+    let text2 = String.fromCharCode(Number(activeCell?.ownKey.split(':')[1])+64)
+
+    let textS = text1 + ':' + text2
 
     const textStyle = `${fontWeight} ${fontStyle}`;
 
+
+    console
 
     return (
         <>
@@ -55,9 +64,19 @@ const SingleCell = React.memo(((props:any) => {
                 fill={'#fff'}
                 
             ></Rect>
+            <Text 
+                x={x}
+                y={y}
+                height={height}
+                width={width}
+                verticalAlign={'middle'}
+                align={'center'}
+                text={activeCell?textS:''}>
+
+            </Text>
             
         </>
     );
 }));
 
-export default SingleCell;
+export default (SingleCell);
