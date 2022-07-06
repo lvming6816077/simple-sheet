@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { CSSProperties, startTransition, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 
 import { MouseEventStoreContext } from "@/stores/MouseEventStore";
@@ -64,7 +64,7 @@ const SelectAreaLayer = (props: any) => {
     }
 
 
-    const getSelectAreaCell = useCallback(() => {
+    const getSelectAreaCell = useMemo(() => {
         if (!selectArea) return null
 
         const o = selectArea
@@ -230,10 +230,16 @@ const SelectAreaLayer = (props: any) => {
                 o.right = Math.max(o.right,cur!.x+cur!.width)
             })
 
-            cellStore.activeHeader(o.left, o.right)
-            cellStore.activeLeft(o.top, o.bottom)
-
             setSelectArea(o)
+
+            startTransition(() => {
+                cellStore.activeHeader(o.left, o.right)
+                cellStore.activeLeft(o.top, o.bottom)
+              });
+
+
+
+
         }
     }, [mv])
 
@@ -282,7 +288,7 @@ const SelectAreaLayer = (props: any) => {
                         }px)`,
                 }}
             >
-                {getSelectAreaCell()}
+                {getSelectAreaCell}
                 {getActiveCellSelection()}
             </div>
         </div>

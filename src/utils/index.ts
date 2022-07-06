@@ -173,6 +173,20 @@ export const generaCell = (prev:CellMap = {})=>{
         return 'normal'
     }
 
+    const getFill = (type:string)=>{
+        if (type == 'header') {
+            return headerCell.fill
+        }
+        if (type == 'left') {
+            return leftCell.fill
+        }
+        if (type == 'normal') {
+            return normalCell.fill
+        }
+
+        return singleCell.fill
+    }
+
 
     var map:CellMap = {}
     for (let rowIndex: number = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
@@ -192,6 +206,8 @@ export const generaCell = (prev:CellMap = {})=>{
 
             const height = getRowHeight(type,k)
 
+            const fill = getFill(type)
+
             map[k] = {
                 x,
                 y,
@@ -201,7 +217,7 @@ export const generaCell = (prev:CellMap = {})=>{
                 type:type,
                 key: k,
                 ownKey:k,
-                fill:prev[k]?.fill || undefined,
+                fill:prev[k]?.fill || getFill(type),
                 ismerge: prev[k]?.ismerge || undefined
             }
 

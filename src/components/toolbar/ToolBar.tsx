@@ -27,8 +27,8 @@ const ToolBar = (props: any) => {
         toolbarStore.mergeCell(cellStore)
     }
 
-    const getColor = ()=>{
-        
+    const getColor = (color:string)=>{
+        toolbarStore.colorBorderCell(color,cellStore)
     }
 
     return (

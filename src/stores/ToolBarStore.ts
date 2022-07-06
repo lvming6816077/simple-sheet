@@ -34,6 +34,14 @@ class ToolBarStore {
 
         cellStore.setSelectArea(null)
 
+    }
+
+    colorBorderCell(color:string,cellStore: CellStore) {
+        let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
+
+        cells.forEach(i=>{
+            i!.stroke = color
+        })
 
     }
 
