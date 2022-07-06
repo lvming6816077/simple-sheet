@@ -1,0 +1,13 @@
+.color-table {
+    width: 200px;
+    height: 140px;
+}
+.color-table-item {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+.color-table-item:hover {
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}

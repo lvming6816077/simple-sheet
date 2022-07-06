@@ -2,18 +2,7 @@ import { CellAttrs, CellMap, CellStoreContext, SelectArea } from "@/stores/CellS
 import _ from 'lodash'
 import { useContext } from "react"
 
-import { headerCell,leftCell,normalCell  } from "./constants"
-
-const rowStartIndex: number = 0
-    
-
-const rowStopIndex: number = 30
-
-
-const columnStartIndex: number = 0
-
-
-const  columnStopIndex: number = 8
+import { headerCell,leftCell,normalCell,singleCell,rowStartIndex,rowStopIndex,columnStartIndex,columnStopIndex  } from "./constants"
 
 
 
@@ -144,7 +133,7 @@ export const generaCell = (prev:CellMap = {})=>{
         }
     
         else if (type == 'single') {
-            v  = 20
+            v  = singleCell.height
         } else {
 
             v = normalCell.height
@@ -166,7 +155,7 @@ export const generaCell = (prev:CellMap = {})=>{
         }
     
         else if (type == 'single') {
-            v  = 60
+            v  = singleCell.width
         } else {
 
             v = normalCell.width

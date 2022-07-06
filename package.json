@@ -49,6 +49,7 @@
     "react-dom": "^18.1.0"
   },
   "dependencies": {
+    "@szhsin/react-menu": "^3.1.1",
     "html-webpack-plugin": "^5.5.0",
     "konva": "^8.3.10",
     "lodash": "^4.17.21",

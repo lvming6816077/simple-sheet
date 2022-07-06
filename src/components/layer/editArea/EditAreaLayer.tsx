@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
 
 import _ from 'lodash'
-
+import { headerCell,leftCell,normalCell,singleCell,rowStartIndex,rowStopIndex,columnStartIndex,columnStopIndex  } from "@/utils/constants"
 import {getCurrentCellByOwnKey, getCurrentCellByXY} from '@/utils/index'
 
 interface IProps {
@@ -24,10 +24,6 @@ interface IProps {
 
 const EditAreaLayer = (props: any) => {
 
-    const scrollLeft = 0
-    const scrollTop = 0
-
-
 
     const mouseEventStore = useContext(MouseEventStoreContext)
     const dbc = mouseEventStore.dbcCellAttr
@@ -36,9 +32,6 @@ const EditAreaLayer = (props: any) => {
     const cellStore = useContext(CellStoreContext)
 
 
-
-
-    // const { rowStartIndex, rowStopIndex, columnStartIndex, columnStopIndex,cellHeight, cellWidth} = cellStore
 
 
     const [editCell, setEditCell] = useState<CellAttrs>(null)
@@ -91,7 +84,6 @@ const EditAreaLayer = (props: any) => {
                     
                     let cur = getCurrentCellByOwnKey(o.ownKey,cellStore.cellsMap)
                     if (cur) {
-                        console.log(cur)
                         cur!.value = e.target.value
                         // console.log(cur)
                         // cur.height = 50
@@ -131,8 +123,8 @@ const EditAreaLayer = (props: any) => {
                 style={{
                     pointerEvents: "none",
                     position: "absolute",
-                    left: -60,
-                    top: -20,
+                    left: -leftCell.width,
+                    top: -headerCell.height,
                     right: 0,
                     bottom: 0,
                     zIndex: 3,

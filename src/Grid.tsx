@@ -15,6 +15,8 @@ import ScrollArea from "./components/layer/scrollArea/ScrollArea";
 import { getScrollWidthAndHeight } from "./utils";
 import ToolBar from "./components/toolbar/ToolBar";
 
+import { headerCell,leftCell,normalCell,singleCell,rowStartIndex,rowStopIndex,columnStartIndex,columnStopIndex  } from "@/utils/constants"
+
 interface IProps {
     src: string[];
     currentIndex?: number;
@@ -65,11 +67,10 @@ const Grid = (props: any) => {
 
         // console.log(mouseEventStore.scrollLeft,mouseEventStore.scrollTop)
     }
+    //
     return (
-        <>
-
+        <div style={{width: width, height: height, position: 'relative'  }}>
             <ToolBar></ToolBar>
-
             <div style={{ width: width, height: height, position: 'relative' }} >
                 <div style={{ width: width, height: height, position: 'relative', zIndex: 3 }}>
                     <Stage width={width} height={height}
@@ -96,8 +97,8 @@ const Grid = (props: any) => {
                         style={{
                             pointerEvents: "none",
                             position: "absolute",
-                            left: 60,
-                            top: 20,
+                            left: leftCell.width,
+                            top: headerCell.height,
                             right: 0,
                             bottom: 0,
                             overflow: "hidden",
@@ -110,7 +111,7 @@ const Grid = (props: any) => {
                     <ScrollArea swidth={swidth} sheight={sheight}></ScrollArea>
                 </div>
             </div>
-        </>
+        </div>
     )
 };
 

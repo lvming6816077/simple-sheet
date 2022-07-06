@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { CellAttrs, CellStoreContext, SelectArea } from "@/stores/CellStore";
 import { getCurrentCellByOwnKey, getCurrentCellByXY, getCurrentCellsByArea } from "@/utils";
 import _ from 'lodash'
+import { headerCell, leftCell } from "@/utils/constants";
 
 interface IProps {
     src: string[];
@@ -268,8 +269,8 @@ const SelectAreaLayer = (props: any) => {
             style={{
                 pointerEvents: "none",
                 position: "absolute",
-                left: -60,
-                top: -20,
+                left: -leftCell.width,
+                top: -headerCell.height,
                 right: 0,
                 bottom: 0,
                 overflow: "hidden",
@@ -281,7 +282,6 @@ const SelectAreaLayer = (props: any) => {
                         }px)`,
                 }}
             >
-                {activeCell?.width}
                 {getSelectAreaCell()}
                 {getActiveCellSelection()}
             </div>

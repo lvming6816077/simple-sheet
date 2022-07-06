@@ -6,21 +6,38 @@ import { useContext } from "react"
 
 export const headerCell = {
     fill:'#f8f9fa',
-    width:100,
-    height:20
+    width:130,
+    height:30
 }
 
 export const leftCell = {
     fill:'#f8f9fa',
     width:60,
-    height:20
+    height:30
 }
 
 export const normalCell = {
     fill:'#fff',
-    width:100,
-    height:20
+    width:130,
+    height:30
 }
+export const singleCell = {
+    fill:'#fff',
+    width:60,
+    height:30
+}
+
+export const rowStartIndex: number = 0
+    
+
+export const rowStopIndex: number = 40
+
+
+export const columnStartIndex: number = 0
+
+
+export const  columnStopIndex: number = 26
+
 
 
 
