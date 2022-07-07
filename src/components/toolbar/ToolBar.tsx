@@ -12,6 +12,7 @@ import { ToolBarStoreContext } from "@/stores/ToolBarStore";
 import { getCurrentCellByXY, getCurrentCellsByArea } from "@/utils";
 import _ from 'lodash'
 import ColorPanel from "./components/ColorPanel";
+import { cellDash } from "@/utils/constants";
 
 interface IProps {
     swidth: number;
@@ -27,8 +28,16 @@ const ToolBar = (props: any) => {
         toolbarStore.mergeCell(cellStore)
     }
 
-    const getColor = (color:string)=>{
+    const colorCell = (color:string)=>{
         toolbarStore.colorBorderCell(color,cellStore)
+    }
+
+    const borderStyleCell = (style:string)=>{
+        toolbarStore.dashBorderCell(cellDash[style],cellStore)
+    }
+
+    const toggleBorderCell = (flag:boolean)=>{
+        toolbarStore.toggleBorderCell(flag,cellStore)
     }
 
     return (
@@ -40,12 +49,13 @@ const ToolBar = (props: any) => {
             </div>
             <Menu
                 menuClassName="border-menu"
+                
                 menuButton={<div className={styles['btn-wrap']}>
                     <div className={styles['border']}></div>
                 </div>}
             >
-                <MenuItem><div className={styles['border-item']}><div className={styles['item-icon-all']}></div><div className={styles['item-text']}>所有框线</div></div></MenuItem>
-                <MenuItem><div className={styles['border-item']}><div className={styles['item-icon-none']}></div><div className={styles['item-text']}>无框线</div></div></MenuItem>
+                <MenuItem onClick={()=>toggleBorderCell(true)}><div className={styles['border-item']}><div className={styles['item-icon-all']}></div><div className={styles['item-text']}>所有框线</div></div></MenuItem>
+                <MenuItem onClick={()=>toggleBorderCell(false)}><div className={styles['border-item']}><div className={styles['item-icon-none']}></div><div className={styles['item-text']}>无框线</div></div></MenuItem>
             </Menu>
 
 
@@ -55,10 +65,9 @@ const ToolBar = (props: any) => {
                     <div className={styles['border-style']}></div>
                 </div>}
             >
-                <MenuItem><div className={styles['border-style-item']} style={{borderBottom:'2px solid #000'}}></div></MenuItem>
-                <MenuItem><div className={styles['border-style-item']}  style={{borderBottom:'2px dashed #000'}}></div></MenuItem>
-                <MenuItem><div className={styles['border-style-item']}  style={{borderBottom:'2px dotted #000'}}></div></MenuItem>
-                <MenuItem><div className={styles['border-style-item']}  style={{borderBottom:'2px double #000'}}></div></MenuItem>
+                <MenuItem onClick={()=>borderStyleCell('solid')}><div  className={styles['border-style-item']} style={{borderBottom:'2px solid #000'}}></div></MenuItem>
+                <MenuItem onClick={()=>borderStyleCell('dashed')}><div onClick={()=>borderStyleCell('dashed')} className={styles['border-style-item']}  style={{borderBottom:'2px dashed #000'}}></div></MenuItem>
+                <MenuItem onClick={()=>borderStyleCell('dotted')}><div onClick={()=>borderStyleCell('dotted')} className={styles['border-style-item']}  style={{borderBottom:'2px dotted #000'}}></div></MenuItem>
                 
                 
             </Menu>
@@ -69,7 +78,7 @@ const ToolBar = (props: any) => {
                 </div>}
             >
                 <MenuItem disabled>
-                    <ColorPanel getColor={getColor}></ColorPanel>
+                    <ColorPanel getColor={colorCell}></ColorPanel>
                 
                 </MenuItem>
                 

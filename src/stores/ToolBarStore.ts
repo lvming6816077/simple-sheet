@@ -5,7 +5,8 @@ import _ from 'lodash'
 import { getCurrentCellsByArea, getCurrentCellByOwnKey, getCurrentCellByXY } from '@/utils'
 
 
-import { CellAttrs, CellStore, CellStoreContext } from './CellStore'
+import { BorderStyle, CellAttrs, CellMap, CellStore, CellStoreContext, SelectArea } from './CellStore'
+import { defaultBorderStyle } from '@/utils/constants'
 
 
 class ToolBarStore {
@@ -36,33 +37,55 @@ class ToolBarStore {
 
     }
 
-    colorBorderCell(color:string,cellStore: CellStore) {
-
+    dealWithBorderStyle(obj:BorderStyle,cellStore: CellStore,hide = false){
         if (cellStore.selectArea) {
             let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
             cells.forEach(i=>{
-                i!.borderStyle = {
-                    stroke:color,
+                i!.borderStyle = hide ? undefined : {
+                    ...i!.borderStyle,
+                    ...obj
                 }
             })
         } else if (cellStore.activeCell){
             let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
-            cell!.borderStyle = {
-                stroke:color,
+            cell!.borderStyle = hide ? undefined :{
+                ...cell!.borderStyle,
+                ...obj
             }
-        } else {
-
         }
-        
-        
-        // console.log(cells)
-
-
     }
 
+    @action.bound
+    colorBorderCell(color:string,cellStore: CellStore) {
+        this.dealWithBorderStyle({color:color,strokeDash:this.currentBorderStyle?.strokeDash},cellStore)
+        this.currentBorderStyle = {
+            ...this.currentBorderStyle,
+            color:color
+        }
+    }
+    @action.bound
+    dashBorderCell(dash:number[],cellStore: CellStore){
+
+        this.dealWithBorderStyle({strokeDash:dash,color:this.currentBorderStyle?.color},cellStore)
+        this.currentBorderStyle = {
+            ...this.currentBorderStyle,
+            strokeDash:dash
+        }
+    }
+
+    @observable
+    currentBorderStyle:BorderStyle = defaultBorderStyle
 
 
+    @action.bound
+    toggleBorderCell(flag:boolean,cellStore: CellStore){
 
+        this.dealWithBorderStyle(this.currentBorderStyle,cellStore,!flag)
+
+        if (flag == false) {
+            this.currentBorderStyle = defaultBorderStyle
+        }
+    }
 
     //   @computed
     //   get getcells() {

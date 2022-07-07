@@ -20,22 +20,23 @@ export const getOffsetFromWidth = (width: number) => {
 /**
  * Only used for strokes
  */
-const CellOverlay: React.FC<any> = memo(props => {
+const CellOverlay = React.memo((props:any) => {
     var {
         x,
         y,
         width,
         height,
-        stroke,
-        strokeTopColor = stroke,
-        strokeRightColor = stroke,
-        strokeBottomColor = stroke,
-        strokeLeftColor = stroke,
+        // stroke,
+        color,
+        strokeTopColor = color,
+        strokeRightColor = color,
+        strokeBottomColor = color,
+        strokeLeftColor = color,
         strokeDash = EMPTY_ARRAY,
-        strokeTopDash = EMPTY_ARRAY,
-        strokeRightDash = EMPTY_ARRAY,
-        strokeBottomDash = EMPTY_ARRAY,
-        strokeLeftDash = EMPTY_ARRAY,
+        strokeTopDash = strokeDash,
+        strokeRightDash = strokeDash,
+        strokeBottomDash = strokeDash,
+        strokeLeftDash = strokeDash,
         strokeWidth = 1,
         strokeTopWidth = strokeWidth,
         strokeRightWidth = strokeWidth,
@@ -165,61 +166,6 @@ if (ismerge) {
   );
 });
 
-/**
- * Default CellRenderer
- * @param props
- */
-const CellRenderer = (props: any) => {
-  const {
-    x,
-    y,
-    width,
-    height,
-    stroke,
-    strokeTopColor = stroke,
-    strokeRightColor = stroke,
-    strokeBottomColor = stroke,
-    strokeLeftColor = stroke,
-    strokeDash = EMPTY_ARRAY,
-    strokeTopDash = EMPTY_ARRAY,
-    strokeRightDash = EMPTY_ARRAY,
-    strokeBottomDash = EMPTY_ARRAY,
-    strokeLeftDash = EMPTY_ARRAY,
-    strokeWidth = 1,
-    strokeTopWidth = strokeWidth,
-    strokeRightWidth = strokeWidth,
-    strokeBottomWidth = strokeWidth,
-    strokeLeftWidth = strokeWidth,
-    lineCap = "butt",
-    key
-  } = props;
-  const userStroke =
-    strokeTopColor || strokeRightColor || strokeBottomColor || strokeLeftColor;
-  if (!userStroke) return null;
-  return (
-    <CellOverlay
-      key={key}
-      x={x}
-      y={y}
-      width={width}
-      height={height}
-      strokeTopColor={strokeTopColor}
-      strokeRightColor={strokeRightColor}
-      strokeBottomColor={strokeBottomColor}
-      strokeLeftColor={strokeLeftColor}
-      strokeDash={strokeDash}
-      strokeTopDash={strokeTopDash}
-      strokeRightDash={strokeRightDash}
-      strokeBottomDash={strokeBottomDash}
-      strokeLeftDash={strokeLeftDash}
-      strokeTopWidth={strokeTopWidth}
-      strokeRightWidth={strokeRightWidth}
-      strokeBottomWidth={strokeBottomWidth}
-      strokeLeftWidth={strokeLeftWidth}
-      lineCap={lineCap}
-    />
-  );
-};
 
-export default CellRenderer;
-export { CellRenderer, CellOverlay };
+
+export {  CellOverlay };

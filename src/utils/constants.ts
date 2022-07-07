@@ -1,4 +1,4 @@
-import { CellAttrs, CellMap, CellStoreContext } from "@/stores/CellStore"
+import { BorderStyle, CellAttrs, CellMap, CellStoreContext } from "@/stores/CellStore"
 import _ from 'lodash'
 import { useContext } from "react"
 
@@ -38,7 +38,16 @@ export const columnStartIndex: number = 0
 
 export const  columnStopIndex: number = 26
 
+export const cellDash:{
+    [key :string]:number[]
+} = {
+    'solid':[],
+    'dashed':[5,5],
+    'dotted':[2,2]
+}
 
-
-
+export const defaultBorderStyle:BorderStyle = {
+    color:'#000',
+    strokeDash:[]
+}
 

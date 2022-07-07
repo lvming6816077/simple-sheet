@@ -5,6 +5,10 @@ import _ from 'lodash'
 import {  generaCell, getCurrentCellByOwnKey, getCurrentCellByXY } from '@/utils'
 import { headerCell, leftCell } from '@/utils/constants'
 
+export type BorderStyle = {
+    color?:string,
+    strokeDash?:number[],
+}
 export type CellAttrs = {
     x: number,
     y: number,
@@ -16,7 +20,7 @@ export type CellAttrs = {
     ownKey:string,
     fill?:string,
     ismerge?:string[],
-    borderStyle?:{},
+    borderStyle?:BorderStyle,
     // orix?:number
 } | null
 
