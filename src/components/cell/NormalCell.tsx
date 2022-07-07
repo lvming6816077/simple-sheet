@@ -68,8 +68,7 @@ const Cell = React.memo(((props:any) => {
                 width:cellsMap[endkey]!.x-cellsMap[firstkey]!.x+cellsMap[endkey]!.width,
                 height:cellsMap[endkey]!.y-cellsMap[firstkey]!.y+cellsMap[endkey]!.height,
             }
-            // _value = cellsMap[firstkey]?.value
-            // console.log(mergeRect)
+
         }
 
     }

@@ -16,7 +16,7 @@ export type CellAttrs = {
     ownKey:string,
     fill?:string,
     ismerge?:string[],
-    stroke?:string,
+    borderStyle?:{},
     // orix?:number
 } | null
 

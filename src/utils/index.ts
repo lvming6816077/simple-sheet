@@ -218,7 +218,8 @@ export const generaCell = (prev:CellMap = {})=>{
                 key: k,
                 ownKey:k,
                 fill:prev[k]?.fill || getFill(type),
-                ismerge: prev[k]?.ismerge || undefined
+                ismerge: prev[k]?.ismerge || undefined,
+                borderStyle: prev[k]?.borderStyle || undefined
             }
 
 

@@ -16,6 +16,7 @@ import { getScrollWidthAndHeight } from "./utils";
 import ToolBar from "./components/toolbar/ToolBar";
 
 import { headerCell,leftCell,normalCell,singleCell,rowStartIndex,rowStopIndex,columnStartIndex,columnStopIndex  } from "@/utils/constants"
+import { CellOverlay } from "./components/cell/CellOverlay";
 
 interface IProps {
     src: string[];
@@ -56,6 +57,9 @@ const Grid = (props: any) => {
     const left = cells.filter(i => i?.type == 'left')
     const single = cells.filter(i => i?.type == 'single')
     const normal = cells.filter(i => i?.type == 'normal')
+    const border = cells.filter(i => i?.borderStyle)
+
+    // console.log(border)
 
     let { swidth, sheight } = useMemo(() => getScrollWidthAndHeight(cellsMap), [cellsMap])
 
@@ -83,6 +87,9 @@ const Grid = (props: any) => {
                         <Layer>
                             <Group offsetY={mouseEventStore.scrollTop} offsetX={mouseEventStore.scrollLeft}>
                                 {normal.map((o) => <Cell {...o}></Cell>)}
+                            </Group>
+                            <Group offsetY={mouseEventStore.scrollTop} offsetX={mouseEventStore.scrollLeft}>
+                                {border.map((o) => <CellOverlay {...o} {...o?.borderStyle} ></CellOverlay>)}
                             </Group>
                             <Group offsetX={mouseEventStore.scrollLeft}>
                                 {header.map((o) => <Cell {...o}></Cell>)}

@@ -37,11 +37,26 @@ class ToolBarStore {
     }
 
     colorBorderCell(color:string,cellStore: CellStore) {
-        let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
 
-        cells.forEach(i=>{
-            i!.stroke = color
-        })
+        if (cellStore.selectArea) {
+            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
+            cells.forEach(i=>{
+                i!.borderStyle = {
+                    stroke:color,
+                }
+            })
+        } else if (cellStore.activeCell){
+            let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
+            cell!.borderStyle = {
+                stroke:color,
+            }
+        } else {
+
+        }
+        
+        
+        // console.log(cells)
+
 
     }
 
