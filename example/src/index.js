@@ -6,5 +6,8 @@ import Grid from '../../src/index.ts';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-      <Grid  />
+    <div style={{display:'flex',justifyContent:'center',alignContent:'center'}}>
+        <Grid/>
+    </div>
+      
   );

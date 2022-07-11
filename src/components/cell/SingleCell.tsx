@@ -47,8 +47,6 @@ const SingleCell = React.memo(observer((props:any) => {
 
     let textS = text1 + ':' + text2
 
-    const textStyle = `${fontWeight} ${fontStyle}`;
-
 
     console
 

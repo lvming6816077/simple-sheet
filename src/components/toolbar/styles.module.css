@@ -5,7 +5,7 @@
     align-items: center;
 }
 .btn-wrap {
-    width: 30px;
+    min-width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
@@ -13,7 +13,19 @@
     cursor: pointer;
     
 }
+.triangle {
+    width: 10px;
+    height: 10px;
+    background-image: url('./imgs/triangle-down.png');
+    background-size: cover;
+    margin-left: 2px;
+    margin-right: 5px;
+}
 .btn-wrap:hover {
+    background-color: #e2e3e4;
+}
+
+.acitve-btn-wrap.btn-wrap {
     background-color: #e2e3e4;
 }
 .merge-cell {
@@ -22,6 +34,13 @@
     background-image: url('./imgs/merge-cells.png');
     background-size: cover;
 }
+.split-cell {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/split-cells.png');
+    background-size: cover;
+}
+
 .border {
     width: 20px;
     height: 20px;
@@ -55,10 +74,16 @@
     padding-right: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
+    font-size: 14px;
 }
 :global .border-menu {
     padding:0;
 }
+:global .no .szh-menu__item--hover {
+    background-color: #fff;
+}
+
+
 
 .border-style {
     width: 15px;
@@ -75,11 +100,117 @@
     transform: translateY(-4px);
 }
 :global .szh-menu {
-    min-width: 70px;
+    min-width: 0px;
+}
+:global .font-size .szh-menu__item {
+    min-width: 30px;
+    justify-content: center;
 }
 .border-color {
     width: 15px;
     height: 15px;
     background-image: url('./imgs/border-color.png');
+    background-size: cover;
+}
+.paint-fill {
+    width: 17px;
+    height: 17px;
+    background-image: url('./imgs/paint-fill.png');
+    background-size: cover;
+}
+.text-bold {
+    width: 17px;
+    height: 17px;
+    background-image: url('./imgs/text-fill.png');
+    background-size: cover;
+}
+.text-italic {
+    width: 15px;
+    height: 15px;
+    background-image: url('./imgs/text-italic.png');
+    background-size: cover;
+}
+.text-underline {
+    width: 17px;
+    height: 17px;
+    background-image: url('./imgs/underline.png');
+    background-size: cover;
+}
+.text-color {
+    width: 22px;
+    height: 22px;
+    background-image: url('./imgs/text-color.png');
+    background-size: cover;
+}
+.cell-v-align {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/vertical-align-middl.png');
+    background-size: cover;
+}
+.cell-v-align-top {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/vertical-align-top.png');
+    background-size: cover;
+}
+.cell-v-align-middle {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/vertical-align-middl.png');
+    background-size: cover;
+}
+.cell-v-align-bottom {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/vertical-align-botto.png');
+    background-size: cover;
+}
+
+.cell-align-left {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/align-left.png');
+    background-size: cover;
+}
+.cell-align-center {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/align-center.png');
+    background-size: cover;
+}
+.cell-align-right {
+    width: 20px;
+    height: 20px;
+    background-image: url('./imgs/align-right.png');
+    background-size: cover;
+}
+.font-family {
+    font-size: 14px;
+    margin-left: 5px;
+}
+:global .ReactTooltip  {
+    padding: 4px !important;
+    font-size: 12px !important;
+}
+
+.divider {
+    display: inline-block;
+    border-right: 1px solid #e0e2e4;
+    width: 0;
+    vertical-align: middle;
+    height: 19px;
+    margin: 0px 3px 0;
+}
+.back-cell {
+    width: 17px;
+    height: 17px;
+    background-image: url('./imgs/back.png');
+    background-size: cover;
+}
+.front-cell {
+    width: 17px;
+    height: 17px;
+    background-image: url('./imgs/front.png');
     background-size: cover;
 }

@@ -56,6 +56,7 @@
     "mobx": "^5.9.0",
     "mobx-react-lite": "^1.0.1",
     "react-konva": "^18.2.1",
+    "react-tooltip": "^4.2.21",
     "ts-loader": "^9.3.1",
     "webpack-dev-server": "^4.9.2"
   }

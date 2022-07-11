@@ -18,17 +18,6 @@ export const getCurrentCellByXY = (x: number, y: number, cellsMap: CellMap) => {
 export const getCurrentCellByOwnKey = (key:string, cellsMap: CellMap, useMerge: boolean = false) => {
     var obj = cellsMap[key]
     
-    // if (obj?.ismerge && useMerge) {
-    //     const [firstkey,endkey] = obj?.ismerge
-    //     obj.x = cellsMap[firstkey]!.x
-    //     obj.y = cellsMap[firstkey]!.y
-    //     obj.width = cellsMap[endkey]!.x-cellsMap[firstkey]!.x+cellsMap[endkey]!.width
-    //     obj.height = cellsMap[endkey]!.y-cellsMap[firstkey]!.y+cellsMap[endkey]!.height
-
-    //     return obj
-    // } else {
-    //     return obj
-    // }
     if (obj?.ismerge&&useMerge) {
         const [firstkey,endkey] = obj?.ismerge
         const o = ({
@@ -64,14 +53,18 @@ export const getCurrentCellsByRow = (rowkey:string, cellsMap: CellMap) => {
 
 }
 
-export const getAreaBounds = (start:CellAttrs,cur:CellAttrs, cellsMap: CellMap) => {
-
-    if (start && cur) {
-        let top = Math.min(start.y, cur.y);
-        let bottom = Math.max(start.y+start.height, cur.y+cur.height);
-        let left = Math.min(start.x, cur.x);
-        let right = Math.max(start.x+start.width, cur.x+cur.width);
+export const getCellsByMergeKey = (ismerge:string[], cellsMap: CellMap) => {
+    let first = getCurrentCellByOwnKey(ismerge[0],cellsMap)
+    let last = getCurrentCellByOwnKey(ismerge[1],cellsMap)
+    let o = {
+        left:first?.x,
+        top:first?.y,
+        bottom:last!.y+last!.height,
+        right:last!.x+last!.width
     }
+    let cells = getCurrentCellsByArea(o as SelectArea, cellsMap)
+
+    return cells
 
 
 }
@@ -219,7 +212,15 @@ export const generaCell = (prev:CellMap = {})=>{
                 ownKey:k,
                 fill:prev[k]?.fill || getFill(type),
                 ismerge: prev[k]?.ismerge || undefined,
-                borderStyle: prev[k]?.borderStyle || undefined
+                borderStyle: prev[k]?.borderStyle || undefined,
+                verticalAlign: prev[k]?.verticalAlign || undefined,
+                textColor: prev[k]?.textColor || undefined,
+                fontWeight: prev[k]?.fontWeight || undefined,
+                align: prev[k]?.align || undefined,
+                fontSize: prev[k]?.fontSize || undefined,
+                fontFamily:prev[k]?.fontFamily || undefined,
+                fontItalic:prev[k]?.fontItalic || undefined,
+                textDecoration:prev[k]?.textDecoration || undefined,
             }
 
 

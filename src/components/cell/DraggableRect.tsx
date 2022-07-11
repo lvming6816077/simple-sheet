@@ -43,7 +43,7 @@ const DraggableRect = React.memo((props: any) => {
                     // console.log(Math.min(newWidth,minWidth))
 
                     cellStore.changeWidth(k, Math.max(newWidth,minWidth), node.x()+props.width)
-                }, 30)}
+                }, 100)}
                 hitStrokeWidth={20}
                 onMouseEnter={(e) => {
 
@@ -70,7 +70,7 @@ const DraggableRect = React.memo((props: any) => {
                         ...pos,
                         y: 0,
                     };
-                },50)}
+                },100)}
 
             /> : <Rect
                 x={x}
@@ -91,7 +91,7 @@ const DraggableRect = React.memo((props: any) => {
                     // console.log(newHeight)
 
                     cellStore.changeHeight(k, Math.max(newHeight,minHeight))
-                }, 30)}
+                }, 100)}
                 hitStrokeWidth={20}
                 onMouseEnter={(e) => {
                     (document.body.style.cursor = "ns-resize")
@@ -113,7 +113,7 @@ const DraggableRect = React.memo((props: any) => {
                         ...pos,
                         x: 0,
                     };
-                }, 50)}
+                }, 100)}
 
             />}
 

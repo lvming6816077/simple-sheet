@@ -10,15 +10,7 @@ import _ from 'lodash'
 import { headerCell, leftCell } from "@/utils/constants";
 
 interface IProps {
-    src: string[];
-    currentIndex?: number;
-    backgroundStyle?: CSSProperties;
-    disableScroll?: boolean;
-    closeOnClickOutside?: boolean;
-    onClose?: () => void;
-    closeComponent?: JSX.Element;
-    leftArrowComponent?: JSX.Element;
-    rightArrowComponent?: JSX.Element;
+
 }
 
 const SelectAreaLayer = (props: any) => {

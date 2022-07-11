@@ -1,4 +1,6 @@
 import { CellStoreContext } from "@/stores/CellStore";
+import { ToolBarStoreContext } from "@/stores/ToolBarStore";
+import { normalCell } from "@/utils/constants";
 import { observer } from "mobx-react-lite";
 import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
 
@@ -8,15 +10,7 @@ import LeftCell from "./LeftCell";
 import SingleCell from "./SingleCell";
 
 interface IProps {
-  src: string[];
-  currentIndex?: number;
-  backgroundStyle?: CSSProperties;
-  disableScroll?: boolean;
-  closeOnClickOutside?: boolean;
-  onClose?: () => void;
-  closeComponent?: JSX.Element;
-  leftArrowComponent?: JSX.Element;
-  rightArrowComponent?: JSX.Element;
+
 }
 
 export const isNull = (value:any) =>
@@ -35,17 +29,11 @@ const Cell = React.memo(((props:any) => {
         verticalAlign = "middle",
         textColor = "#333",
         padding = 5,
-        fontFamily = "Arial",
-        fontSize = 12,
-        children,
+        fontFamily = normalCell.fontFamily,
+        fontSize = normalCell.fontSize,
         wrap = "none",
-        fontWeight = "normal",
-        fontStyle = "normal",
-        textDecoration,
         alpha = 1,
         strokeEnabled = true,
-        globalCompositeOperation = "multiply",
-        isOverlay,
         type = 'normal',
         ownKey,
         ismerge,
@@ -55,7 +43,18 @@ const Cell = React.memo(((props:any) => {
 
     const cellStore = useContext(CellStoreContext)
     const cellsMap = cellStore.cellsMap
-    // console.log(cellsMap['9:6'])
+
+    const tabBarStore = useContext(ToolBarStoreContext)
+    
+    const fontWeight = tabBarStore.currentTextFillBold ? 'bold':''
+    const fontItalic = tabBarStore.currentTextFillItalic ? 'italic':''
+
+    const fontStyle = (fontItalic + ' ' + fontWeight).trim()||'normal'
+
+    const textDecoration = tabBarStore.currentTextFillUnderline
+
+
+    // console.log(props)
 
     var mergeRect:any = {}
 
@@ -74,16 +73,6 @@ const Cell = React.memo(((props:any) => {
     }
 
 
-
-    const fillEnabled = !!fill;
-    const textStyle = `${fontWeight} ${fontStyle}`;
-    const _merge = (ismerge && ismerge[0] != ownKey)
-    // if ('9:6' == ownKey) {
-    //     console.log(height,ownKey)
-    // }
-    // console.log(ownKey)
-
-    // console.log(value)
     
     return (
         <Group>
@@ -96,16 +85,9 @@ const Cell = React.memo(((props:any) => {
                 fill={fill}
                 stroke={stroke}
                 type={type}
-                // strokeWidth={strokeWidth}
-
                 strokeWidth={ismerge ? 0: 0.5}
                 ismerge={ismerge}
-                shadowForStrokeEnabled={false}
-                strokeScaleEnabled={true}
-                hitStrokeWidth={0}
                 alpha={alpha}
-                fillEnabled={fillEnabled}
-                strokeEnabled={strokeEnabled}
             />
   
             {(isNull(value) || mergeRect.width) ? null : (
@@ -123,12 +105,11 @@ const Cell = React.memo(((props:any) => {
                     verticalAlign={verticalAlign}
                     align={align}
                     fontFamily={fontFamily}
-                    fontStyle={textStyle}
+                    fontStyle={fontStyle}
                     textDecoration={textDecoration}
                     padding={padding}
                     wrap={wrap}
                     fontSize={fontSize}
-                    hitStrokeWidth={0}
                 />
             )}
                     {mergeRect.width ? <Text
@@ -139,17 +120,16 @@ const Cell = React.memo(((props:any) => {
                     height={mergeRect.height}
                     width={mergeRect.width}
                     text={value}
-                    fill={'red'}
+                    fill={textColor}
                     // lineHeight={mergeRect.height}
                     verticalAlign={verticalAlign}
                     align={align}
                     fontFamily={fontFamily}
-                    fontStyle={textStyle}
+                    fontStyle={fontStyle}
                     textDecoration={textDecoration}
                     padding={padding}
                     wrap={wrap}
                     fontSize={fontSize}
-                    hitStrokeWidth={0}
                 />:null}
         </Group>
     );

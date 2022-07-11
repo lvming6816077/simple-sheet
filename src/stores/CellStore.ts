@@ -21,7 +21,14 @@ export type CellAttrs = {
     fill?:string,
     ismerge?:string[],
     borderStyle?:BorderStyle,
-    // orix?:number
+    fontWeight?:string|boolean,
+    textColor?:string,
+    verticalAlign?:string,
+    align?:string,
+    fontFamily?:string,
+    fontSize?:number,
+    fontItalic?:string|boolean,
+    textDecoration?:string|boolean
 } | null
 
 export type CellMap = {
@@ -45,14 +52,13 @@ export class CellStore {
 
     @action.bound
     mergeCell(list:CellAttrs[]) {
-        // console.log(list[0],list[list.length-1])
+        if (list.length < 2) return
         var mergekey:string[] = [list[0]!.ownKey,list[list.length-1]!.ownKey]
         list.forEach((i,index)=>{
             if (index != list.length-1) {
                 i!.value = ''
             }
         })
-        // console.log(mergekey)
         for (var key in this.cellsMap) {
             if (_.find(list,{ownKey:key})) {
                 this.cellsMap[key]!.ismerge = mergekey
@@ -62,6 +68,33 @@ export class CellStore {
         }
 
     }
+
+    @action.bound
+    splitCell(list:CellAttrs[]) {
+        // var mergekey:string[] = [list[0]!.ownKey,list[list.length-1]!.ownKey]
+        list.forEach((i,index)=>{
+            i!.ismerge = undefined
+        })
+        // for (var key in this.cellsMap) {
+        //     if (_.find(list,{ownKey:key})) {
+        //         this.cellsMap[key]!.ismerge = mergekey
+        //     } else {
+        //         this.cellsMap[key]!.ismerge = this.cellsMap[key]!.ismerge == undefined ? undefined : this.cellsMap[key]!.ismerge
+        //     }
+        // }
+
+    }
+
+    @action.bound
+    fillCell(color:string,list:CellAttrs[]) {
+        list.forEach((i,index)=>{
+            i!.fill = color
+        })
+    }
+
+
+
+    
 
     @action.bound
     areaHeaderCell(ownKey:string) {

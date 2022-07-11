@@ -19,7 +19,9 @@ export const leftCell = {
 export const normalCell = {
     fill:'#fff',
     width:130,
-    height:30
+    height:30,
+    fontSize:12,
+    fontFamily:'Arial'
 }
 export const singleCell = {
     fill:'#fff',
