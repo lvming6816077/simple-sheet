@@ -58,7 +58,7 @@ const ColorPanel = (props: any) => {
                             </div>
                         </td>
                     </tr>
-                    <tr className="x-spreadsheet-theme-colors">
+                    <tr className="">
                         <td className="">
                             <div className={styles['color-table-item']} style={{backgroundColor: 'rgb(242, 242, 242)'}}>
                             </div>
@@ -100,7 +100,7 @@ const ColorPanel = (props: any) => {
                             </div>
                         </td>
                     </tr>
-                    <tr className="x-spreadsheet-theme-colors">
+                    <tr className="">
                         <td className="">
                             <div className={styles['color-table-item']} style={{backgroundColor: 'rgb(216, 216, 216)'}}>
                             </div>
@@ -142,7 +142,7 @@ const ColorPanel = (props: any) => {
                             </div>
                         </td>
                     </tr>
-                    <tr className="x-spreadsheet-theme-colors">
+                    <tr className="">
                         <td className="">
                             <div className={styles['color-table-item']} style={{backgroundColor: 'rgb(191, 191, 191)'}}>
                             </div>
@@ -184,7 +184,7 @@ const ColorPanel = (props: any) => {
                             </div>
                         </td>
                     </tr>
-                    <tr className="x-spreadsheet-theme-colors">
+                    <tr className="">
                         <td className="">
                             <div className={styles['color-table-item']} style={{backgroundColor: 'rgb(165, 165, 165)'}}>
                             </div>
@@ -226,7 +226,7 @@ const ColorPanel = (props: any) => {
                             </div>
                         </td>
                     </tr>
-                    <tr className="x-spreadsheet-theme-colors">
+                    <tr className="">
                         <td className="">
                             <div className={styles['color-table-item']} style={{backgroundColor: 'rgb(127, 127, 127)'}}>
                             </div>
@@ -268,7 +268,7 @@ const ColorPanel = (props: any) => {
                             </div>
                         </td>
                     </tr>
-                    <tr className="x-spreadsheet-standard-colors">
+                    <tr className="">
                         <td className="">
                             <div className={styles['color-table-item']} style={{backgroundColor: 'rgb(192, 0, 0)'}}>
                             </div>

@@ -1,5 +1,5 @@
 .edit-textarea {
-    font: 12px / 1.2 Arial;
+    font-size: 14px;
     width: 100%;
     height: 100%;
     padding: 0px 1px;
@@ -12,6 +12,6 @@
     vertical-align: top;
     background: transparent;
     pointer-events: all;
-    line-height: 16px;
+    line-height: 25px;
     text-indent: 1px;
 }
