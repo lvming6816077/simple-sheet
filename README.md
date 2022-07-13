@@ -8,6 +8,15 @@
 [![Mobx](https://img.shields.io/badge/Mobx-5.9.0-brightgreen)](https://mobx.js.org/react-integration.html)
 [![React Konva](https://img.shields.io/badge/React%20Konva-18.3.2-brightgreen)](https://konvajs.org/docs/react/index.html)
 
+## 功能和特性
+
+* 高性能（使用canvas进行渲染）
+* 可定制化
+* 支持行、列宽度高度、自动筛选视图、单元格样式和格式设置等
+* 计算公式
+
+相关功能还在持续开发中，欢迎体验。
+
 ## 技术栈
 
 
