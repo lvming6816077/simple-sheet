@@ -15,7 +15,7 @@
 * 支持行、列宽度高度、自动筛选视图、单元格样式和格式设置等
 * 计算公式
 
-相关功能还在持续开发中，欢迎体验。
+相关功能还在持续开发中，欢迎[体验](https://www.nihaoshijie.com.cn/mypro/simple-sheet/index.html)。
 
 ## 技术栈
 
