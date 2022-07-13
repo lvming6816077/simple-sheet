@@ -9,6 +9,7 @@ module.exports = {
     path: path.resolve(__dirname, "example/dist"),
     filename: "[name].js",
     publicPath: "https://www.nihaoshijie.com.cn/mypro/simple-sheet/",
+    // publicPath: "/",
   },
   devtool: 'source-map',
   devServer: {

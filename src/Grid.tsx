@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { CSSProperties, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 // import styles from "./styles.module.css";
 
 import { Stage, Layer, Group, Line } from "react-konva";
@@ -15,7 +15,7 @@ import ScrollArea from "./components/layer/scrollArea/ScrollArea";
 import { getScrollWidthAndHeight } from "./utils";
 import ToolBar from "./components/toolbar/ToolBar";
 
-import { headerCell,leftCell,normalCell,singleCell,rowStartIndex,rowStopIndex,columnStartIndex,columnStopIndex  } from "@/utils/constants"
+import { headerCell, leftCell, normalCell, singleCell, rowStartIndex, rowStopIndex, columnStartIndex, columnStopIndex } from "@/utils/constants"
 import { CellOverlay } from "./components/cell/CellOverlay";
 
 interface IProps {
@@ -46,7 +46,7 @@ const Grid = (props: any) => {
 
     const cellStore = useContext(CellStoreContext)
 
-    // cellStore.generaCell()
+
 
     const cellsMap = cellStore.cellsMap
 
@@ -62,21 +62,36 @@ const Grid = (props: any) => {
     // console.log(border)
 
     let { swidth, sheight } = useMemo(() => getScrollWidthAndHeight(cellsMap), [cellsMap])
-
+    const scrolRef = useRef<HTMLDivElement>(null);
 
     const onScroll = (e: any) => {
 
         mouseEventStore.scrollLeft = e.target.scrollLeft
         mouseEventStore.scrollTop = e.target.scrollTop
 
+
         // console.log(mouseEventStore.scrollLeft,mouseEventStore.scrollTop)
     }
+
+    const handleWheel = (event: any) => {
+
+        const isHorizontally = event.shiftKey;
+
+
+        const { deltaX, deltaY, deltaMode } = event;
+
+
+        mouseEventStore.scrollTop = Math.min(606, Math.max(0, mouseEventStore.scrollTop + deltaY))
+
+        scrolRef.current!.scrollTop = mouseEventStore.scrollTop
+
+    };
     //
     return (
-        <div style={{width: width, height: height, position: 'relative'  }}>
+        <div style={{ width: width, height: height, position: 'relative' }}>
             <ToolBar></ToolBar>
             <div style={{ width: width, height: height, position: 'relative' }} >
-                <div style={{ width: width, height: height, position: 'relative', zIndex: 3 }}>
+                <div style={{ width: width, height: height, position: 'relative', zIndex: 3 }} onWheel={handleWheel}>
                     <Stage width={width} height={height}
                         onDblClick={(e: KonvaEventObject<MouseEvent>) => {
                             setDBC({ ...e.target.attrs, value: e.target.attrs.text } as CellAttrs)
@@ -114,7 +129,7 @@ const Grid = (props: any) => {
                         <EditAreaLayer></EditAreaLayer>
                     </div>
                 </div>
-                <div style={{ width: width + 20, height: height + 20, position: 'absolute', left: 0, top: 0, overflow: 'auto', zIndex: 1 }} onScroll={(onScroll)}>
+                <div style={{ width: width + 20, height: height + 20, position: 'absolute', left: 0, top: 0, overflow: 'auto', zIndex: 1 }} onScroll={(onScroll)} ref={scrolRef}>
                     <ScrollArea swidth={swidth} sheight={sheight}></ScrollArea>
                 </div>
             </div>
