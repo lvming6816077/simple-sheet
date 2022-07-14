@@ -3,6 +3,7 @@ import { createContext } from 'react'
 import { CellAttrs } from './CellStore'
 
 class MouseEventStore {
+    lastMoveCellAttr:CellAttrs = null
     @observable
     upCellAttr: CellAttrs = null
 
@@ -27,7 +28,16 @@ class MouseEventStore {
 
     @action.bound
     mouseMove(obj: CellAttrs) {
-        this.moveCellAttr = obj
+        // 优化，缓存上一次的move结果，使其不会触发多次
+        if (this.lastMoveCellAttr == null) {
+            this.moveCellAttr = obj
+            this.lastMoveCellAttr = obj
+        }
+        if (this.lastMoveCellAttr && this.lastMoveCellAttr.ownKey != obj?.ownKey) {
+            this.moveCellAttr = obj
+            this.lastMoveCellAttr = obj
+        }
+        
     }
 
     @action.bound

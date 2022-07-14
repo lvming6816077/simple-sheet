@@ -40,6 +40,10 @@ export const columnStartIndex: number = 0
 
 export const columnStopIndex: number = 26
 
+export const containerWidth:number = 861
+
+export const containerHeight:number = 621
+
 export const cellDash: {
     [key: string]: number[]
 } = {

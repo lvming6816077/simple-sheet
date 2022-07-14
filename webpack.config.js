@@ -2,14 +2,14 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+
 module.exports = {
   mode: "development",
   entry: ["./example/src/index.js"],
   output: {
     path: path.resolve(__dirname, "example/dist"),
     filename: "[name].js",
-    publicPath: "https://www.nihaoshijie.com.cn/mypro/simple-sheet/",
-    // publicPath: "/",
+    publicPath: process.env.NODE_ENV ? "/" : "https://www.nihaoshijie.com.cn/mypro/simple-sheet/",
   },
   devtool: 'source-map',
   devServer: {

@@ -47,61 +47,10 @@ const HeaderCell = React.memo((props: any) => {
 
     const cellStore = useContext(CellStoreContext)
 
-    // const dv = mouseEventStore.getdownCellAttr
-    // const mv = mouseEventStore.moveCellAttr
-    // const uv = mouseEventStore.upCellAttr
-    // const isSelecting = useRef(false);
-    // const selectStart = useRef<CellAttrs>(null);
-    // useEffect(()=>{
-    //     if (!dv) return
-    //     isSelecting.current = true
-
-    //     selectStart.current = dv ? {
-    //         x:dv.x,
-    //         y:dv.y
-    //     } : null
-    //     // console.log(x,y)
-    //     if (dv.x == x) {
-    //         setOwnFill('blue')
-    //     } else {
-    //         setOwnFill(fill)
-    //     }
-    // },[dv])
-    // // console.log('xxx')
-    // useEffect(()=>{
-    //     if (isSelecting.current && mv) {
-
-    //         const cur = {
-    //             x:mv.x,
-    //             y:mv.y
-    //         }
-    //         const start = selectStart.current
-
-    //         if (start == null) return
-
-    //         let top = Math.min(start.y, cur.y);
-    //         let bottom = Math.max(start.y, cur.y);
-    //         let left = Math.min(start.x, cur.x);
-    //         let right = Math.max(start.x, cur.x);
-
-    //         if (x <= right && x>=left) {
-    //             setOwnFill('blue')
-    //         } else {
-    //             setOwnFill(fill)
-    //         }
-    //     }
-    // },[mv])
-
-    // useEffect(()=>{
-    //     if (isSelecting.current && uv) {
-    //         isSelecting.current = false
-
-    //     }
-    // },[uv])
 
     const textStyle = `${fontWeight} ${fontStyle}`
 
-    const isFirst = ownKey == '0:1'
+
     const dragHandleWidth = 3
 
     const clickHeader = () => {
@@ -125,7 +74,7 @@ const HeaderCell = React.memo((props: any) => {
                 y={y}
                 height={height}
                 width={width}
-                text={text}
+                text={text+ownKey.split(':')[1]}
                 fill={textColor}
                 onClick={clickHeader}
                 onMouseEnter={(e) => {

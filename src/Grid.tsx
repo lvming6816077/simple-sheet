@@ -32,6 +32,8 @@ import {
     rowStopIndex,
     columnStartIndex,
     columnStopIndex,
+    containerWidth,
+    containerHeight,
 } from '@/utils/constants'
 import { CellOverlay } from './components/cell/CellOverlay'
 
@@ -48,8 +50,8 @@ interface IProps {
 }
 
 const Grid = (props: any) => {
-    const width = 861
-    const height = 621
+    const width = containerWidth
+    const height = containerHeight
 
     const mouseEventStore = useContext(MouseEventStoreContext)
     const setDV = mouseEventStore.mouseDown
@@ -79,8 +81,6 @@ const Grid = (props: any) => {
     const onScroll = (e: any) => {
         mouseEventStore.scrollLeft = e.target.scrollLeft
         mouseEventStore.scrollTop = e.target.scrollTop
-
-        // console.log(mouseEventStore.scrollLeft,mouseEventStore.scrollTop)
     }
 
     const handleWheel = (event: any) => {
@@ -93,8 +93,14 @@ const Grid = (props: any) => {
             Math.max(0, mouseEventStore.scrollTop + deltaY)
         )
 
-        scrolRef.current!.scrollTop = mouseEventStore.scrollTop
     }
+
+    useEffect(()=>{
+        scrolRef.current!.scrollTop = mouseEventStore.scrollTop
+    },[mouseEventStore.scrollTop])
+    useEffect(()=>{
+        scrolRef.current!.scrollLeft = mouseEventStore.scrollLeft
+    },[mouseEventStore.scrollLeft])
     //
     return (
         <div style={{ width: width, height: height, position: 'relative' }}>
