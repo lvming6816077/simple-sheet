@@ -1,52 +1,52 @@
-import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
-import { MouseEventStoreContext } from "@/stores/MouseEventStore";
-import { headerCell } from "@/utils/constants";
-import { KonvaEventObject } from "konva/lib/Node";
-import { observer } from "mobx-react-lite";
-import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { CellAttrs, CellStoreContext } from '@/stores/CellStore'
+import { MouseEventStoreContext } from '@/stores/MouseEventStore'
+import { headerCell } from '@/utils/constants'
+import { KonvaEventObject } from 'konva/lib/Node'
+import { observer } from 'mobx-react-lite'
+import React, {
+    CSSProperties,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
-import { Stage, Text, Group, Rect, Line } from "react-konva";
-import DraggableRect from "./DraggableRect";
+import { Stage, Text, Group, Rect, Line } from 'react-konva'
+import DraggableRect from './DraggableRect'
 
-
-
-const HeaderCell = React.memo(((props:any) => {
+const HeaderCell = React.memo((props: any) => {
     let {
-
         width,
         height,
         ownKey,
         fill = headerCell.fill,
         strokeWidth = 1.5,
-        stroke = "#c6c6c6",
-        align = "center",
-        verticalAlign = "middle",
-        textColor = "#333",
+        stroke = '#c6c6c6',
+        align = 'center',
+        verticalAlign = 'middle',
+        textColor = '#333',
         padding = 5,
-        fontFamily = "Arial",
+        fontFamily = 'Arial',
         fontSize = 12,
         children,
-        wrap = "none",
-        fontWeight = "normal",
-        fontStyle = "normal",
+        wrap = 'none',
+        fontWeight = 'normal',
+        fontStyle = 'normal',
         textDecoration,
         alpha = 1,
         strokeEnabled = true,
-        globalCompositeOperation = "multiply",
+        globalCompositeOperation = 'multiply',
         type,
-    } = props;
+    } = props
 
+    let x = props.x + 0,
+        y = props.y + 0
 
-    let x = props.x+0,y = props.y+0
-
-
-    let text = String.fromCharCode(Number(ownKey.split(':')[1])+64)
-
+    let text = String.fromCharCode(Number(ownKey.split(':')[1]) + 64)
 
     const cellStore = useContext(CellStoreContext)
-    
-    
-    
+
     // const dv = mouseEventStore.getdownCellAttr
     // const mv = mouseEventStore.moveCellAttr
     // const uv = mouseEventStore.upCellAttr
@@ -70,7 +70,7 @@ const HeaderCell = React.memo(((props:any) => {
     // // console.log('xxx')
     // useEffect(()=>{
     //     if (isSelecting.current && mv) {
-            
+
     //         const cur = {
     //             x:mv.x,
     //             y:mv.y
@@ -78,8 +78,6 @@ const HeaderCell = React.memo(((props:any) => {
     //         const start = selectStart.current
 
     //         if (start == null) return
-
-
 
     //         let top = Math.min(start.y, cur.y);
     //         let bottom = Math.max(start.y, cur.y);
@@ -97,19 +95,16 @@ const HeaderCell = React.memo(((props:any) => {
     // useEffect(()=>{
     //     if (isSelecting.current && uv) {
     //         isSelecting.current = false
-            
 
     //     }
     // },[uv])
 
-
-    const textStyle = `${fontWeight} ${fontStyle}`;
-
+    const textStyle = `${fontWeight} ${fontStyle}`
 
     const isFirst = ownKey == '0:1'
     const dragHandleWidth = 3
 
-    const clickHeader = ()=>{
+    const clickHeader = () => {
         console.log(ownKey)
         cellStore.areaHeaderCell(ownKey)
     }
@@ -124,7 +119,6 @@ const HeaderCell = React.memo(((props:any) => {
                 height={height}
                 width={width}
                 fill={fill}
-                
             ></Rect>
             <Text
                 x={x}
@@ -135,10 +129,10 @@ const HeaderCell = React.memo(((props:any) => {
                 fill={textColor}
                 onClick={clickHeader}
                 onMouseEnter={(e) => {
-                    (document.body.style.cursor = "pointer")
+                    document.body.style.cursor = 'pointer'
                 }}
                 onMouseLeave={(e) => {
-                    (document.body.style.cursor = "default")
+                    document.body.style.cursor = 'default'
                 }}
                 verticalAlign={verticalAlign}
                 align={align}
@@ -151,20 +145,17 @@ const HeaderCell = React.memo(((props:any) => {
                 hitStrokeWidth={0}
                 type={type}
             />
-            
-            
+
             <DraggableRect
                 {...props}
-                x={x-dragHandleWidth + width}
+                x={x - dragHandleWidth + width}
                 y={y}
                 height={height}
                 width={dragHandleWidth}
                 ownx={props.x}
-                
             ></DraggableRect>
-            
         </>
-    );
-}));
+    )
+})
 
-export default HeaderCell;
+export default HeaderCell

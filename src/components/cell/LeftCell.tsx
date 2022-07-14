@@ -1,47 +1,51 @@
-import { CellStoreContext } from "@/stores/CellStore";
-import { MouseEventStoreContext } from "@/stores/MouseEventStore";
-import { leftCell } from "@/utils/constants";
-import { observer } from "mobx-react-lite";
-import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { CellStoreContext } from '@/stores/CellStore'
+import { MouseEventStoreContext } from '@/stores/MouseEventStore'
+import { leftCell } from '@/utils/constants'
+import { observer } from 'mobx-react-lite'
+import React, {
+    CSSProperties,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
-import { Stage, Text, Group, Rect } from "react-konva";
-import DraggableRect from "./DraggableRect";
+import { Stage, Text, Group, Rect } from 'react-konva'
+import DraggableRect from './DraggableRect'
 
-
-
-const LeftCell = React.memo(((props:any) => {
+const LeftCell = React.memo((props: any) => {
     let {
-
         width,
         height,
         ownKey,
         fill = leftCell.fill,
         strokeWidth = 1.5,
-        stroke = "#c6c6c6",
-        align = "center",
-        verticalAlign = "middle",
-        textColor = "#333",
+        stroke = '#c6c6c6',
+        align = 'center',
+        verticalAlign = 'middle',
+        textColor = '#333',
         padding = 5,
-        fontFamily = "Arial",
+        fontFamily = 'Arial',
         fontSize = 12,
         children,
-        wrap = "none",
-        fontWeight = "normal",
-        fontStyle = "normal",
+        wrap = 'none',
+        fontWeight = 'normal',
+        fontStyle = 'normal',
         textDecoration,
         alpha = 1,
         strokeEnabled = true,
-        globalCompositeOperation = "multiply",
+        globalCompositeOperation = 'multiply',
         type,
-    } = props;
+    } = props
 
-    let x = props.x+0,y = props.y+0
+    let x = props.x + 0,
+        y = props.y + 0
 
-    const mouseEventStore =  useContext(MouseEventStoreContext)
-    
+    const mouseEventStore = useContext(MouseEventStoreContext)
 
     const cellStore = useContext(CellStoreContext)
-    
+
     // const dv = mouseEventStore.getdownCellAttr
     // useEffect(()=>{
     //     if (!dv) return
@@ -55,14 +59,13 @@ const LeftCell = React.memo(((props:any) => {
 
     // const width = 60,height = 20
 
-
     let text = ownKey.split(':')[0]
 
     const dragHandleHeight = 3
 
-    const textStyle = `${fontWeight} ${fontStyle}`;
+    const textStyle = `${fontWeight} ${fontStyle}`
 
-    const clickHeader = ()=>{
+    const clickHeader = () => {
         console.log(ownKey)
         cellStore.areaLeftCell(ownKey)
     }
@@ -80,42 +83,42 @@ const LeftCell = React.memo(((props:any) => {
                 fill={fill}
             ></Rect>
             <Text
-                    x={x}
-                    y={y}
-                    height={height}
-                    width={width}
-                    text={text}
-                    fill={textColor}
-                    verticalAlign={verticalAlign}
-                    align={align}
-                    onClick={clickHeader}
-                    onMouseEnter={(e) => {
-                        (document.body.style.cursor = "pointer")
-                    }}
-                    onMouseLeave={(e) => {
-                        (document.body.style.cursor = "default")
-                    }}
-                    fontFamily={fontFamily}
-                    fontStyle={textStyle}
-                    textDecoration={textDecoration}
-                    padding={padding}
-                    wrap={wrap}
-                    type={type}
-                    fontSize={fontSize}
-                    hitStrokeWidth={0}
-                />
-                {false ? null : 
-            <DraggableRect
-                {...props}
                 x={x}
-                y={y-dragHandleHeight + height}
-                height={dragHandleHeight}
+                y={y}
+                height={height}
                 width={width}
-                owny={props.y}
-                
-            ></DraggableRect>}
+                text={text}
+                fill={textColor}
+                verticalAlign={verticalAlign}
+                align={align}
+                onClick={clickHeader}
+                onMouseEnter={(e) => {
+                    document.body.style.cursor = 'pointer'
+                }}
+                onMouseLeave={(e) => {
+                    document.body.style.cursor = 'default'
+                }}
+                fontFamily={fontFamily}
+                fontStyle={textStyle}
+                textDecoration={textDecoration}
+                padding={padding}
+                wrap={wrap}
+                type={type}
+                fontSize={fontSize}
+                hitStrokeWidth={0}
+            />
+            {false ? null : (
+                <DraggableRect
+                    {...props}
+                    x={x}
+                    y={y - dragHandleHeight + height}
+                    height={dragHandleHeight}
+                    width={width}
+                    owny={props.y}
+                ></DraggableRect>
+            )}
         </Group>
-    );
-}));
+    )
+})
 
-export default LeftCell;
+export default LeftCell

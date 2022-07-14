@@ -1,34 +1,37 @@
-import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+    CSSProperties,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
-
-import { MouseEventStoreContext } from "@/stores/MouseEventStore";
-import styles from "./styles.module.css";
+import { MouseEventStoreContext } from '@/stores/MouseEventStore'
+import styles from './styles.module.css'
 import { observer } from 'mobx-react-lite'
-import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
-import { getCurrentCellByXY } from "@/utils";
+import { CellAttrs, CellStoreContext } from '@/stores/CellStore'
+import { getCurrentCellByXY } from '@/utils'
 import _ from 'lodash'
 
 interface IProps {
-    swidth: number;
-    sheight: number;
+    swidth: number
+    sheight: number
 }
 
 const ScrollArea = (props: IProps) => {
-
     return (
         <div
             style={{
-                position: "absolute",
+                position: 'absolute',
                 left: 0,
                 top: 0,
-                overflow: "hidden",
+                overflow: 'hidden',
                 width: props.swidth,
-                height: props.sheight
+                height: props.sheight,
             }}
-        >
-        </div>
-        
+        ></div>
     )
-};
+}
 
-export default (ScrollArea);
+export default ScrollArea

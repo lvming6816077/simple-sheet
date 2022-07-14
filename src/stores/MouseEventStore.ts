@@ -2,8 +2,6 @@ import { observable, action, computed } from 'mobx'
 import { createContext } from 'react'
 import { CellAttrs } from './CellStore'
 
-
-
 class MouseEventStore {
     @observable
     upCellAttr: CellAttrs = null
@@ -24,9 +22,7 @@ class MouseEventStore {
 
     @action.bound
     mouseDown(obj: CellAttrs) {
-
         this.downCellAttr = obj
-        
     }
 
     @action.bound
@@ -39,18 +35,11 @@ class MouseEventStore {
         this.dbcCellAttr = obj
     }
 
-
     @observable
     scrollLeft: number = 0
 
     @observable
     scrollTop: number = 0
-
-
-
-
-
-
 }
 
 export const MouseEventStoreContext = createContext(new MouseEventStore())

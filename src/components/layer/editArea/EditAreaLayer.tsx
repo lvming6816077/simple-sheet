@@ -1,44 +1,50 @@
-import React, { CSSProperties, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+    CSSProperties,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
-
-import {  MouseEventStoreContext } from "@/stores/MouseEventStore";
-import styles from "./styles.module.css";
+import { MouseEventStoreContext } from '@/stores/MouseEventStore'
+import styles from './styles.module.css'
 import { observer } from 'mobx-react-lite'
-import { CellAttrs, CellStoreContext } from "@/stores/CellStore";
+import { CellAttrs, CellStoreContext } from '@/stores/CellStore'
 
 import _ from 'lodash'
-import { headerCell,leftCell,normalCell,singleCell,rowStartIndex,rowStopIndex,columnStartIndex,columnStopIndex  } from "@/utils/constants"
-import {getCurrentCellByOwnKey, getCurrentCellByXY} from '@/utils/index'
+import {
+    headerCell,
+    leftCell,
+    normalCell,
+    singleCell,
+    rowStartIndex,
+    rowStopIndex,
+    columnStartIndex,
+    columnStopIndex,
+} from '@/utils/constants'
+import { getCurrentCellByOwnKey, getCurrentCellByXY } from '@/utils/index'
 
-interface IProps {
-
-}
+interface IProps {}
 
 const EditAreaLayer = (props: any) => {
-
-
     const mouseEventStore = useContext(MouseEventStoreContext)
     const dbc = mouseEventStore.dbcCellAttr
-    
 
     const cellStore = useContext(CellStoreContext)
-
-
-
 
     const [editCell, setEditCell] = useState<CellAttrs>(null)
 
     useEffect(() => {
         // console.log(dbc)
         if (!dbc || !dbc.ownKey) return
-        var cur = getCurrentCellByOwnKey(dbc!.ownKey,cellStore.cellsMap,true)
+        var cur = getCurrentCellByOwnKey(dbc!.ownKey, cellStore.cellsMap, true)
         // dbc.value = '222'
         if (cur?.ismerge) {
-            
             setEditCell({
                 ...cur,
-                ownKey:cellStore.cellsMap[cur.ismerge[1]]!.ownKey,
-                value:cellStore.cellsMap[cur.ismerge[1]]?.value
+                ownKey: cellStore.cellsMap[cur.ismerge[1]]!.ownKey,
+                value: cellStore.cellsMap[cur.ismerge[1]]?.value,
             })
             return
         }
@@ -49,7 +55,6 @@ const EditAreaLayer = (props: any) => {
     useEffect(() => {
         setEditCell(null)
     }, [mouseEventStore.downCellAttr])
-
 
     const editCellRenderer = (o: any) => {
         const style: CSSProperties = {
@@ -63,24 +68,27 @@ const EditAreaLayer = (props: any) => {
             borderStyle: 'solid',
             boxSizing: 'border-box',
             boxShadow: 'rgb(60 64 67 / 15%) 0px 2px 6px 2px',
-            backgroundColor: '#fff'
+            backgroundColor: '#fff',
         }
 
-
-
-
         return (
-
             <div style={style}>
-                <textarea defaultValue={o.value} className={styles['edit-textarea']} autoFocus onBlur={(e) => {
-                    
-                    let cur = getCurrentCellByOwnKey(o.ownKey,cellStore.cellsMap)
-                    if (cur) {
-                        cur!.value = e.target.value
-                        // console.log(cur)
-                        // cur.height = 50
-                    }
-                }}></textarea>
+                <textarea
+                    defaultValue={o.value}
+                    className={styles['edit-textarea']}
+                    autoFocus
+                    onBlur={(e) => {
+                        let cur = getCurrentCellByOwnKey(
+                            o.ownKey,
+                            cellStore.cellsMap
+                        )
+                        if (cur) {
+                            cur!.value = e.target.value
+                            // console.log(cur)
+                            // cur.height = 50
+                        }
+                    }}
+                ></textarea>
             </div>
         )
     }
@@ -91,48 +99,44 @@ const EditAreaLayer = (props: any) => {
         // console.log(editCell)
 
         const cell = editCellRenderer({
-            stroke: "#1a73e8",
+            stroke: '#1a73e8',
             strokeWidth: 2,
-            fill: "transparent",
+            fill: 'transparent',
             x: editCell.x,
             y: editCell.y,
             width: editCell.width,
             height: editCell.height,
-            value:editCell.value,
-            ownKey:editCell.ownKey
-        });
-
+            value: editCell.value,
+            ownKey: editCell.ownKey,
+        })
 
         return cell
-
     }, [editCell])
 
-
-
     return (
-
+        <div
+            style={{
+                pointerEvents: 'none',
+                position: 'absolute',
+                left: -leftCell.width,
+                top: -headerCell.height,
+                right: 0,
+                bottom: 0,
+                zIndex: 3,
+                overflow: 'hidden',
+            }}
+        >
             <div
                 style={{
-                    pointerEvents: "none",
-                    position: "absolute",
-                    left: -leftCell.width,
-                    top: -headerCell.height,
-                    right: 0,
-                    bottom: 0,
-                    zIndex: 3,
-                    overflow: "hidden",
+                    transform: `translate(-${
+                        mouseEventStore.scrollLeft + 0
+                    }px, -${mouseEventStore.scrollTop + 0}px)`,
                 }}
             >
-                <div
-                    style={{
-                        transform: `translate(-${mouseEventStore.scrollLeft + 0}px, -${mouseEventStore.scrollTop + 0
-                            }px)`,
-                    }}
-                >
-                    {getEditCellSelection()}
-                </div>
+                {getEditCellSelection()}
             </div>
+        </div>
     )
-};
+}
 
-export default observer(EditAreaLayer);
+export default observer(EditAreaLayer)

@@ -2,21 +2,30 @@ import { observable, action, computed } from 'mobx'
 import { createContext } from 'react'
 import _ from 'lodash'
 
-import { getCurrentCellsByArea, getCurrentCellByOwnKey, getCurrentCellByXY, getCellsByMergeKey } from '@/utils'
+import {
+    getCurrentCellsByArea,
+    getCurrentCellByOwnKey,
+    getCurrentCellByXY,
+    getCellsByMergeKey,
+} from '@/utils'
 
-
-import { BorderStyle, CellAttrs, CellMap, CellStore, CellStoreContext, SelectArea } from './CellStore'
+import {
+    BorderStyle,
+    CellAttrs,
+    CellMap,
+    CellStore,
+    CellStoreContext,
+    SelectArea,
+} from './CellStore'
 import { defaultBorderStyle } from '@/utils/constants'
 
-
 class ToolBarStore {
-
-
-
     @action.bound
     mergeCell(cellStore: CellStore) {
-        
-        let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
+        let cells = getCurrentCellsByArea(
+            cellStore.selectArea,
+            cellStore.cellsMap
+        )
 
         cellStore.mergeCell(cells)
         let first = cells[0]
@@ -35,69 +44,84 @@ class ToolBarStore {
         } as CellAttrs)
 
         cellStore.setSelectArea(null)
-
     }
 
     @action.bound
     splitCell(cellStore: CellStore) {
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
 
             cellStore.splitCell(cells)
-        } else if (cellStore.activeCell && cellStore.activeCell.ismerge){
-
-
-            let cells = getCellsByMergeKey(cellStore.activeCell.ismerge,cellStore.cellsMap)
+        } else if (cellStore.activeCell && cellStore.activeCell.ismerge) {
+            let cells = getCellsByMergeKey(
+                cellStore.activeCell.ismerge,
+                cellStore.cellsMap
+            )
             cellStore.splitCell(cells)
         }
-
-
     }
 
-    dealWithBorderStyle(obj:BorderStyle,cellStore: CellStore,hide = false){
+    dealWithBorderStyle(obj: BorderStyle, cellStore: CellStore, hide = false) {
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
-            cells.forEach(i=>{
-                i!.borderStyle = hide ? undefined : {
-                    ...i!.borderStyle,
-                    ...obj
-                }
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            cells.forEach((i) => {
+                i!.borderStyle = hide
+                    ? undefined
+                    : {
+                          ...i!.borderStyle,
+                          ...obj,
+                      }
             })
-        } else if (cellStore.activeCell){
-            let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
-            cell!.borderStyle = hide ? undefined :{
-                ...cell!.borderStyle,
-                ...obj
-            }
+        } else if (cellStore.activeCell) {
+            let cell = getCurrentCellByOwnKey(
+                cellStore.activeCell.ownKey,
+                cellStore.cellsMap
+            )
+            cell!.borderStyle = hide
+                ? undefined
+                : {
+                      ...cell!.borderStyle,
+                      ...obj,
+                  }
         }
     }
 
     @action.bound
-    colorBorderCell(color:string,cellStore: CellStore) {
-        this.dealWithBorderStyle({color:color,strokeDash:this.currentBorderStyle?.strokeDash},cellStore)
+    colorBorderCell(color: string, cellStore: CellStore) {
+        this.dealWithBorderStyle(
+            { color: color, strokeDash: this.currentBorderStyle?.strokeDash },
+            cellStore
+        )
         this.currentBorderStyle = {
             ...this.currentBorderStyle,
-            color:color
+            color: color,
         }
     }
-    @action.bound
-    dashBorderCell(dash:number[],cellStore: CellStore){
 
-        this.dealWithBorderStyle({strokeDash:dash,color:this.currentBorderStyle?.color},cellStore)
+    @action.bound
+    dashBorderCell(dash: number[], cellStore: CellStore) {
+        this.dealWithBorderStyle(
+            { strokeDash: dash, color: this.currentBorderStyle?.color },
+            cellStore
+        )
         this.currentBorderStyle = {
             ...this.currentBorderStyle,
-            strokeDash:dash
+            strokeDash: dash,
         }
     }
 
     @observable
-    currentBorderStyle:BorderStyle = defaultBorderStyle
-
+    currentBorderStyle: BorderStyle = defaultBorderStyle
 
     @action.bound
-    toggleBorderCell(flag:boolean,cellStore: CellStore){
-
-        this.dealWithBorderStyle(this.currentBorderStyle,cellStore,!flag)
+    toggleBorderCell(flag: boolean, cellStore: CellStore) {
+        this.dealWithBorderStyle(this.currentBorderStyle, cellStore, !flag)
 
         if (flag == false) {
             this.currentBorderStyle = defaultBorderStyle
@@ -105,29 +129,32 @@ class ToolBarStore {
     }
 
     @action.bound
-    fillCell(color:string,cellStore: CellStore){
-
+    fillCell(color: string, cellStore: CellStore) {
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
-            cells.forEach(i=>{
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            cells.forEach((i) => {
                 i!.fill = color
             })
-        } else if (cellStore.activeCell){
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             if (ismerge) {
-
                 let cells = getCellsByMergeKey(ismerge, cellStore.cellsMap)
-                cellStore.fillCell(color,cells)
+                cellStore.fillCell(color, cells)
             } else {
-                let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
                 cell!.fill = color
             }
-
         }
     }
 
     @observable
-    currentTextFillBold:boolean|string = false
+    currentTextFillBold: boolean | string = false
 
     @action.bound
     textBoldCell(cellStore: CellStore) {
@@ -137,54 +164,59 @@ class ToolBarStore {
             this.currentTextFillBold = 'bold'
         }
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
             if (this.currentTextFillBold) {
-                cells.forEach(i=>{
-
+                cells.forEach((i) => {
                     i!.fontWeight = 'bold'
                 })
             } else {
-                cells.forEach(i=>{
+                cells.forEach((i) => {
                     i!.fontWeight = false
                 })
             }
-            
-        } else if (cellStore.activeCell){
-
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             let cell = null
             if (ismerge) {
                 cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
-
             } else {
-                cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
-
+                cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
             }
             cell!.fontWeight = this.currentTextFillBold ? 'bold' : false
-
         }
     }
 
     @action.bound
-    textColorCell(color:string,cellStore: CellStore) {
-
+    textColorCell(color: string, cellStore: CellStore) {
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
-            cells.forEach(i=>{
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            cells.forEach((i) => {
                 if (i?.value) {
                     i!.textColor = color
                 }
-                
             })
-            
-        } else if (cellStore.activeCell){
-
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             if (ismerge) {
-                let cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    ismerge[1],
+                    cellStore.cellsMap
+                )
                 cell!.textColor = color
             } else {
-                let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
 
                 cell!.textColor = color
             }
@@ -192,24 +224,30 @@ class ToolBarStore {
     }
 
     @action.bound
-    verticalAlignCell(align:string,cellStore: CellStore) {
-
+    verticalAlignCell(align: string, cellStore: CellStore) {
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
-            cells.forEach(i=>{
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            cells.forEach((i) => {
                 if (i?.value) {
                     i!.verticalAlign = align
                 }
             })
-            
-        } else if (cellStore.activeCell){
-
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             if (ismerge) {
-                let cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    ismerge[1],
+                    cellStore.cellsMap
+                )
                 cell!.verticalAlign = align
             } else {
-                let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
 
                 cell!.verticalAlign = align
             }
@@ -217,24 +255,30 @@ class ToolBarStore {
     }
 
     @action.bound
-    alignCell(align:string,cellStore: CellStore) {
-
+    alignCell(align: string, cellStore: CellStore) {
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
-            cells.forEach(i=>{
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            cells.forEach((i) => {
                 if (i?.value) {
                     i!.align = align
                 }
             })
-            
-        } else if (cellStore.activeCell){
-
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             if (ismerge) {
-                let cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    ismerge[1],
+                    cellStore.cellsMap
+                )
                 cell!.align = align
             } else {
-                let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
 
                 cell!.align = align
             }
@@ -242,50 +286,61 @@ class ToolBarStore {
     }
 
     @action.bound
-    fontFamaiyCell(str:string,cellStore: CellStore) {
-
+    fontFamaiyCell(str: string, cellStore: CellStore) {
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
-            cells.forEach(i=>{
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            cells.forEach((i) => {
                 if (i?.value) {
                     i!.fontFamily = str
                 }
             })
-            
-        } else if (cellStore.activeCell){
-
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             if (ismerge) {
-                let cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    ismerge[1],
+                    cellStore.cellsMap
+                )
                 cell!.fontFamily = str
             } else {
-                let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
 
                 cell!.fontFamily = str
             }
         }
     }
 
-
     @action.bound
-    fontSizeCell(size:number,cellStore: CellStore) {
-
+    fontSizeCell(size: number, cellStore: CellStore) {
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
-            cells.forEach(i=>{
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            cells.forEach((i) => {
                 if (i?.value) {
                     i!.fontSize = size
                 }
             })
-            
-        } else if (cellStore.activeCell){
-
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             if (ismerge) {
-                let cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    ismerge[1],
+                    cellStore.cellsMap
+                )
                 cell!.fontSize = size
             } else {
-                let cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
+                let cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
 
                 cell!.fontSize = size
             }
@@ -293,7 +348,7 @@ class ToolBarStore {
     }
 
     @observable
-    currentTextFillItalic:boolean|string = false
+    currentTextFillItalic: boolean | string = false
 
     @action.bound
     textItalicCell(cellStore: CellStore) {
@@ -303,36 +358,36 @@ class ToolBarStore {
             this.currentTextFillItalic = 'italic'
         }
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
             if (this.currentTextFillItalic) {
-                cells.forEach(i=>{
-
+                cells.forEach((i) => {
                     i!.fontItalic = 'italic'
                 })
             } else {
-                cells.forEach(i=>{
+                cells.forEach((i) => {
                     i!.fontItalic = false
                 })
             }
-            
-        } else if (cellStore.activeCell){
-
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             let cell = null
             if (ismerge) {
                 cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
-
             } else {
-                cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
-
+                cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
             }
             cell!.fontItalic = this.currentTextFillItalic ? 'bold' : false
-
         }
     }
 
     @observable
-    currentTextFillUnderline:string = ''
+    currentTextFillUnderline: string = ''
 
     @action.bound
     textUnderlineCell(cellStore: CellStore) {
@@ -342,40 +397,40 @@ class ToolBarStore {
             this.currentTextFillUnderline = 'underline'
         }
         if (cellStore.selectArea) {
-            let cells = getCurrentCellsByArea(cellStore.selectArea, cellStore.cellsMap)
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
             if (this.currentTextFillUnderline) {
-                cells.forEach(i=>{
+                cells.forEach((i) => {
                     i!.textDecoration = 'underline'
                 })
             } else {
-                cells.forEach(i=>{
+                cells.forEach((i) => {
                     i!.textDecoration = ''
                 })
             }
-            
-        } else if (cellStore.activeCell){
-
+        } else if (cellStore.activeCell) {
             var ismerge = cellStore.activeCell.ismerge
             let cell = null
             if (ismerge) {
                 cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
-
             } else {
-                cell = getCurrentCellByOwnKey(cellStore.activeCell.ownKey, cellStore.cellsMap)
-
+                cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
             }
-            cell!.textDecoration = this.currentTextFillUnderline ? 'underline' : ''
-
+            cell!.textDecoration = this.currentTextFillUnderline
+                ? 'underline'
+                : ''
         }
-
     }
-    
 
     //   @computed
     //   get getcells() {
 
     //   }
-
 }
 
 export const ToolBarStoreContext = createContext(new ToolBarStore())
