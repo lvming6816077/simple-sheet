@@ -88,8 +88,10 @@ const Grid = (props: any) => {
 
         const { deltaX, deltaY, deltaMode } = event
 
+        // console.log(sheight - containerHeight)
+
         mouseEventStore.scrollTop = Math.min(
-            606,
+            sheight - containerHeight-3,
             Math.max(0, mouseEventStore.scrollTop + deltaY)
         )
     }

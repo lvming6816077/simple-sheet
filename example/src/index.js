@@ -30,6 +30,8 @@ root.render(
                 <div className='btn'>开始</div>
             </div>
         </div>
+        
+        <div className='power'>Powered by <a href='https://github.com/lvming6816077' target={'_blank'}>lvming6816077</a></div>
     </>
 
 

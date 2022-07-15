@@ -46,7 +46,6 @@ const DraggableRect = React.memo((props: any) => {
                             node.width(1)
                             node.opacity(0.5)
 
-                            console.log(node.getParent())
                         }
                     }}
                     onDragEnd={(e) => {
@@ -101,12 +100,11 @@ const DraggableRect = React.memo((props: any) => {
                     onDragMove={(e) => {
                         const node = e.target
                         if (node.width() !== containerWidth) {
-                            node.setZIndex(99)
+                            node.setZIndex(40)
 
                             node.width(containerWidth)
                             node.height(1)
                             node.opacity(0.5)
-                            console.log(node.getParent())
                         }
                     }}
                     onDragEnd={(e) => {

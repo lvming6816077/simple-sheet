@@ -4,8 +4,6 @@ import {
     CellMap,
     CellStoreContext,
 } from '@/stores/CellStore'
-import _ from 'lodash'
-import { useContext } from 'react'
 
 export const headerCell = {
     fill: '#f8f9fa',

@@ -86,3 +86,13 @@ body {
     vertical-align: -5px;
     background-image: url(./sheet_5.png);
 }
+.power {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    font-size: 12px;
+    color: #a2a2a2;
+}
+.power a{
+    text-decoration: none;
+}
