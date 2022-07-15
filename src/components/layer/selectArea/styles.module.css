@@ -5,6 +5,10 @@
     pointer-events: none;
     box-sizing: border-box;
     will-change: left,top,width,bottom,right,height;
+    transform: translateZ(0);
+    border: 1px solid rgb(26, 115, 232);
+    /* box-shadow: rgb(255 255 255) 0px 0px 0px 0.666667px, rgb(31 187 125) 0px 0px 0px 2px; */
+    position: absolute;
     /* transition: all 60ms; */
 }
 .active-cell {

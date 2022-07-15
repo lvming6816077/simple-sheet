@@ -60,6 +60,7 @@ const HeaderCell = React.memo((props: any) => {
                 strokeWidth={0.5}
                 x={x}
                 y={y}
+                id={'header'+ownKey}
                 height={height}
                 width={width}
                 fill={fill}
@@ -69,7 +70,7 @@ const HeaderCell = React.memo((props: any) => {
                 y={y}
                 height={height}
                 width={width}
-                text={text + ownKey.split(':')[1]}
+                text={text}
                 fill={textColor}
                 onClick={clickHeader}
                 onMouseEnter={(e) => {

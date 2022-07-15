@@ -121,7 +121,6 @@ export class CellStore {
 
         this.setSelectArea(o)
         this.setActiveCell(null)
-        this.activeHeader(o.left, o.right)
     }
 
     @action.bound
@@ -154,7 +153,6 @@ export class CellStore {
 
         this.setSelectArea(o)
         this.setActiveCell(null)
-        this.activeLeft(o.top, o.bottom)
     }
 
     // tempx:number = 0
@@ -180,6 +178,7 @@ export class CellStore {
 
     @action.bound
     changeHeight(ownKey: string, newheight: number) {
+        // return
         var copy: CellMap = this.cellsMap
 
         for (var key in copy) {
@@ -196,35 +195,37 @@ export class CellStore {
         this.cellsMap = generaCell(copy)
     }
 
-    @action.bound
-    activeHeader(left: number, right: number) {
-        for (var key in this.cellsMap) {
-            var item = this.cellsMap[key]
+    // @action.bound
+    // activeHeader(left: number, right: number) {
 
-            if (item?.type == 'header') {
-                if (item.x >= left && item.x < right) {
-                    item!.fill = '#e9eaed'
-                } else {
-                    item!.fill = headerCell.fill
-                }
-            }
-        }
-    }
+    //     for (var key in this.cellsMap) {
+    //         var item:any = this.cellsMap[key]
 
-    @action.bound
-    activeLeft(top: number, bottom: number) {
-        for (var key in this.cellsMap) {
-            var item = this.cellsMap[key]
+    //         if (item?.type == 'header') {
+    //             if (item.x >= left && item.x < right) {
+    //                 item!.fill = '#e9eaed'
+    //             } else {
+    //                 item!.fill = headerCell.fill
+    //             }
+    //         }
+    //     }
+    // }
 
-            if (item?.type == 'left') {
-                if (item.y >= top && item.y < bottom) {
-                    item!.fill = '#e9eaed'
-                } else {
-                    item!.fill = leftCell.fill
-                }
-            }
-        }
-    }
+    // @action.bound
+    // activeLeft(top: number, bottom: number) {
+
+    //     for (var key in this.cellsMap) {
+    //         var item:any = this.cellsMap[key]
+
+    //         if (item?.type == 'left') {
+    //             if (item.y >= top && item.y < bottom) {
+    //                 item!.fill = '#e9eaed'
+    //             } else {
+    //                 item!.fill = leftCell.fill
+    //             }
+    //         }
+    //     }
+    // }
 
     @action.bound
     setSelectArea(o: SelectArea) {

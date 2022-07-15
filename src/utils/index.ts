@@ -252,7 +252,7 @@ export const generaCell = (prev: CellMap = {}) => {
                 height,
                 value: prev[k]?.value || '',
                 type: type,
-                key: k,
+                // key: k,
                 ownKey: k,
                 fill: prev[k]?.fill || getFill(type),
                 ismerge: prev[k]?.ismerge || undefined,

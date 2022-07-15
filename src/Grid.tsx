@@ -36,6 +36,7 @@ import {
     containerHeight,
 } from '@/utils/constants'
 import { CellOverlay } from './components/cell/CellOverlay'
+import CornerArea from './components/layer/cornerArea/CornerArea'
 
 interface IProps {
     src: string[]
@@ -102,9 +103,11 @@ const Grid = (props: any) => {
     useEffect(() => {
         scrolRef.current!.scrollLeft = mouseEventStore.scrollLeft
     }, [mouseEventStore.scrollLeft])
+
+    
     //
     return (
-        <div style={{ width: width, height: height, position: 'relative' }}>
+        <div style={{ width: width, height: height, position: 'relative' }} id="container">
             <ToolBar></ToolBar>
             <div style={{ width: width, height: height, position: 'relative' }}>
                 <div
@@ -112,7 +115,7 @@ const Grid = (props: any) => {
                         width: width,
                         height: height,
                         position: 'relative',
-                        zIndex: 3,
+                        zIndex: 4,
                     }}
                     onWheel={handleWheel}
                 >
@@ -131,11 +134,13 @@ const Grid = (props: any) => {
                                 value: e.target.attrs.text,
                             } as CellAttrs)
                         }
-                        onMouseMove={(e: KonvaEventObject<MouseEvent>) =>
-                            setMV({
-                                ...e.target.attrs,
-                                value: e.target.attrs.text,
-                            } as CellAttrs)
+                        onMouseMove={(e: KonvaEventObject<MouseEvent>) =>{
+                                // console.log('xxx')
+                                setMV({
+                                    ...e.target.attrs,
+                                    value: e.target.attrs.text,
+                                } as CellAttrs)
+                            }
                         }
                         onMouseDown={(e: KonvaEventObject<MouseEvent>) =>
                             setDV({
@@ -150,7 +155,7 @@ const Grid = (props: any) => {
                                 offsetX={mouseEventStore.scrollLeft}
                             >
                                 {normal.map((o) => (
-                                    <Cell {...o}></Cell>
+                                    <Cell {...o} key={o?.ownKey}></Cell>
                                 ))}
                             </Group>
                             <Group
@@ -161,21 +166,22 @@ const Grid = (props: any) => {
                                     <CellOverlay
                                         {...o}
                                         {...o?.borderStyle}
+                                        key={o?.ownKey}
                                     ></CellOverlay>
                                 ))}
                             </Group>
                             <Group offsetX={mouseEventStore.scrollLeft}>
                                 {header.map((o) => (
-                                    <Cell {...o}></Cell>
+                                    <Cell {...o} key={o?.ownKey}></Cell>
                                 ))}
                             </Group>
                             <Group offsetY={mouseEventStore.scrollTop}>
                                 {left.map((o) => (
-                                    <Cell {...o}></Cell>
+                                    <Cell {...o} key={o?.ownKey}></Cell>
                                 ))}
                             </Group>
                             {single.map((o) => (
-                                <Cell {...o}></Cell>
+                                <Cell {...o} key={o?.ownKey}></Cell>
                             ))}
                         </Layer>
                     </Stage>
@@ -208,6 +214,21 @@ const Grid = (props: any) => {
                     ref={scrolRef}
                 >
                     <ScrollArea swidth={swidth} sheight={sheight}></ScrollArea>
+                </div>
+                <div
+                    style={{
+                        width: width,
+                        height: height,
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        overflow: 'auto',
+                        pointerEvents:'none',
+                        userSelect:'none',
+                        zIndex: 5,
+                    }}
+                >
+                    <CornerArea></CornerArea>
                 </div>
             </div>
         </div>

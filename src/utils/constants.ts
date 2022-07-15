@@ -7,27 +7,27 @@ import {
 
 export const headerCell = {
     fill: '#f8f9fa',
-    width: 100,
-    height: 30,
+    width: 70,
+    height: 20,
 }
 
 export const leftCell = {
     fill: '#f8f9fa',
-    width: 60,
-    height: 30,
+    width: 40,
+    height: 20,
 }
 
 export const normalCell = {
     fill: '#fff',
-    width: 100,
-    height: 30,
+    width: 70,
+    height: 20,
     fontSize: 12,
     fontFamily: 'Arial',
 }
 export const singleCell = {
     fill: '#fff',
-    width: 60,
-    height: 30,
+    width: 40,
+    height: 20,
 }
 
 export const rowStartIndex: number = 0

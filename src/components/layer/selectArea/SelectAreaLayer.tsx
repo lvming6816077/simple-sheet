@@ -13,6 +13,7 @@ import { MouseEventStoreContext } from '@/stores/MouseEventStore'
 import styles from './styles.module.css'
 import { observer } from 'mobx-react-lite'
 import { CellAttrs, CellStoreContext, SelectArea } from '@/stores/CellStore'
+
 import {
     getCurrentCellByOwnKey,
     getCurrentCellByXY,
@@ -52,13 +53,12 @@ const SelectAreaLayer = (props: any) => {
             top: o.top,
             width: o.right - o.left,
             height: o.bottom - o.top,
-            border: '1px solid rgb(26, 115, 232)',
         }
 
         return style
-    }, [selectArea, cellStore.selectEnd])
+    }, [selectArea])
 
-    // const [activeCell,setActiveCell] = useState<CellAttrs>(null)
+
 
     const activeCell = cellStore.activeCell
     const setActiveCell = cellStore.setActiveCell
@@ -71,6 +71,7 @@ const SelectAreaLayer = (props: any) => {
             top: activeCell.y,
             width: activeCell?.width + 1,
             height: activeCell?.height + 1,
+            // backgroundColor:selectArea?'#fff':'transparent'
         }
 
         return style
@@ -166,6 +167,7 @@ const SelectAreaLayer = (props: any) => {
 
     const timer = useRef<number>(0)
     const expandScrollAreaCheck = (flag: string, cur: CellAttrs) => {
+
         if (flag == 'start') {
             if (timer.current) {
                 clearInterval(timer.current)
@@ -181,14 +183,13 @@ const SelectAreaLayer = (props: any) => {
     }
 
     useEffect(() => {
-        // console.log(dv)
+
         let cur = null
 
         if (dv?.type != 'normal') return
 
         cur = getCurrentCellByOwnKey(dv?.ownKey || '', cellStore.cellsMap, true)
 
-        // console.log(cur)
 
         setActiveCell(cur)
         setSelectArea(null)
@@ -202,9 +203,8 @@ const SelectAreaLayer = (props: any) => {
               }
             : null
 
-        cur && cellStore.activeHeader(cur!.x, cur!.x + cur!.width)
-        cur && cellStore.activeLeft(cur!.y, cur!.y + cur.height)
     }, [dv])
+
 
     useEffect(() => {
         // if (mv?.type == 'header' || mv?.type == 'left')  {
@@ -215,12 +215,15 @@ const SelectAreaLayer = (props: any) => {
         // }
 
         // console.log('cur')
+        // console.log('yyy')
+
         if (isSelecting.current) {
-            let cur = getCurrentCellByOwnKey(
-                mv?.ownKey || '',
-                cellStore.cellsMap,
-                true
-            )
+            // let cur = getCurrentCellByOwnKey(
+            //     mv?.ownKey || '',
+            //     cellStore.cellsMap,
+            //     true
+            // )
+            let cur = mv
             if (!cur) return
 
             const start = cellStore.selectStart
@@ -262,12 +265,12 @@ const SelectAreaLayer = (props: any) => {
 
             setSelectArea(o)
 
-            // 降低优先级
-            startTransition(() => {
-                cellStore.activeHeader(o.left, o.right)
-                cellStore.activeLeft(o.top, o.bottom)
-            })
+
         }
+    }, [mv])
+
+    useEffect(() => {
+        
     }, [mv])
 
     useEffect(() => {
@@ -300,6 +303,8 @@ const SelectAreaLayer = (props: any) => {
                     }px, -${mouseEventStore.scrollTop + 0}px)`,
                 }}
             >
+
+
                 <div
                     style={getSelectAreaCell}
                     className={styles['select-area']}

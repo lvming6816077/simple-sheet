@@ -1,0 +1,6 @@
+.header-area,.left-area {
+    position: absolute;
+    background-color:rgb(126 126 126 / 10%);
+    will-change: left,top,width,bottom,right,height;
+    transform: translateZ(0);
+}

@@ -29,6 +29,7 @@ class MouseEventStore {
 
     @action.bound
     mouseMove(obj: CellAttrs) {
+        // console.log('yyy')
         // 优化，缓存上一次的move结果，使其不会触发多次
         if (this.lastMoveCellAttr == null) {
             this.moveCellAttr = obj
