@@ -1,7 +1,0 @@
-.select-area {
-    background-color: rgba(14, 101, 235, 0.1);
-    opacity: 1;
-    user-select: none;
-    pointer-events: none;
-    box-sizing: border-box;
-}

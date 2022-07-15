@@ -1,6 +1,6 @@
 import { CellStoreContext } from '@/stores/CellStore'
 import { MouseEventStoreContext } from '@/stores/MouseEventStore'
-import { leftCell } from '@/utils/constants'
+import { dragHandleHeight, leftCell } from '@/utils/constants'
 import { observer } from 'mobx-react-lite'
 import React, {
     CSSProperties,
@@ -42,36 +42,18 @@ const LeftCell = React.memo((props: any) => {
     let x = props.x + 0,
         y = props.y + 0
 
-    const mouseEventStore = useContext(MouseEventStoreContext)
-
     const cellStore = useContext(CellStoreContext)
 
-    // const dv = mouseEventStore.getdownCellAttr
-    // useEffect(()=>{
-    //     if (!dv) return
-    //     // console.log(x,y)
-    //     if (dv.y == y) {
-    //         setOwnFill('blue')
-    //     } else {
-    //         setOwnFill(fill)
-    //     }
-    // },[dv])
-
-    // const width = 60,height = 20
-
     let text = ownKey.split(':')[0]
-
-    const dragHandleHeight = 3
 
     const textStyle = `${fontWeight} ${fontStyle}`
 
     const clickHeader = () => {
-        console.log(ownKey)
         cellStore.areaLeftCell(ownKey)
     }
 
     return (
-        <Group>
+        <>
             <Rect
                 stroke={stroke}
                 strokeWidth={0.5}
@@ -107,17 +89,15 @@ const LeftCell = React.memo((props: any) => {
                 fontSize={fontSize}
                 hitStrokeWidth={0}
             />
-            {false ? null : (
-                <DraggableRect
-                    {...props}
-                    x={x}
-                    y={y - dragHandleHeight + height}
-                    height={dragHandleHeight}
-                    width={width}
-                    owny={props.y}
-                ></DraggableRect>
-            )}
-        </Group>
+            <DraggableRect
+                {...props}
+                x={x}
+                y={y - dragHandleHeight + height}
+                height={dragHandleHeight}
+                width={width}
+                owny={props.y}
+            ></DraggableRect>
+        </>
     )
 })
 

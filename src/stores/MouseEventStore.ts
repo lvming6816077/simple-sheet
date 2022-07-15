@@ -3,7 +3,8 @@ import { createContext } from 'react'
 import { CellAttrs } from './CellStore'
 
 class MouseEventStore {
-    lastMoveCellAttr:CellAttrs = null
+    lastMoveCellAttr: CellAttrs = null
+
     @observable
     upCellAttr: CellAttrs = null
 
@@ -33,11 +34,13 @@ class MouseEventStore {
             this.moveCellAttr = obj
             this.lastMoveCellAttr = obj
         }
-        if (this.lastMoveCellAttr && this.lastMoveCellAttr.ownKey != obj?.ownKey) {
+        if (
+            this.lastMoveCellAttr &&
+            this.lastMoveCellAttr.ownKey != obj?.ownKey
+        ) {
             this.moveCellAttr = obj
             this.lastMoveCellAttr = obj
         }
-        
     }
 
     @action.bound

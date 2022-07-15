@@ -9,7 +9,7 @@ import { useContext } from 'react'
 
 export const headerCell = {
     fill: '#f8f9fa',
-    width: 130,
+    width: 100,
     height: 30,
 }
 
@@ -21,7 +21,7 @@ export const leftCell = {
 
 export const normalCell = {
     fill: '#fff',
-    width: 130,
+    width: 100,
     height: 30,
     fontSize: 12,
     fontFamily: 'Arial',
@@ -40,9 +40,17 @@ export const columnStartIndex: number = 0
 
 export const columnStopIndex: number = 26
 
-export const containerWidth:number = 861
+export const containerWidth: number = 861
 
-export const containerHeight:number = 621
+export const containerHeight: number = 621
+
+export const dragMinWidth: number = 40
+
+export const dragMinHeight: number = 18
+
+export const dragHandleHeight: number = 3
+
+export const dragHandleWidth: number = 3
 
 export const cellDash: {
     [key: string]: number[]

@@ -20,7 +20,13 @@ import {
     getScrollWidthAndHeight,
 } from '@/utils'
 import _ from 'lodash'
-import { containerHeight, containerWidth, headerCell, leftCell, normalCell } from '@/utils/constants'
+import {
+    containerHeight,
+    containerWidth,
+    headerCell,
+    leftCell,
+    normalCell,
+} from '@/utils/constants'
 
 interface IProps {}
 
@@ -32,11 +38,9 @@ const SelectAreaLayer = (props: any) => {
     const selectArea = cellStore.selectArea
     const setSelectArea = cellStore.setSelectArea
 
-
-
-    const getSelectAreaCell:CSSProperties = useMemo(() => {
-        var style:CSSProperties = {
-            position: 'absolute'
+    const getSelectAreaCell: CSSProperties = useMemo(() => {
+        var style: CSSProperties = {
+            position: 'absolute',
         }
         if (!selectArea) return style
 
@@ -59,24 +63,17 @@ const SelectAreaLayer = (props: any) => {
     const activeCell = cellStore.activeCell
     const setActiveCell = cellStore.setActiveCell
 
+    const getActiveCellSelection = useMemo(() => {
+        if (!activeCell) return undefined
 
-
-    const getActiveCellSelection = useCallback(() => {
-        if (!activeCell) return null
-
-        const style:CSSProperties = {
-            position: 'absolute',
+        const style: CSSProperties = {
             left: activeCell.x,
             top: activeCell.y,
-            borderWidth: 2,
-            borderColor: '#1a73e8',
             width: activeCell?.width + 1,
             height: activeCell?.height + 1,
-            borderStyle: 'solid',
-            boxSizing: 'border-box',
         }
 
-        return <div style={style}></div>
+        return style
     }, [activeCell])
 
     const mouseEventStore = useContext(MouseEventStoreContext)
@@ -86,10 +83,10 @@ const SelectAreaLayer = (props: any) => {
 
     // const cellsMap = cellStore.cellsMap
 
-    let { swidth, sheight } = useMemo(() => getScrollWidthAndHeight(cellStore.cellsMap), [
-        cellStore.cellsMap,
-    ])
-
+    let { swidth, sheight } = useMemo(
+        () => getScrollWidthAndHeight(cellStore.cellsMap),
+        [cellStore.cellsMap]
+    )
 
     useEffect(() => {
         if (activeCell) {
@@ -132,45 +129,56 @@ const SelectAreaLayer = (props: any) => {
         // })
     }, [cellStore.cellsMap])
 
-    const expandScrollArea = (cur:CellAttrs)=>{
-        
-
+    const expandScrollArea = (cur: CellAttrs) => {
         if (!cur) return
-        var isRightBound = ((cur.x+cur.width)-mouseEventStore.scrollLeft) >= (containerWidth-20)
-        var isLeftBound = cur.x-mouseEventStore.scrollLeft <= (leftCell.width)
-        var isBottomBound = cur.y+cur.height-mouseEventStore.scrollTop >= (containerHeight-20)
+        var isRightBound =
+            cur.x + cur.width - mouseEventStore.scrollLeft >=
+            containerWidth - 20
+        var isLeftBound = cur.x - mouseEventStore.scrollLeft <= leftCell.width
+        var isBottomBound =
+            cur.y + cur.height - mouseEventStore.scrollTop >=
+            containerHeight - 20
 
-        var isTopBound = cur.y-mouseEventStore.scrollTop <= (headerCell.height)
+        var isTopBound = cur.y - mouseEventStore.scrollTop <= headerCell.height
 
         if (isRightBound) {
-            mouseEventStore.scrollLeft = Math.min((swidth-containerWidth),mouseEventStore.scrollLeft + cur.width)
-
-        } else if(isLeftBound) {
-            mouseEventStore.scrollLeft = Math.max(0,mouseEventStore.scrollLeft - cur.width)
-        } else if(isBottomBound) {
-            mouseEventStore.scrollTop = Math.min((sheight-containerHeight),mouseEventStore.scrollTop + cur.height)
-        } else if(isTopBound) {
-            mouseEventStore.scrollTop = Math.max(0,mouseEventStore.scrollTop - cur.height)
+            mouseEventStore.scrollLeft = Math.min(
+                swidth - containerWidth,
+                mouseEventStore.scrollLeft + cur.width
+            )
+        } else if (isLeftBound) {
+            mouseEventStore.scrollLeft = Math.max(
+                0,
+                mouseEventStore.scrollLeft - cur.width
+            )
+        } else if (isBottomBound) {
+            mouseEventStore.scrollTop = Math.min(
+                sheight - containerHeight,
+                mouseEventStore.scrollTop + cur.height
+            )
+        } else if (isTopBound) {
+            mouseEventStore.scrollTop = Math.max(
+                0,
+                mouseEventStore.scrollTop - cur.height
+            )
         }
     }
 
     const timer = useRef<number>(0)
-    const expandScrollAreaCheck = (flag:string,cur:CellAttrs)=>{
+    const expandScrollAreaCheck = (flag: string, cur: CellAttrs) => {
         if (flag == 'start') {
             if (timer.current) {
                 clearInterval(timer.current)
             }
-            timer.current = window.setInterval(()=>{
+            timer.current = window.setInterval(() => {
                 expandScrollArea(cur)
-            },300)
+            }, 300)
         } else {
             if (timer.current) {
                 clearInterval(timer.current)
             }
         }
-
     }
-
 
     useEffect(() => {
         // console.log(dv)
@@ -198,11 +206,7 @@ const SelectAreaLayer = (props: any) => {
         cur && cellStore.activeLeft(cur!.y, cur!.y + cur.height)
     }, [dv])
 
-
-
     useEffect(() => {
-
-
         // if (mv?.type == 'header' || mv?.type == 'left')  {
         //     if (selectArea) {
         //         let arr = getCurrentCellsByArea(selectArea,cellStore.cellsMap)
@@ -212,7 +216,6 @@ const SelectAreaLayer = (props: any) => {
 
         // console.log('cur')
         if (isSelecting.current) {
-            
             let cur = getCurrentCellByOwnKey(
                 mv?.ownKey || '',
                 cellStore.cellsMap,
@@ -223,7 +226,7 @@ const SelectAreaLayer = (props: any) => {
             const start = cellStore.selectStart
 
             if (start == null) return
-            
+
             // 回到起点，置为空
             if (cur.x == start.x && cur.y == start.y) {
                 setSelectArea(null)
@@ -254,10 +257,8 @@ const SelectAreaLayer = (props: any) => {
                 o.right = Math.max(o.right, cur!.x + cur!.width)
             })
 
-
-            expandScrollAreaCheck('start',cur)
+            expandScrollAreaCheck('start', cur)
             // expandScrollArea(cur)
-
 
             setSelectArea(o)
 
@@ -277,7 +278,7 @@ const SelectAreaLayer = (props: any) => {
                 ...uv,
             }
         }
-        expandScrollAreaCheck('stop',null)
+        expandScrollAreaCheck('stop', null)
     }, [uv])
 
     return (
@@ -299,9 +300,15 @@ const SelectAreaLayer = (props: any) => {
                     }px, -${mouseEventStore.scrollTop + 0}px)`,
                 }}
             >
-                
-                <div style={getSelectAreaCell} className={styles['select-area']}></div>
-                {getActiveCellSelection()}
+                <div
+                    style={getSelectAreaCell}
+                    className={styles['select-area']}
+                ></div>
+
+                <div
+                    style={getActiveCellSelection}
+                    className={styles['active-cell']}
+                ></div>
             </div>
         </div>
     )

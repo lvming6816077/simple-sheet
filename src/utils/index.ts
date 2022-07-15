@@ -112,29 +112,38 @@ export const getScrollWidthAndHeight = (cellsMap: CellMap) => {
     }
 }
 
-export const getCurrentCellByNextRight =(cell:CellAttrs,cellsMap: CellMap)=>{
+export const getCurrentCellByNextRight = (
+    cell: CellAttrs,
+    cellsMap: CellMap
+) => {
     var r = cell?.ownKey.split(':')[0]
-    var c = Number(cell?.ownKey.split(':')[1])+1
+    var c = Number(cell?.ownKey.split(':')[1]) + 1
 
-    return cellsMap[r+':'+c]
+    return cellsMap[r + ':' + c]
 }
-export const getCurrentCellByNextBottom =(cell:CellAttrs,cellsMap: CellMap)=>{
-    var r = Number(cell?.ownKey.split(':')[0])+1
+export const getCurrentCellByNextBottom = (
+    cell: CellAttrs,
+    cellsMap: CellMap
+) => {
+    var r = Number(cell?.ownKey.split(':')[0]) + 1
     var c = Number(cell?.ownKey.split(':')[1])
 
-    return cellsMap[r+':'+c]
+    return cellsMap[r + ':' + c]
 }
-export const getCurrentCellByPrevLeft =(cell:CellAttrs,cellsMap: CellMap)=>{
+export const getCurrentCellByPrevLeft = (
+    cell: CellAttrs,
+    cellsMap: CellMap
+) => {
     var r = Number(cell?.ownKey.split(':')[0])
-    var c = Number(cell?.ownKey.split(':')[1])-1
+    var c = Number(cell?.ownKey.split(':')[1]) - 1
 
-    return cellsMap[r+':'+c]
+    return cellsMap[r + ':' + c]
 }
-export const getCurrentCellByPrevTop =(cell:CellAttrs,cellsMap: CellMap)=>{
-    var r = Number(cell?.ownKey.split(':')[0])-1
+export const getCurrentCellByPrevTop = (cell: CellAttrs, cellsMap: CellMap) => {
+    var r = Number(cell?.ownKey.split(':')[0]) - 1
     var c = Number(cell?.ownKey.split(':')[1])
 
-    return cellsMap[r+':'+c]
+    return cellsMap[r + ':' + c]
 }
 
 export const generaCell = (prev: CellMap = {}) => {
@@ -235,8 +244,6 @@ export const generaCell = (prev: CellMap = {}) => {
             const width = getColumnWidth(type, k)
 
             const height = getRowHeight(type, k)
-
-            const fill = getFill(type)
 
             map[k] = {
                 x,

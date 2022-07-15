@@ -1,6 +1,6 @@
 import { CellAttrs, CellStoreContext } from '@/stores/CellStore'
 import { MouseEventStoreContext } from '@/stores/MouseEventStore'
-import { headerCell } from '@/utils/constants'
+import { dragHandleWidth, headerCell } from '@/utils/constants'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { observer } from 'mobx-react-lite'
 import React, {
@@ -47,14 +47,9 @@ const HeaderCell = React.memo((props: any) => {
 
     const cellStore = useContext(CellStoreContext)
 
-
     const textStyle = `${fontWeight} ${fontStyle}`
 
-
-    const dragHandleWidth = 3
-
     const clickHeader = () => {
-        console.log(ownKey)
         cellStore.areaHeaderCell(ownKey)
     }
 
@@ -74,7 +69,7 @@ const HeaderCell = React.memo((props: any) => {
                 y={y}
                 height={height}
                 width={width}
-                text={text+ownKey.split(':')[1]}
+                text={text + ownKey.split(':')[1]}
                 fill={textColor}
                 onClick={clickHeader}
                 onMouseEnter={(e) => {

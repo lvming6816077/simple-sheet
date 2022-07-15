@@ -4,4 +4,17 @@
     user-select: none;
     pointer-events: none;
     box-sizing: border-box;
+    will-change: left,top,width,bottom,right,height;
+    /* transition: all 60ms; */
+}
+.active-cell {
+    position: absolute;
+    transition: all 70ms;
+    will-change: left,top,width,bottom,right,height;
+    
+    border-width: 2px;
+    border-color: #1a73e8;
+    
+    border-style: solid;
+    box-sizing: border-box;
 }

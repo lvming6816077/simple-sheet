@@ -92,15 +92,14 @@ const Grid = (props: any) => {
             606,
             Math.max(0, mouseEventStore.scrollTop + deltaY)
         )
-
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         scrolRef.current!.scrollTop = mouseEventStore.scrollTop
-    },[mouseEventStore.scrollTop])
-    useEffect(()=>{
+    }, [mouseEventStore.scrollTop])
+    useEffect(() => {
         scrolRef.current!.scrollLeft = mouseEventStore.scrollLeft
-    },[mouseEventStore.scrollLeft])
+    }, [mouseEventStore.scrollLeft])
     //
     return (
         <div style={{ width: width, height: height, position: 'relative' }}>

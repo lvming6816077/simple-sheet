@@ -10,17 +10,22 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import _ from 'lodash'
+import _, { zip } from 'lodash'
 import { Stage, Text, Group, Rect, Line } from 'react-konva'
+import {
+    containerHeight,
+    containerWidth,
+    dragMinWidth,
+    dragMinHeight,
+    leftCell,
+    normalCell,
+} from '@/utils/constants'
 const DraggableRect = React.memo((props: any) => {
     const cellStore = useContext(CellStoreContext)
     const mouseEventStore = useContext(MouseEventStoreContext)
-    // console.log(mouseEventStore.scrollLeft,mouseEventStore.scrollTop)
+
     const { type, x, y, height, width } = props
 
-    const minWidth = 40
-
-    const minHeight = 18
     return (
         <>
             {type == 'header' ? (
@@ -29,42 +34,50 @@ const DraggableRect = React.memo((props: any) => {
                     y={y}
                     width={width}
                     height={height}
-                    fill="rgb(26, 115, 232)"
+                    fill="#8b8b8b"
                     type={props.type}
                     opacity={0}
                     draggable
-                    onDragMove={_.throttle((e) => {
-                        // console.log('sss')
+                    onDragMove={(e) => {
                         const node = e.target
-                        // console.log(node)
-                        node.opacity(0)
+                        if (node.height() !== containerHeight) {
+                            node.zIndex(70)
+                            node.height(containerHeight)
+                            node.width(1)
+                            node.opacity(0.5)
+
+                            console.log(node.getParent())
+                        }
+                    }}
+                    onDragEnd={(e) => {
+                        const node = e.target
+                        node.width(width)
+                        node.height(height)
+
                         const newWidth = node.x() - props.ownx + props.width
                         const k = props.ownKey
-                        // onResize(columnIndex, newWidth);
-                        // console.log(Math.min(newWidth,minWidth))
 
                         cellStore.changeWidth(
                             k,
-                            Math.max(newWidth, minWidth),
+                            Math.max(newWidth, dragMinWidth),
                             node.x() + props.width
                         )
-                    }, 100)}
-                    hitStrokeWidth={20}
+
+                        node.opacity(0)
+                    }}
                     onMouseEnter={(e) => {
                         e.target.opacity(1)
                         document.body.style.cursor = 'ew-resize'
-
-                        // e.target.fill
                     }}
                     onMouseLeave={(e) => {
                         e.target.opacity(0)
                         document.body.style.cursor = 'default'
                     }}
-                    dragBoundFunc={_.throttle((pos) => {
+                    dragBoundFunc={(pos) => {
                         var rx = props.ownx - mouseEventStore.scrollLeft
-                        if (pos.x - rx < minWidth) {
+                        if (pos.x - rx < dragMinWidth) {
                             return {
-                                x: minWidth + rx,
+                                x: dragMinWidth + rx,
                                 y: 0,
                             }
                         }
@@ -73,7 +86,7 @@ const DraggableRect = React.memo((props: any) => {
                             ...pos,
                             y: 0,
                         }
-                    }, 100)}
+                    }}
                 />
             ) : (
                 <Rect
@@ -81,25 +94,35 @@ const DraggableRect = React.memo((props: any) => {
                     y={y}
                     width={width}
                     height={height}
-                    fill="rgb(26, 115, 232)"
+                    fill="#8b8b8b"
                     type={type}
                     opacity={0}
                     draggable
-                    onDragMove={_.throttle((e: KonvaEventObject<DragEvent>) => {
-                        // console.log('sss')
+                    onDragMove={(e) => {
                         const node = e.target
-                        const newHeight = node.y() - props.owny + props.height
+                        if (node.width() !== containerWidth) {
+                            node.setZIndex(99)
+
+                            node.width(containerWidth)
+                            node.height(1)
+                            node.opacity(0.5)
+                            console.log(node.getParent())
+                        }
+                    }}
+                    onDragEnd={(e) => {
+                        const node = e.target
+                        node.width(width)
+                        node.height(height)
                         node.opacity(0)
+
+                        const newHeight = node.y() - props.owny + props.height
                         const k = props.ownKey
-                        // onResize(columnIndex, newWidth);
-                        // console.log(newHeight)
 
                         cellStore.changeHeight(
                             k,
-                            Math.max(newHeight, minHeight)
+                            Math.max(newHeight, dragMinHeight)
                         )
-                    }, 100)}
-                    hitStrokeWidth={20}
+                    }}
                     onMouseEnter={(e) => {
                         document.body.style.cursor = 'ns-resize'
                         e.target.opacity(1)
@@ -108,11 +131,11 @@ const DraggableRect = React.memo((props: any) => {
                         document.body.style.cursor = 'default'
                         e.target.opacity(0)
                     }}
-                    dragBoundFunc={_.throttle((pos) => {
+                    dragBoundFunc={(pos) => {
                         var ry = props.ownx - mouseEventStore.scrollTop
-                        if (pos.y - ry < minHeight) {
+                        if (pos.y - ry < dragMinHeight) {
                             return {
-                                y: ry + minHeight,
+                                y: ry + dragMinHeight,
                                 x: 0,
                             }
                         }
@@ -120,7 +143,7 @@ const DraggableRect = React.memo((props: any) => {
                             ...pos,
                             x: 0,
                         }
-                    }, 100)}
+                    }}
                 />
             )}
         </>
