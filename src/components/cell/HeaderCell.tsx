@@ -60,7 +60,7 @@ const HeaderCell = React.memo((props: any) => {
                 strokeWidth={0.5}
                 x={x}
                 y={y}
-                id={'header'+ownKey}
+                id={'header' + ownKey}
                 height={height}
                 width={width}
                 fill={fill}

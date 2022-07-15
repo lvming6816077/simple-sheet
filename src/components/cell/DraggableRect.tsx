@@ -45,7 +45,6 @@ const DraggableRect = React.memo((props: any) => {
                             node.height(containerHeight)
                             node.width(1)
                             node.opacity(0.5)
-
                         }
                     }}
                     onDragEnd={(e) => {

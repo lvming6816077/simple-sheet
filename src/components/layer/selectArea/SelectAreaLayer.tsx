@@ -58,8 +58,6 @@ const SelectAreaLayer = (props: any) => {
         return style
     }, [selectArea])
 
-
-
     const activeCell = cellStore.activeCell
     const setActiveCell = cellStore.setActiveCell
 
@@ -167,7 +165,6 @@ const SelectAreaLayer = (props: any) => {
 
     const timer = useRef<number>(0)
     const expandScrollAreaCheck = (flag: string, cur: CellAttrs) => {
-
         if (flag == 'start') {
             if (timer.current) {
                 clearInterval(timer.current)
@@ -183,13 +180,11 @@ const SelectAreaLayer = (props: any) => {
     }
 
     useEffect(() => {
-
         let cur = null
 
         if (dv?.type != 'normal') return
 
         cur = getCurrentCellByOwnKey(dv?.ownKey || '', cellStore.cellsMap, true)
-
 
         setActiveCell(cur)
         setSelectArea(null)
@@ -202,9 +197,7 @@ const SelectAreaLayer = (props: any) => {
                   y: cur.y,
               }
             : null
-
     }, [dv])
-
 
     useEffect(() => {
         // if (mv?.type == 'header' || mv?.type == 'left')  {
@@ -264,14 +257,10 @@ const SelectAreaLayer = (props: any) => {
             // expandScrollArea(cur)
 
             setSelectArea(o)
-
-
         }
     }, [mv])
 
-    useEffect(() => {
-        
-    }, [mv])
+    useEffect(() => {}, [mv])
 
     useEffect(() => {
         if (isSelecting.current && uv) {
@@ -298,13 +287,12 @@ const SelectAreaLayer = (props: any) => {
         >
             <div
                 style={{
-                    transform: `translate(-${
+                    // willChange:'transform',
+                    transform: `translate3d(-${
                         mouseEventStore.scrollLeft + 0
-                    }px, -${mouseEventStore.scrollTop + 0}px)`,
+                    }px, -${mouseEventStore.scrollTop + 0}px,1px)`,
                 }}
             >
-
-
                 <div
                     style={getSelectAreaCell}
                     className={styles['select-area']}

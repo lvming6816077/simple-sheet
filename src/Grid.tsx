@@ -80,6 +80,7 @@ const Grid = (props: any) => {
     const scrolRef = useRef<HTMLDivElement>(null)
 
     const onScroll = (e: any) => {
+        console.log('111')
         mouseEventStore.scrollLeft = e.target.scrollLeft
         mouseEventStore.scrollTop = e.target.scrollTop
     }
@@ -92,7 +93,7 @@ const Grid = (props: any) => {
         // console.log(sheight - containerHeight)
 
         mouseEventStore.scrollTop = Math.min(
-            sheight - containerHeight-3,
+            sheight - containerHeight - 3,
             Math.max(0, mouseEventStore.scrollTop + deltaY)
         )
     }
@@ -104,10 +105,12 @@ const Grid = (props: any) => {
         scrolRef.current!.scrollLeft = mouseEventStore.scrollLeft
     }, [mouseEventStore.scrollLeft])
 
-    
     //
     return (
-        <div style={{ width: width, height: height, position: 'relative' }} id="container">
+        <div
+            style={{ width: width, height: height, position: 'relative' }}
+            id="container"
+        >
             <ToolBar></ToolBar>
             <div style={{ width: width, height: height, position: 'relative' }}>
                 <div
@@ -134,14 +137,13 @@ const Grid = (props: any) => {
                                 value: e.target.attrs.text,
                             } as CellAttrs)
                         }
-                        onMouseMove={(e: KonvaEventObject<MouseEvent>) =>{
-                                // console.log('xxx')
-                                setMV({
-                                    ...e.target.attrs,
-                                    value: e.target.attrs.text,
-                                } as CellAttrs)
-                            }
-                        }
+                        onMouseMove={(e: KonvaEventObject<MouseEvent>) => {
+                            // console.log('xxx')
+                            setMV({
+                                ...e.target.attrs,
+                                value: e.target.attrs.text,
+                            } as CellAttrs)
+                        }}
                         onMouseDown={(e: KonvaEventObject<MouseEvent>) =>
                             setDV({
                                 ...e.target.attrs,
@@ -223,8 +225,8 @@ const Grid = (props: any) => {
                         left: 0,
                         top: 0,
                         overflow: 'auto',
-                        pointerEvents:'none',
-                        userSelect:'none',
+                        pointerEvents: 'none',
+                        userSelect: 'none',
                         zIndex: 5,
                     }}
                 >

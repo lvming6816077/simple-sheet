@@ -27,8 +27,7 @@ const CornerArea = () => {
     const activeCell = cellStore.activeCell
     // const setSelectArea = cellStore.setSelectArea
     const getHeaderAreaCell: CSSProperties = useMemo(() => {
-        var style: CSSProperties = {
-        }
+        var style: CSSProperties = {}
         if (selectArea) {
             const o = selectArea
 
@@ -38,7 +37,7 @@ const CornerArea = () => {
                 width: o.right - o.left,
                 height: headerCell.height,
             }
-    
+
             return style
         } else if (activeCell) {
             const o = activeCell
@@ -49,18 +48,15 @@ const CornerArea = () => {
                 width: o.width,
                 height: headerCell.height,
             }
-    
+
             return style
         }
 
         return style
-
-
-    }, [selectArea,activeCell])
+    }, [selectArea, activeCell])
 
     const getLeftAreaCell: CSSProperties = useMemo(() => {
-        var style: CSSProperties = {
-        }
+        var style: CSSProperties = {}
 
         if (selectArea) {
             const o = selectArea
@@ -69,9 +65,9 @@ const CornerArea = () => {
                 left: 0,
                 top: o.top,
                 width: leftCell.width,
-                height: o.bottom-o.top,
+                height: o.bottom - o.top,
             }
-    
+
             return style
         } else if (activeCell) {
             const o = activeCell
@@ -82,13 +78,13 @@ const CornerArea = () => {
                 width: leftCell.width,
                 height: o.height,
             }
-    
+
             return style
         }
         return style
+    }, [selectArea, activeCell])
 
-
-    }, [selectArea,activeCell])
+    const mouseEventStore = useContext(MouseEventStoreContext)
 
     return (
         <div
@@ -97,23 +93,29 @@ const CornerArea = () => {
                 position: 'absolute',
                 left: 0,
                 top: 0,
-                right:0,
-                bottom:0,
+                right: 0,
+                bottom: 0,
                 overflow: 'hidden',
-                // width: props.swidth,
-                // height: props.sheight,
             }}
-            
         >
-
             <div
-                    style={getHeaderAreaCell}
-                    className={styles['header-area']}
-                ></div>
-                            <div
-                    style={getLeftAreaCell}
-                    className={styles['left-area']}
-                ></div>
+                style={{
+                    ...getHeaderAreaCell,
+                    transform: `translate(-${
+                        mouseEventStore.scrollLeft + 0
+                    }px,0px)`,
+                }}
+                className={styles['header-area']}
+            ></div>
+            <div
+                style={{
+                    ...getLeftAreaCell,
+                    transform: `translate(0px,-${
+                        mouseEventStore.scrollTop + 0
+                    }px)`,
+                }}
+                className={styles['left-area']}
+            ></div>
         </div>
     )
 }

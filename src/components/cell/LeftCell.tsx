@@ -57,7 +57,7 @@ const LeftCell = React.memo((props: any) => {
             <Rect
                 stroke={stroke}
                 strokeWidth={0.5}
-                id={'left'+ownKey}
+                id={'left' + ownKey}
                 x={x}
                 y={y}
                 type={type}
