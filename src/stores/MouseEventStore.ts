@@ -54,6 +54,9 @@ class MouseEventStore {
 
     @observable
     scrollTop: number = 0
+
+    @observable
+    selectFilling:boolean = false
 }
 
 export const MouseEventStoreContext = createContext(new MouseEventStore())

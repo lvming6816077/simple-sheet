@@ -22,3 +22,15 @@
     border-style: solid;
     box-sizing: border-box;
 }
+.active-cell-corner {
+    pointer-events: auto;
+    position: absolute;
+    cursor: crosshair;
+    font-size: 0;
+    height: 4px;
+    width: 4px;
+    right: -4px;
+    bottom: -4px;
+    border: 1px solid #ffffff;
+    background: #4b89ff;
+}

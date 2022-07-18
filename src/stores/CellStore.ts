@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx'
 import { createContext } from 'react'
 import _ from 'lodash'
 
-import { generaCell, getCurrentCellByOwnKey, getCurrentCellByXY } from '@/utils'
+import { generaCell, getCurrentCellByOwnKey, getCurrentCellByXY, getCurrentCellsByArea } from '@/utils'
 import { headerCell, leftCell } from '@/utils/constants'
 
 export type BorderStyle = {
@@ -195,6 +195,36 @@ export class CellStore {
         this.cellsMap = generaCell(copy)
     }
 
+    @action.bound
+    setSelectFillAreaCell(area: SelectArea,current: CellAttrs) {
+
+
+        let cells = getCurrentCellsByArea(
+            area,
+            this.cellsMap
+        )
+
+        if(cells.some(i=>i?.ismerge)) {
+            alert('若要执行此操作，所有单元格大小需相同')
+            return
+        }
+
+        cells.forEach(item=>{
+            item!.fill = current?.fill
+            item!.value = current?.value
+            item!.borderStyle = current?.borderStyle
+            item!.fontFamily = current?.fontFamily
+            item!.fontWeight = current?.fontWeight
+            item!.align = current?.align
+            item!.fontItalic = current?.fontItalic
+            item!.textDecoration = current?.textDecoration
+            item!.fontSize = current?.fontSize
+            item!.verticalAlign = current?.verticalAlign
+            item!.textColor = current?.textColor
+        })
+
+    }
+
     // @action.bound
     // activeHeader(left: number, right: number) {
 
@@ -237,11 +267,19 @@ export class CellStore {
         this.activeCell = o
     }
 
+    @action.bound
+    setSelectFillArea(o: SelectArea) {
+        this.selectFillArea = o
+    }
+
     @observable
     cellsMap: CellMap = generaCell()
 
     @observable
     selectArea: SelectArea = null
+
+    @observable
+    selectFillArea: SelectArea = null
 
     @observable
     activeCell: CellAttrs = null

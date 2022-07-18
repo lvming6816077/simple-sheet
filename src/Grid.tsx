@@ -80,12 +80,15 @@ const Grid = (props: any) => {
     const scrolRef = useRef<HTMLDivElement>(null)
 
     const onScroll = (e: any) => {
-        console.log('111')
+        // console.log('111')
         mouseEventStore.scrollLeft = e.target.scrollLeft
         mouseEventStore.scrollTop = e.target.scrollTop
     }
 
+    const wheelRef = useRef<HTMLDivElement>(null)
+
     const handleWheel = (event: any) => {
+        event.preventDefault()
         const isHorizontally = event.shiftKey
 
         const { deltaX, deltaY, deltaMode } = event
@@ -97,6 +100,13 @@ const Grid = (props: any) => {
             Math.max(0, mouseEventStore.scrollTop + deltaY)
         )
     }
+    useEffect(()=>{
+        wheelRef.current?.addEventListener('wheel',handleWheel,{ passive: false })
+
+        return ()=>{
+            wheelRef.current?.removeEventListener('wheel',handleWheel)
+        }
+    })
 
     useEffect(() => {
         scrolRef.current!.scrollTop = mouseEventStore.scrollTop
@@ -120,7 +130,7 @@ const Grid = (props: any) => {
                         position: 'relative',
                         zIndex: 4,
                     }}
-                    onWheel={handleWheel}
+                    ref={wheelRef}
                 >
                     <Stage
                         width={width}
