@@ -1,3 +1,4 @@
+import { GridProps } from '@/Grid'
 import {
     BorderStyle,
     CellAttrs,
@@ -38,9 +39,9 @@ export const columnStartIndex: number = 0
 
 export const columnStopIndex: number = 26
 
-export const containerWidth: number = 861
+export var containerWidth: number = 861
 
-export const containerHeight: number = 621
+export var containerHeight: number = 621
 
 export const dragMinWidth: number = 40
 
@@ -61,4 +62,9 @@ export const cellDash: {
 export const defaultBorderStyle: BorderStyle = {
     color: '#000',
     strokeDash: [],
+}
+
+export const initConstants = (props:GridProps)=>{
+    containerHeight = props.height||containerHeight
+    containerWidth = props.width||containerWidth
 }

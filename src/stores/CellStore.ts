@@ -204,14 +204,21 @@ export class CellStore {
             this.cellsMap
         )
 
+        let len = cells.length
+
         if(cells.some(i=>i?.ismerge)) {
             alert('若要执行此操作，所有单元格大小需相同')
             return
         }
 
-        cells.forEach(item=>{
+        cells.forEach((item,index)=>{
             item!.fill = current?.fill
-            item!.value = current?.value
+            if (current?.value && !isNaN(Number(current?.value))) {
+                item!.value = (Number(current?.value)+index).toString()
+            } else {
+                item!.value = current?.value
+            }
+            
             item!.borderStyle = current?.borderStyle
             item!.fontFamily = current?.fontFamily
             item!.fontWeight = current?.fontWeight

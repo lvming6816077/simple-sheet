@@ -8,7 +8,8 @@ module.exports = {
   entry: ["./example/src/index.js"],
   output: {
     path: path.resolve(__dirname, "example/dist"),
-    filename: "[name].js",
+    filename: "[name].[contenthash].js",
+    chunkFilename: "[name].[contenthash].js",
     publicPath: process.env.NODE_ENV ? "/" : "https://www.nihaoshijie.com.cn/mypro/simple-sheet/",
   },
   devtool: 'source-map',

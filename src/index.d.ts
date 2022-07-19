@@ -1,3 +1,0 @@
-declare interface window {
-    $: any
-}

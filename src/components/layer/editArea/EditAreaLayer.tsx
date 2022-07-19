@@ -52,9 +52,9 @@ const EditAreaLayer = (props: any) => {
         setEditCell(dbc)
     }, [dbc])
 
-    useEffect(() => {
-        setEditCell(null)
-    }, [mouseEventStore.downCellAttr])
+    // useEffect(() => {
+    //     setEditCell(null)
+    // }, [mouseEventStore.downCellAttr])
 
     const editCellRenderer = (o: any) => {
         const style: CSSProperties = {
@@ -82,11 +82,12 @@ const EditAreaLayer = (props: any) => {
                             o.ownKey,
                             cellStore.cellsMap
                         )
+                        console.log('onBlur')
+                        console.log(cur)
                         if (cur) {
-                            cur!.value = e.target.value
-                            // console.log(cur)
-                            // cur.height = 50
+                            cur.value = e.target.value
                         }
+                        setEditCell(null)
                     }}
                 ></textarea>
             </div>

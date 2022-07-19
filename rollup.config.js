@@ -26,8 +26,8 @@ export default {
 
   plugins: [
     typescript({ tsconfig: "./tsconfig.json" }),
-    postcss({ 
-        modules: true ,
+    postcss({
+        autoModules: true ,
         plugins:[
             url({
                 url: "inline", // enable inline assets using base64 encoding

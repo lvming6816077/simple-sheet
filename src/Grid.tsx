@@ -3,6 +3,7 @@ import React, {
     useCallback,
     useContext,
     useEffect,
+    useImperativeHandle,
     useMemo,
     useRef,
     useState,
@@ -16,11 +17,12 @@ import SelectAreaLayer from '@/components/layer/selectArea/SelectAreaLayer'
 
 import { MouseEventStoreContext } from '@/stores/MouseEventStore'
 import { observer } from 'mobx-react-lite'
+import {toJS} from 'mobx'
 import EditAreaLayer from './components/layer/editArea/EditAreaLayer'
-import { CellAttrs, CellStoreContext } from './stores/CellStore'
+import { CellAttrs, CellMap, CellStoreContext } from './stores/CellStore'
 import _ from 'lodash'
 import ScrollArea from './components/layer/scrollArea/ScrollArea'
-import { getScrollWidthAndHeight } from './utils'
+import { generaCell, getScrollWidthAndHeight } from './utils'
 import ToolBar from './components/toolbar/ToolBar'
 
 import {
@@ -34,23 +36,27 @@ import {
     columnStopIndex,
     containerWidth,
     containerHeight,
+    initConstants,
 } from '@/utils/constants'
 import { CellOverlay } from './components/cell/CellOverlay'
 import CornerArea from './components/layer/cornerArea/CornerArea'
 
-interface IProps {
-    src: string[]
-    currentIndex?: number
-    backgroundStyle?: CSSProperties
-    disableScroll?: boolean
-    closeOnClickOutside?: boolean
-    onClose?: () => void
-    closeComponent?: JSX.Element
-    leftArrowComponent?: JSX.Element
-    rightArrowComponent?: JSX.Element
+export interface GridProps {
+    width?:number,
+    height?:number,
+    onRef?: any,
+    initData?:CellMap
+    
 }
 
-const Grid = (props: any) => {
+const Grid = (props: GridProps) => {
+    initConstants(props)
+    useImperativeHandle(props.onRef, () => ({
+        getCellData,
+    }))
+    const getCellData = ()=>{
+        return toJS(cellsMap)
+    }
     const width = containerWidth
     const height = containerHeight
 
@@ -62,7 +68,12 @@ const Grid = (props: any) => {
 
     const cellStore = useContext(CellStoreContext)
 
-    const cellsMap = cellStore.cellsMap
+
+    var cellsMap = cellStore.cellsMap
+
+    if (props.initData) {
+        cellsMap = generaCell(props.initData)
+    }
 
     const cells = _.values(cellsMap)
 
@@ -72,7 +83,7 @@ const Grid = (props: any) => {
     const normal = cells.filter((i) => i?.type == 'normal')
     const border = cells.filter((i) => i?.borderStyle)
 
-    // console.log(border)
+
 
     let { swidth, sheight } = useMemo(() => getScrollWidthAndHeight(cellsMap), [
         cellsMap,
@@ -80,7 +91,7 @@ const Grid = (props: any) => {
     const scrolRef = useRef<HTMLDivElement>(null)
 
     const onScroll = (e: any) => {
-        // console.log('111')
+
         mouseEventStore.scrollLeft = e.target.scrollLeft
         mouseEventStore.scrollTop = e.target.scrollTop
     }
