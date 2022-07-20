@@ -3,6 +3,7 @@ import React, {
     useCallback,
     useContext,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from 'react'
@@ -10,20 +11,26 @@ import React, {
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu'
 import '@szhsin/react-menu/dist/index.css'
 
-import { MouseEventStoreContext } from '@/stores/MouseEventStore'
+// import { MouseEventStoreContext } from '@/stores/MouseEventStore'
 import ReactTooltip from 'react-tooltip'
 import styles from './styles.module.css'
 import { observer } from 'mobx-react-lite'
 import { CellAttrs, CellStoreContext } from '@/stores/CellStore'
-import { ToolBarStoreContext } from '@/stores/ToolBarStore'
+// import { ToolBarStoreContext } from '@/stores/ToolBarStore'
 
 import _ from 'lodash'
 import ColorPanel from './components/ColorPanel'
 import { cellDash, normalCell } from '@/utils/constants'
+import Konva from 'konva'
+import { getScrollWidthAndHeight } from '@/utils'
+import { ToolBarStoreContext } from '@/stores/ToolBarStore'
 
-interface IProps {}
 
-const ToolBar = (props: any) => {
+interface IProps {
+    stageRef: React.MutableRefObject<Konva.Stage | null>;
+}
+
+const ToolBar = (props: IProps) => {
     const cellStore = useContext(CellStoreContext)
     const toolbarStore = useContext(ToolBarStoreContext)
 
@@ -118,6 +125,28 @@ const ToolBar = (props: any) => {
         toolbarStore.fontSizeCell(size, cellStore)
     }
 
+    let { swidth, sheight } = useMemo(() => getScrollWidthAndHeight(cellStore.cellsMap), [
+        cellStore.cellsMap,
+    ])
+
+    const exportImage = () => {
+
+        function downloadURI(uri: string, name: string) {
+            if (!uri) return
+            var link = document.createElement('a');
+            link.download = name;
+            link.href = uri;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            // delete link;
+        }
+
+        var dataURL = props.stageRef.current?.toDataURL({ x: 0, y: 0, width: swidth, height: sheight, pixelRatio: 3 });
+        downloadURI(dataURL || '', `sheet-${Date.now()}.png`);
+
+    }
+
     return (
         <div className={`${styles['tool-bar-wrap']}`}>
             <ReactTooltip
@@ -192,11 +221,10 @@ const ToolBar = (props: any) => {
                 </MenuItem>
             </Menu>
             <div
-                className={`${styles['btn-wrap']} ${
-                    toolbarStore.currentTextFillBold
+                className={`${styles['btn-wrap']} ${toolbarStore.currentTextFillBold
                         ? styles['acitve-btn-wrap']
                         : ''
-                } `}
+                    } `}
             >
                 <div
                     className={`${styles['text-bold']}`}
@@ -205,11 +233,10 @@ const ToolBar = (props: any) => {
                 ></div>
             </div>
             <div
-                className={`${styles['btn-wrap']} ${
-                    toolbarStore.currentTextFillItalic
+                className={`${styles['btn-wrap']} ${toolbarStore.currentTextFillItalic
                         ? styles['acitve-btn-wrap']
                         : ''
-                } `}
+                    } `}
             >
                 <div
                     className={`${styles['text-italic']}`}
@@ -218,11 +245,10 @@ const ToolBar = (props: any) => {
                 ></div>
             </div>
             <div
-                className={`${styles['btn-wrap']} ${
-                    toolbarStore.currentTextFillUnderline
+                className={`${styles['btn-wrap']} ${toolbarStore.currentTextFillUnderline
                         ? styles['acitve-btn-wrap']
                         : ''
-                } `}
+                    } `}
             >
                 <div
                     className={`${styles['text-underline']}`}
@@ -358,7 +384,19 @@ const ToolBar = (props: any) => {
                 <MenuItem onClick={() => alignCell('right')}>
                     <div className={styles['cell-align-right']}></div>
                 </MenuItem>
+
+
             </Menu>
+
+            <div className={styles.divider}></div>
+
+            <div className={styles['btn-wrap']}>
+                <div
+                    className={styles['export-image']}
+                    onClick={exportImage}
+                    data-tip="导出图片"
+                ></div>
+            </div>
         </div>
     )
 }

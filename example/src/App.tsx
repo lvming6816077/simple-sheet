@@ -5,13 +5,13 @@ import SimpleSheet from '../../src/index';
 
 import './css/styles.css'
 const App: React.FC = () => {
-    const simpleSheetRef = useRef<any>(null)
-
+    const simpleSheetRef = useRef(null)
+    
     return (
         <>
             {/* <button onClick={() => {
-                // console.log(simpleSheetRef.current?.getCellData())
-                (window as any).aa = simpleSheetRef.current?.getCellData()
+                console.log(simpleSheetRef.current?.getCellData())
+                // (window as any).aa = simpleSheetRef.current?.getCellData()
             }}>获取</button> */}
             <div className="nav-wrapper">
                 <span className="title"><span className='title-logo'></span>Simple Sheet</span>
@@ -19,7 +19,7 @@ const App: React.FC = () => {
             </div>
             <div className='sub-title'><span className='logo'></span>Simple Sheet</div>
             <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-                <SimpleSheet onRef={simpleSheetRef} />
+                <SimpleSheet ref={simpleSheetRef}/>
             </div>
             <div className='desc'>
                 <div className='desc-inner'>

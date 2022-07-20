@@ -40,6 +40,7 @@ import {
 } from '@/utils/constants'
 import { CellOverlay } from './components/cell/CellOverlay'
 import CornerArea from './components/layer/cornerArea/CornerArea'
+import Konva from 'konva'
 
 export interface GridProps {
     width?:number,
@@ -49,13 +50,21 @@ export interface GridProps {
     
 }
 
-const Grid = (props: GridProps) => {
+const Grid = observer((props: GridProps,ref:any) => {
     initConstants(props)
-    useImperativeHandle(props.onRef, () => ({
+
+    useImperativeHandle(ref, () => ({
         getCellData,
+        setCellData,
+        stage:stageRef.current
+
     }))
     const getCellData = ()=>{
         return toJS(cellsMap)
+    }
+    const setCellData = (map:CellMap)=>{
+        cellStore.cellsMap = map
+
     }
     const width = containerWidth
     const height = containerHeight
@@ -126,13 +135,14 @@ const Grid = (props: GridProps) => {
         scrolRef.current!.scrollLeft = mouseEventStore.scrollLeft
     }, [mouseEventStore.scrollLeft])
 
+    const stageRef = useRef<Konva.Stage>(null)
     //
     return (
         <div
             style={{ width: width, height: height, position: 'relative' }}
             id="container"
         >
-            <ToolBar></ToolBar>
+            <ToolBar stageRef={stageRef}></ToolBar>
             <div style={{ width: width, height: height, position: 'relative' }}>
                 <div
                     style={{
@@ -146,6 +156,7 @@ const Grid = (props: GridProps) => {
                     <Stage
                         width={width}
                         height={height}
+                        ref={stageRef}
                         onDblClick={(e: KonvaEventObject<MouseEvent>) => {
                             setDBC({
                                 ...e.target.attrs,
@@ -256,6 +267,6 @@ const Grid = (props: GridProps) => {
             </div>
         </div>
     )
-}
+},{forwardRef:true})
 
-export default observer(Grid)
+export default (Grid)
