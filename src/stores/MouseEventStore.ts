@@ -39,6 +39,7 @@ class MouseEventStore {
             this.lastMoveCellAttr &&
             this.lastMoveCellAttr.ownKey != obj?.ownKey
         ) {
+
             this.moveCellAttr = obj
             this.lastMoveCellAttr = obj
         }

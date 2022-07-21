@@ -35,8 +35,8 @@ export const getCurrentCellByOwnKey = (
 ) => {
     var obj = cellsMap[key]
 
-    if (obj?.ismerge && useMerge) {
-        const [firstkey, endkey] = obj?.ismerge
+    if (obj?.isMerge && useMerge) {
+        const [firstkey, endkey] = obj?.isMerge
         const o = {
             x: cellsMap[firstkey]!.x,
             y: cellsMap[firstkey]!.y,
@@ -72,9 +72,9 @@ export const getCurrentCellsByRow = (rowkey: string, cellsMap: CellMap) => {
     })
 }
 
-export const getCellsByMergeKey = (ismerge: string[], cellsMap: CellMap) => {
-    let first = getCurrentCellByOwnKey(ismerge[0], cellsMap)
-    let last = getCurrentCellByOwnKey(ismerge[1], cellsMap)
+export const getCellsByMergeKey = (isMerge: string[], cellsMap: CellMap) => {
+    let first = getCurrentCellByOwnKey(isMerge[0], cellsMap)
+    let last = getCurrentCellByOwnKey(isMerge[1], cellsMap)
     let o = {
         left: first?.x,
         top: first?.y,
@@ -145,7 +145,22 @@ export const getCurrentCellByPrevTop = (cell: CellAttrs, cellsMap: CellMap) => {
 
     return cellsMap[r + ':' + c]
 }
+export const clearCellFromat = (cell: CellAttrs) => {
 
+
+    cell!.value = undefined
+    cell!.borderStyle = undefined
+    cell!.imgUrl = undefined
+    cell!.fontFamily = undefined
+    cell!.textColor = undefined
+    cell!.verticalAlign = undefined
+    cell!.fill = normalCell.fill
+    cell!.align = undefined
+    cell!.fontSize = undefined
+    cell!.fontItalic = undefined
+    cell!.textDecoration = undefined
+    
+}
 export const generaCell = (prev: CellMap = {}) => {
     const getRowOffset = (
         rowIndex: number,
@@ -255,7 +270,7 @@ export const generaCell = (prev: CellMap = {}) => {
                 // key: k,
                 ownKey: k,
                 fill: prev[k]?.fill || getFill(type),
-                ismerge: prev[k]?.ismerge || undefined,
+                isMerge: prev[k]?.isMerge || undefined,
                 borderStyle: prev[k]?.borderStyle || undefined,
                 verticalAlign: prev[k]?.verticalAlign || undefined,
                 textColor: prev[k]?.textColor || undefined,
@@ -265,6 +280,7 @@ export const generaCell = (prev: CellMap = {}) => {
                 fontFamily: prev[k]?.fontFamily || undefined,
                 fontItalic: prev[k]?.fontItalic || undefined,
                 textDecoration: prev[k]?.textDecoration || undefined,
+                imgUrl:prev[k]?.imgUrl || undefined
             }
         }
     }

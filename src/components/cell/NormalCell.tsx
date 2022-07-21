@@ -12,14 +12,16 @@ import React, {
 } from 'react'
 
 import { Stage, Text, Group, Rect } from 'react-konva'
+import NImage from './components/NImage'
+import NText from './components/NText'
 import HeaderCell from './HeaderCell'
 import LeftCell from './LeftCell'
 import SingleCell from './SingleCell'
 
-interface IProps {}
+interface IProps { }
 
-export const isNull = (value: any) =>
-    value === void 0 || value === null || value === ''
+
+
 
 const Cell = React.memo((props: any) => {
     const {
@@ -41,8 +43,9 @@ const Cell = React.memo((props: any) => {
         strokeEnabled = true,
         type = 'normal',
         ownKey,
-        ismerge,
+        isMerge,
         value,
+        imgUrl
     } = props
 
     const cellStore = useContext(CellStoreContext)
@@ -61,8 +64,8 @@ const Cell = React.memo((props: any) => {
 
     var mergeRect: any = {}
 
-    if (ismerge) {
-        const [firstkey, endkey] = ismerge
+    if (isMerge) {
+        const [firstkey, endkey] = isMerge
         if (ownKey == endkey) {
             mergeRect = {
                 x: cellsMap[firstkey]!.x,
@@ -79,6 +82,51 @@ const Cell = React.memo((props: any) => {
         }
     }
 
+
+    const renderCell = () => {
+        
+
+        var p = {
+            ownKey:ownKey,
+            type:type,
+            x:x,
+            y:y,
+            height:height,
+            width:width,
+            value:value,
+            fill:textColor,
+            verticalAlign:verticalAlign,
+            align:align,
+            fontFamily:fontFamily,
+            fontStyle:fontStyle,
+            textDecoration:textDecoration,
+            padding:padding,
+            wrap:wrap,
+            fontSize:fontSize,
+            imgUrl:imgUrl
+        }
+
+        if (mergeRect.width) {
+            p.width = mergeRect.width
+            p.height = mergeRect.height
+            p.x = mergeRect.x
+            p.y = mergeRect.y
+            if (imgUrl) {
+                return <NImage {...p}></NImage>
+            } else {
+                return <NText {...p} isMerge={isMerge}></NText>
+            }
+        } else {
+            if (imgUrl) {
+                return <NImage {...p}></NImage>
+            } else {
+                return <NText {...p}></NText>
+            }
+        }
+
+
+    }
+
     return (
         <Group>
             <Rect
@@ -90,54 +138,12 @@ const Cell = React.memo((props: any) => {
                 fill={fill}
                 stroke={stroke}
                 type={type}
-                strokeWidth={ismerge ? 0 : 0.5}
-                ismerge={ismerge}
+                strokeWidth={isMerge ? 0 : 0.5}
+                isMerge={isMerge}
                 alpha={alpha}
             />
+            {renderCell()}
 
-            {isNull(value) || mergeRect.width ? null : (
-                <Text
-                    ownKey={ownKey}
-                    x={x + 0}
-                    y={y + 0}
-                    height={height}
-                    type={type}
-                    width={width}
-                    text={value}
-                    fill={textColor}
-                    ismerge={ismerge}
-                    lineHeight={1.5}
-                    verticalAlign={verticalAlign}
-                    align={align}
-                    fontFamily={fontFamily}
-                    fontStyle={fontStyle}
-                    textDecoration={textDecoration}
-                    padding={padding}
-                    wrap={wrap}
-                    fontSize={fontSize}
-                />
-            )}
-            {mergeRect.width ? (
-                <Text
-                    ownKey={ownKey}
-                    type={type}
-                    x={mergeRect.x}
-                    y={mergeRect.y}
-                    height={mergeRect.height}
-                    width={mergeRect.width}
-                    text={value}
-                    fill={textColor}
-                    // lineHeight={mergeRect.height}
-                    verticalAlign={verticalAlign}
-                    align={align}
-                    fontFamily={fontFamily}
-                    fontStyle={fontStyle}
-                    textDecoration={textDecoration}
-                    padding={padding}
-                    wrap={wrap}
-                    fontSize={fontSize}
-                />
-            ) : null}
         </Group>
     )
 })

@@ -51,20 +51,19 @@
 .border-item {
     display: flex;
 }
-.border-item .item-icon-all {
-    width: 15px;
-    height: 15px;
+.item-icon-all {
     background-image: url('./imgs/border-all.png');
-    background-size: cover;
-    margin-right: 4px;
 }
-.border-item .item-icon-none {
+.item-icon-none {
+    background-image: url('./imgs/border-none.png');
+}
+.icon-item {
     width: 15px;
     height: 15px;
-    background-image: url('./imgs/border-none.png');
     background-size: cover;
     margin-right: 4px;
 }
+
 .border-item .item-text {
     font-size: 13px;
     margin-top: -1px;
@@ -219,4 +218,16 @@
     height: 17px;
     background-image: url('./imgs/file-export.png');
     background-size: cover;
+}
+.insert-img {
+    width: 18px;
+    height: 18px;
+    background-image: url('./imgs/insert-img.png');
+    background-size: cover;
+}
+.item-icon-insert-1 {
+    background-image: url('./imgs/computer.png');
+}
+.item-icon-insert-2 {
+    background-image: url('./imgs/cloud-upload.png');
 }

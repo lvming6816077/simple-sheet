@@ -121,8 +121,8 @@ const SelectAreaLayer = (props: any) => {
 
         // let arr = _.values(cellStore.cellsMap)
         // arr.filter(i=>{
-        //     if (i?.ismerge) {
-        //         if(i.ismerge[0] == i.ownKey){
+        //     if (i?.isMerge) {
+        //         if(i.isMerge[0] == i.ownKey){
         //             console.log(i.ownKey)
         //         }
         //     }
@@ -231,7 +231,7 @@ const SelectAreaLayer = (props: any) => {
 
             // 判断是否覆盖了mergecell
             let arr = getCurrentCellsByArea(o, cellStore.cellsMap).filter(
-                (i) => i?.ismerge
+                (i) => i?.isMerge
             )
 
             arr.forEach((item) => {

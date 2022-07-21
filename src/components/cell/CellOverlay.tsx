@@ -34,16 +34,18 @@ const CellOverlay = React.memo((props: any) => {
         strokeLeftWidth = strokeWidth,
         lineCap = 'butt',
         ownKey,
-        ismerge,
+        isMerge,
     } = props
     //   console.log(ownKey)
 
     const cellStore = useContext(CellStoreContext)
     const cellsMap = cellStore.cellsMap
-    var mergeRect: any = {}
+    var mergeRect: {
+        [key:string]:number
+    } = {}
 
-    if (ismerge) {
-        const [firstkey, endkey] = ismerge
+    if (isMerge) {
+        const [firstkey, endkey] = isMerge
         if (ownKey == endkey) {
             mergeRect = {
                 x: cellsMap[firstkey]!.x,
@@ -83,6 +85,8 @@ const CellOverlay = React.memo((props: any) => {
             sceneFunc={(context, shape) => {
                 /* Top border */
                 if (strokeTopColor) {
+
+                    console.log(context)
                     context.beginPath()
                     context.moveTo(
                         strokeLeftColor
@@ -98,7 +102,7 @@ const CellOverlay = React.memo((props: any) => {
                         0.5
                     )
                     context.setAttr('strokeStyle', strokeTopColor)
-                    context.setAttr('lineWidth', strokeTopWidth)
+                    context.setAttr('lineWidth', 1)
                     context.setAttr('lineCap', lineCap)
                     context.setLineDash(strokeTopDash)
                     context.stroke()

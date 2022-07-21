@@ -129,7 +129,7 @@ const DraggableRect = React.memo((props: any) => {
                         e.target.opacity(0)
                     }}
                     dragBoundFunc={(pos) => {
-                        var ry = props.ownx - mouseEventStore.scrollTop
+                        var ry = props.owny - mouseEventStore.scrollTop
                         if (pos.y - ry < dragMinHeight) {
                             return {
                                 y: ry + dragMinHeight,

@@ -22,12 +22,14 @@ import { defaultBorderStyle } from '@/utils/constants'
 class ToolBarStore {
     @action.bound
     mergeCell(cellStore: CellStore) {
+        if (!cellStore.selectArea) return
         let cells = getCurrentCellsByArea(
             cellStore.selectArea,
             cellStore.cellsMap
         )
 
         cellStore.mergeCell(cells)
+
         let first = cells[0]
         let last = cells[cells.length - 1]
 
@@ -55,9 +57,9 @@ class ToolBarStore {
             )
 
             cellStore.splitCell(cells)
-        } else if (cellStore.activeCell && cellStore.activeCell.ismerge) {
+        } else if (cellStore.activeCell && cellStore.activeCell.isMerge) {
             let cells = getCellsByMergeKey(
-                cellStore.activeCell.ismerge,
+                cellStore.activeCell.isMerge,
                 cellStore.cellsMap
             )
             cellStore.splitCell(cells)
@@ -139,9 +141,9 @@ class ToolBarStore {
                 i!.fill = color
             })
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
-            if (ismerge) {
-                let cells = getCellsByMergeKey(ismerge, cellStore.cellsMap)
+            var isMerge = cellStore.activeCell.isMerge
+            if (isMerge) {
+                let cells = getCellsByMergeKey(isMerge, cellStore.cellsMap)
                 cellStore.fillCell(color, cells)
             } else {
                 let cell = getCurrentCellByOwnKey(
@@ -178,10 +180,10 @@ class ToolBarStore {
                 })
             }
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
+            var isMerge = cellStore.activeCell.isMerge
             let cell = null
-            if (ismerge) {
-                cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
+            if (isMerge) {
+                cell = getCurrentCellByOwnKey(isMerge[1], cellStore.cellsMap)
             } else {
                 cell = getCurrentCellByOwnKey(
                     cellStore.activeCell.ownKey,
@@ -205,10 +207,10 @@ class ToolBarStore {
                 }
             })
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
-            if (ismerge) {
+            var isMerge = cellStore.activeCell.isMerge
+            if (isMerge) {
                 let cell = getCurrentCellByOwnKey(
-                    ismerge[1],
+                    isMerge[1],
                     cellStore.cellsMap
                 )
                 cell!.textColor = color
@@ -236,10 +238,10 @@ class ToolBarStore {
                 }
             })
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
-            if (ismerge) {
+            var isMerge = cellStore.activeCell.isMerge
+            if (isMerge) {
                 let cell = getCurrentCellByOwnKey(
-                    ismerge[1],
+                    isMerge[1],
                     cellStore.cellsMap
                 )
                 cell!.verticalAlign = align
@@ -267,10 +269,10 @@ class ToolBarStore {
                 }
             })
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
-            if (ismerge) {
+            var isMerge = cellStore.activeCell.isMerge
+            if (isMerge) {
                 let cell = getCurrentCellByOwnKey(
-                    ismerge[1],
+                    isMerge[1],
                     cellStore.cellsMap
                 )
                 cell!.align = align
@@ -298,10 +300,10 @@ class ToolBarStore {
                 }
             })
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
-            if (ismerge) {
+            var isMerge = cellStore.activeCell.isMerge
+            if (isMerge) {
                 let cell = getCurrentCellByOwnKey(
-                    ismerge[1],
+                    isMerge[1],
                     cellStore.cellsMap
                 )
                 cell!.fontFamily = str
@@ -329,10 +331,10 @@ class ToolBarStore {
                 }
             })
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
-            if (ismerge) {
+            var isMerge = cellStore.activeCell.isMerge
+            if (isMerge) {
                 let cell = getCurrentCellByOwnKey(
-                    ismerge[1],
+                    isMerge[1],
                     cellStore.cellsMap
                 )
                 cell!.fontSize = size
@@ -372,10 +374,10 @@ class ToolBarStore {
                 })
             }
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
+            var isMerge = cellStore.activeCell.isMerge
             let cell = null
-            if (ismerge) {
-                cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
+            if (isMerge) {
+                cell = getCurrentCellByOwnKey(isMerge[1], cellStore.cellsMap)
             } else {
                 cell = getCurrentCellByOwnKey(
                     cellStore.activeCell.ownKey,
@@ -411,10 +413,10 @@ class ToolBarStore {
                 })
             }
         } else if (cellStore.activeCell) {
-            var ismerge = cellStore.activeCell.ismerge
+            var isMerge = cellStore.activeCell.isMerge
             let cell = null
-            if (ismerge) {
-                cell = getCurrentCellByOwnKey(ismerge[1], cellStore.cellsMap)
+            if (isMerge) {
+                cell = getCurrentCellByOwnKey(isMerge[1], cellStore.cellsMap)
             } else {
                 cell = getCurrentCellByOwnKey(
                     cellStore.activeCell.ownKey,
@@ -425,6 +427,23 @@ class ToolBarStore {
                 ? 'underline'
                 : ''
         }
+    }
+
+    @action.bound
+    uploadImgCell(img:string,cellStore: CellStore) {
+        if (!cellStore.activeCell) return
+        var isMerge = cellStore.activeCell.isMerge
+        let cell = null
+        if (isMerge) {
+            cell = getCurrentCellByOwnKey(isMerge[1], cellStore.cellsMap)
+        } else {
+            cell = getCurrentCellByOwnKey(
+                cellStore.activeCell.ownKey,
+                cellStore.cellsMap
+            )
+        }
+
+        cell!.imgUrl = img
     }
 
     //   @computed

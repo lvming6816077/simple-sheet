@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx'
 import { createContext } from 'react'
 import _ from 'lodash'
 
-import { generaCell, getCurrentCellByOwnKey, getCurrentCellByXY, getCurrentCellsByArea } from '@/utils'
+import { clearCellFromat, generaCell, getCurrentCellByOwnKey, getCurrentCellByXY, getCurrentCellsByArea } from '@/utils'
 import { headerCell, leftCell } from '@/utils/constants'
 
 export type BorderStyle = {
@@ -19,7 +19,7 @@ export type CellAttrs = {
     type?: string
     ownKey: string
     fill?: string
-    ismerge?: string[]
+    isMerge?: string[]
     borderStyle?: BorderStyle
     fontWeight?: string | boolean
     textColor?: string
@@ -28,7 +28,9 @@ export type CellAttrs = {
     fontFamily?: string
     fontSize?: number
     fontItalic?: string | boolean
-    textDecoration?: string | boolean
+    textDecoration?: string | boolean,
+    imgUrl?:string,
+    noEdit?:boolean
 } | null
 
 export type CellMap = {
@@ -55,17 +57,18 @@ export class CellStore {
         ]
         list.forEach((i, index) => {
             if (index != list.length - 1) {
-                i!.value = ''
+                // i!.value = ''
+                clearCellFromat(i)
             }
         })
         for (var key in this.cellsMap) {
             if (_.find(list, { ownKey: key })) {
-                this.cellsMap[key]!.ismerge = mergekey
+                this.cellsMap[key]!.isMerge = mergekey
             } else {
-                this.cellsMap[key]!.ismerge =
-                    this.cellsMap[key]!.ismerge == undefined
+                this.cellsMap[key]!.isMerge =
+                    this.cellsMap[key]!.isMerge == undefined
                         ? undefined
-                        : this.cellsMap[key]!.ismerge
+                        : this.cellsMap[key]!.isMerge
             }
         }
     }
@@ -74,13 +77,13 @@ export class CellStore {
     splitCell(list: CellAttrs[]) {
         // var mergekey:string[] = [list[0]!.ownKey,list[list.length-1]!.ownKey]
         list.forEach((i, index) => {
-            i!.ismerge = undefined
+            i!.isMerge = undefined
         })
         // for (var key in this.cellsMap) {
         //     if (_.find(list,{ownKey:key})) {
-        //         this.cellsMap[key]!.ismerge = mergekey
+        //         this.cellsMap[key]!.isMerge = mergekey
         //     } else {
-        //         this.cellsMap[key]!.ismerge = this.cellsMap[key]!.ismerge == undefined ? undefined : this.cellsMap[key]!.ismerge
+        //         this.cellsMap[key]!.isMerge = this.cellsMap[key]!.isMerge == undefined ? undefined : this.cellsMap[key]!.isMerge
         //     }
         // }
     }
@@ -206,7 +209,7 @@ export class CellStore {
 
         let len = cells.length
 
-        if(cells.some(i=>i?.ismerge)) {
+        if(cells.some(i=>i?.isMerge)) {
             alert('若要执行此操作，所有单元格大小需相同')
             return
         }

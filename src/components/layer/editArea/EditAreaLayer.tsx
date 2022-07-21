@@ -37,14 +37,14 @@ const EditAreaLayer = (props: any) => {
 
     useEffect(() => {
         // console.log(dbc)
-        if (!dbc || !dbc.ownKey) return
+        if (!dbc || !dbc.ownKey || dbc.noEdit) return
         var cur = getCurrentCellByOwnKey(dbc!.ownKey, cellStore.cellsMap, true)
         // dbc.value = '222'
-        if (cur?.ismerge) {
+        if (cur?.isMerge) {
             setEditCell({
                 ...cur,
-                ownKey: cellStore.cellsMap[cur.ismerge[1]]!.ownKey,
-                value: cellStore.cellsMap[cur.ismerge[1]]?.value,
+                ownKey: cellStore.cellsMap[cur.isMerge[1]]!.ownKey,
+                value: cellStore.cellsMap[cur.isMerge[1]]?.value,
             })
             return
         }
@@ -82,10 +82,10 @@ const EditAreaLayer = (props: any) => {
                             o.ownKey,
                             cellStore.cellsMap
                         )
-                        console.log('onBlur')
-                        console.log(cur)
                         if (cur) {
                             cur.value = e.target.value
+                            // cur.imgUrl = 'https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fd1ebc6f88746c390d6b87d766018d4~tplv-k3u1fbpfcp-zoom-1.image'
+                            // cur.imgUrl = 'https://qiniu.nihaoshijie.com.cn/qunmingp.jpg'
                         }
                         setEditCell(null)
                     }}
