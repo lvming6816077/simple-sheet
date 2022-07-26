@@ -145,6 +145,32 @@ const Grid = observer(
 
         const stageRef = useRef<Konva.Stage>(null)
 
+        const mouseEventProp = {
+            onMouseUp:((e: KonvaEventObject<MouseEvent>) =>
+                setUV({
+                    ...e.target.attrs,
+                    value: e.target.attrs.text,
+                } as CellAttrs)
+            ),
+            onMouseMove:(
+                e: KonvaEventObject<MouseEvent>
+            ) => {
+                setMV({
+                    ...e.target.attrs,
+                    value: e.target.attrs.text,
+                } as CellAttrs)
+            },
+            onMouseDown:(
+                e: KonvaEventObject<MouseEvent>
+            ) =>{
+                setDV({
+                    ...e.target.attrs,
+                    value: e.target.attrs.text,
+                } as CellAttrs)
+            }
+                
+        }
+
         return (
             <div
                 style={{ width: width, height: height, position: 'relative' }}
@@ -177,50 +203,25 @@ const Grid = observer(
                                     value: e.target.attrs.text,
                                 })
                             }}
-                            onDblClick={(
-                                e: KonvaEventObject<MouseEvent>
-                            ) => {
-                                setDBC({
-                                    ...e.target.attrs,
-                                    value: e.target.attrs.text,
-                                } as CellAttrs)
-                            }}
-                            onMouseUp={(e: KonvaEventObject<MouseEvent>) =>
-                                setUV({
-                                    ...e.target.attrs,
-                                    value: e.target.attrs.text,
-                                } as CellAttrs)
-                            }
-                            onMouseMove={(
-                                e: KonvaEventObject<MouseEvent>
-                            ) => {
-                                // console.log('xxx')
-                                setMV({
-                                    ...e.target.attrs,
-                                    value: e.target.attrs.text,
-                                } as CellAttrs)
-                            }}
-                            onMouseDown={(
-                                e: KonvaEventObject<MouseEvent>
-                            ) =>
-                                setDV({
-                                    ...e.target.attrs,
-                                    value: e.target.attrs.text,
-                                } as CellAttrs)
-                            }>
+                            
+                            >
                             <Layer>
                                 <Group
                                     offsetY={mouseEventStore.scrollTop}
                                     offsetX={mouseEventStore.scrollLeft}
+                                    {...mouseEventProp}
+                                    onDblClick={(
+                                        e: KonvaEventObject<MouseEvent>
+                                    ) => {
+                                        setDBC({
+                                            ...e.target.attrs,
+                                            value: e.target.attrs.text,
+                                        } as CellAttrs)
+                                    }}
                                 >
                                     {normal.map((o) => (
                                         <Cell {...o} key={o?.ownKey}></Cell>
                                     ))}
-                                </Group>
-                                <Group
-                                    offsetY={mouseEventStore.scrollTop}
-                                    offsetX={mouseEventStore.scrollLeft}
-                                >
                                     {border.map((o) => (
                                         <CellOverlay
                                             {...o}
@@ -238,12 +239,12 @@ const Grid = observer(
                                     ))}
                                 </Group>
 
-                                <Group offsetX={mouseEventStore.scrollLeft}>
+                                <Group offsetX={mouseEventStore.scrollLeft} {...mouseEventProp}>
                                     {header.map((o) => (
                                         <Cell {...o} key={o?.ownKey}></Cell>
                                     ))}
                                 </Group>
-                                <Group offsetY={mouseEventStore.scrollTop}>
+                                <Group offsetY={mouseEventStore.scrollTop} {...mouseEventProp}>
                                     {left.map((o) => (
                                         <Cell {...o} key={o?.ownKey}></Cell>
                                     ))}
