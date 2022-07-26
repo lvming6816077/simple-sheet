@@ -170,7 +170,6 @@ const Grid = observer(
                         <Stage width={width} height={height} ref={stageRef}
                             onContextMenu={(e: KonvaEventObject<PointerEvent>) => {
                                 e.evt.preventDefault()
-                                console.log(e)
                                 setRC({
                                     clientX:e.evt.clientX,
                                     clientY:e.evt.clientY,
@@ -269,7 +268,6 @@ const Grid = observer(
                         >
                             <SelectAreaLayer></SelectAreaLayer>
                             <EditAreaLayer></EditAreaLayer>
-                            <ContextMenuLayer></ContextMenuLayer>
                         </div>
                     </div>
                     <div
@@ -304,6 +302,7 @@ const Grid = observer(
                         }}
                     >
                         <CornerArea></CornerArea>
+                        <ContextMenuLayer></ContextMenuLayer>
                     </div>
                 </div>
             </div>
