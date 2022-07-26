@@ -1,6 +1,6 @@
 
 <div align="center">
-<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/240e267a91f14906a039e3c62ae5a100~tplv-k3u1fbpfcp-watermark.image?" />
+<img src="https://github.com/lvming6816077/simple-sheet/blob/main/example/imgs/9001E442-B21F-4dbf-ABAD-D5C1988FA13A.png" />
 </div>
 
 # 【Simple Sheet】一款高性能的在线表格EXCEL文档系统
