@@ -304,6 +304,8 @@ export class CellStore {
 
     @observable
     selectEnd: CellAttrs = null
+
+
     //   @computed
     //   get getcells() {
 

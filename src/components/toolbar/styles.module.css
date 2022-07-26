@@ -75,6 +75,9 @@
     padding-bottom: 5px;
     font-size: 14px;
 }
+:global .react-viewer-transition {
+    transition: opacity 3ms !important;
+}
 :global .border-menu {
     padding:0;
     pointer-events: auto;

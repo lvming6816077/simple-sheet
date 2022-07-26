@@ -45,6 +45,7 @@ import { ToolBarStoreContext } from './stores/ToolBarStore'
 import FloatImage from './components/toolbar/components/FloatImage'
 import { FloatImageStoreContext } from './stores/FloatImageStore'
 import ContextMenuLayer from './components/layer/contextMenuArea/ContextMenuLayer'
+import Viewer from 'react-viewer';
 
 export interface GridProps {
     width?: number
@@ -171,6 +172,8 @@ const Grid = observer(
                 
         }
 
+        const [ visible, setVisible ] = React.useState(false);
+
         return (
             <div
                 style={{ width: width, height: height, position: 'relative' }}
@@ -193,7 +196,7 @@ const Grid = observer(
                         }}
                         ref={wheelRef}
                     >
-                        <Stage width={width} height={height} ref={stageRef}
+                        <Stage width={width} height={height} ref={stageRef} zIndex={4}
                             onContextMenu={(e: KonvaEventObject<PointerEvent>) => {
                                 e.evt.preventDefault()
                                 setRC({
@@ -304,8 +307,16 @@ const Grid = observer(
                     >
                         <CornerArea></CornerArea>
                         <ContextMenuLayer></ContextMenuLayer>
+                        
                     </div>
                 </div>
+                <Viewer
+                    noNavbar={true}
+                    showTotal={false}
+                    visible={toolbarStore.currentBigImg.length > 0}
+                    onClose={() => { toolbarStore.currentBigImg = [] } }
+                    images={toolbarStore.currentBigImg}
+                />
             </div>
         )
     },

@@ -18,6 +18,7 @@ import { Stage, Text, Group, Rect, Image } from 'react-konva'
 interface IProps {}
 
 const NImage = React.memo((props: any) => {
+    const toolbarStore = useContext(ToolBarStoreContext)
     let { imgUrl, width, height, x, y, ...rest } = props
 
     const spacing = 3
@@ -54,6 +55,14 @@ const NImage = React.memo((props: any) => {
         _x = _x + spacing / 2
     }
 
+
+    const dbClick = ()=>{
+
+
+        toolbarStore.currentBigImg = [{src:imgUrl,alt:''}] as any
+          console.log(toolbarStore.currentBigImg)
+    }
+
     return (
         <>
             <Image
@@ -64,6 +73,7 @@ const NImage = React.memo((props: any) => {
                 image={image}
             />
             <Rect
+                onDblClick={dbClick}
                 x={x}
                 y={y}
                 height={height}
