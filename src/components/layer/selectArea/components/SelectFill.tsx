@@ -32,7 +32,6 @@ import {
 interface IProps {}
 
 const SelectFill = (props: any) => {
-
     const cellStore = useContext(CellStoreContext)
 
     const selectFillArea = cellStore.selectFillArea
@@ -57,9 +56,6 @@ const SelectFill = (props: any) => {
         return style
     }, [selectFillArea])
 
-
-
-
     const mouseEventStore = useContext(MouseEventStoreContext)
     const dv = mouseEventStore.downCellAttr
     const uv = mouseEventStore.upCellAttr
@@ -72,15 +68,8 @@ const SelectFill = (props: any) => {
         [cellStore.cellsMap]
     )
 
-
-
-
-
     useEffect(() => {
-
         if (mouseEventStore.selectFilling) {
-
-
             let cur = mv
             if (!cur) return
 
@@ -96,7 +85,10 @@ const SelectFill = (props: any) => {
 
             if (cur.y != start.y) {
                 let top = Math.min(start.y, cur.y)
-                let bottom = Math.max(start.y + start.height, cur.y + cur.height)
+                let bottom = Math.max(
+                    start.y + start.height,
+                    cur.y + cur.height
+                )
                 let left = start.x
                 let right = start.x + start.width
                 const o = { top, bottom, left, right }
@@ -105,27 +97,25 @@ const SelectFill = (props: any) => {
 
             if (cur.x != start.x) {
                 let top = start.y
-                let bottom = start.y+start.height
+                let bottom = start.y + start.height
                 let left = Math.min(start.x, cur.x)
                 let right = Math.max(start.x + start.width, cur.x + cur.width)
                 const o = { top, bottom, left, right }
                 setSelectFillArea(o)
             }
-
         }
     }, [mv])
 
-    useEffect(()=>{
-        
+    useEffect(() => {
         if (selectFillArea) {
-            cellStore.setSelectFillAreaCell(selectFillArea,cellStore.activeCell)
+            cellStore.setSelectFillAreaCell(
+                selectFillArea,
+                cellStore.activeCell
+            )
             setSelectFillArea(null)
         }
         mouseEventStore.selectFilling = false
-        
-    },[uv])
-
-
+    }, [uv])
 
     return (
         <div

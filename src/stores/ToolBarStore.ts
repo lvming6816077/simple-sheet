@@ -19,8 +19,6 @@ import {
 } from './CellStore'
 import { defaultBorderStyle } from '@/utils/constants'
 
-
-
 class ToolBarStore {
     @action.bound
     mergeCell(cellStore: CellStore) {
@@ -432,7 +430,7 @@ class ToolBarStore {
     }
 
     @action.bound
-    uploadImgCell(img:string,cellStore: CellStore) {
+    uploadImgCell(img: string, cellStore: CellStore) {
         if (!cellStore.activeCell) return
         var isMerge = cellStore.activeCell.isMerge
         let cell = null
@@ -447,8 +445,6 @@ class ToolBarStore {
 
         cell!.imgUrl = img
     }
-
-
 
     //   @computed
     //   get getcells() {

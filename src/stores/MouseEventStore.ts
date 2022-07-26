@@ -39,7 +39,6 @@ class MouseEventStore {
             this.lastMoveCellAttr &&
             this.lastMoveCellAttr.ownKey != obj?.ownKey
         ) {
-
             this.moveCellAttr = obj
             this.lastMoveCellAttr = obj
         }
@@ -57,7 +56,7 @@ class MouseEventStore {
     scrollTop: number = 0
 
     @observable
-    selectFilling:boolean = false
+    selectFilling: boolean = false
 }
 
 export const MouseEventStoreContext = createContext(new MouseEventStore())

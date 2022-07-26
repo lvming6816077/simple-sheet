@@ -2,7 +2,13 @@ import { observable, action, computed } from 'mobx'
 import { createContext } from 'react'
 import _ from 'lodash'
 
-import { clearCellFromat, generaCell, getCurrentCellByOwnKey, getCurrentCellByXY, getCurrentCellsByArea } from '@/utils'
+import {
+    clearCellFromat,
+    generaCell,
+    getCurrentCellByOwnKey,
+    getCurrentCellByXY,
+    getCurrentCellsByArea,
+} from '@/utils'
 import { headerCell, leftCell } from '@/utils/constants'
 
 export type BorderStyle = {
@@ -28,9 +34,9 @@ export type CellAttrs = {
     fontFamily?: string
     fontSize?: number
     fontItalic?: string | boolean
-    textDecoration?: string | boolean,
-    imgUrl?:string,
-    noEdit?:boolean
+    textDecoration?: string | boolean
+    imgUrl?: string
+    noEdit?: boolean
 } | null
 
 export type CellMap = {
@@ -199,29 +205,24 @@ export class CellStore {
     }
 
     @action.bound
-    setSelectFillAreaCell(area: SelectArea,current: CellAttrs) {
-
-
-        let cells = getCurrentCellsByArea(
-            area,
-            this.cellsMap
-        )
+    setSelectFillAreaCell(area: SelectArea, current: CellAttrs) {
+        let cells = getCurrentCellsByArea(area, this.cellsMap)
 
         let len = cells.length
 
-        if(cells.some(i=>i?.isMerge)) {
+        if (cells.some((i) => i?.isMerge)) {
             alert('若要执行此操作，所有单元格大小需相同')
             return
         }
 
-        cells.forEach((item,index)=>{
+        cells.forEach((item, index) => {
             item!.fill = current?.fill
             if (current?.value && !isNaN(Number(current?.value))) {
-                item!.value = (Number(current?.value)+index).toString()
+                item!.value = (Number(current?.value) + index).toString()
             } else {
                 item!.value = current?.value
             }
-            
+
             item!.borderStyle = current?.borderStyle
             item!.fontFamily = current?.fontFamily
             item!.fontWeight = current?.fontWeight
@@ -232,7 +233,6 @@ export class CellStore {
             item!.verticalAlign = current?.verticalAlign
             item!.textColor = current?.textColor
         })
-
     }
 
     // @action.bound

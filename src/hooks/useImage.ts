@@ -1,59 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
 export interface UseImageProps {
-    imgUrl: string;
-    crossOrigin?: string;
+    imgUrl: string
+    crossOrigin?: string
 }
 
 export interface UseImageResults {
-    image?: HTMLImageElement;
-    width: number;
-    height: number;
-    status: string;
+    image?: HTMLImageElement
+    width: number
+    height: number
+    status: string
 }
 
 const useImage = ({ imgUrl, crossOrigin }: UseImageProps) => {
-    
-
     const [state, setState] = useState<UseImageResults>(() => ({
         image: undefined,
-        status: "loading",
+        status: 'loading',
         width: 0,
         height: 0,
-    }));
+    }))
 
     useEffect(() => {
-        if (!imgUrl) return;
-        var img = new Image();
+        if (!imgUrl) return
+        var img = new Image()
 
         function onload() {
             setState({
                 image: img,
                 height: img.height,
                 width: img.width,
-                status: "loaded",
-            });
+                status: 'loaded',
+            })
         }
         function onerror() {
             setState((prev) => ({
                 ...prev,
                 image: undefined,
-                status: "failed",
-            }));
+                status: 'failed',
+            }))
         }
-        img.addEventListener("load", onload);
-        img.addEventListener("error", onerror);
+        img.addEventListener('load', onload)
+        img.addEventListener('error', onerror)
 
-        crossOrigin && (img.crossOrigin = crossOrigin);
-        img.src = imgUrl;
+        crossOrigin && (img.crossOrigin = crossOrigin)
+        img.src = imgUrl
 
         return () => {
-            img.removeEventListener("load", onload);
-            img.removeEventListener("error", onerror);
-        };
-    }, [imgUrl, crossOrigin]);
+            img.removeEventListener('load', onload)
+            img.removeEventListener('error', onerror)
+        }
+    }, [imgUrl, crossOrigin])
 
-    return state;
-};
+    return state
+}
 
-export default useImage;
+export default useImage

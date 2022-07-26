@@ -18,10 +18,7 @@ import HeaderCell from './HeaderCell'
 import LeftCell from './LeftCell'
 import SingleCell from './SingleCell'
 
-interface IProps { }
-
-
-
+interface IProps {}
 
 const Cell = React.memo((props: any) => {
     const {
@@ -45,7 +42,7 @@ const Cell = React.memo((props: any) => {
         ownKey,
         isMerge,
         value,
-        imgUrl
+        imgUrl,
     } = props
 
     const cellStore = useContext(CellStoreContext)
@@ -82,28 +79,25 @@ const Cell = React.memo((props: any) => {
         }
     }
 
-
     const renderCell = () => {
-        
-
         var p = {
-            ownKey:ownKey,
-            type:type,
-            x:x,
-            y:y,
-            height:height,
-            width:width,
-            value:value,
-            fill:textColor,
-            verticalAlign:verticalAlign,
-            align:align,
-            fontFamily:fontFamily,
-            fontStyle:fontStyle,
-            textDecoration:textDecoration,
-            padding:padding,
-            wrap:wrap,
-            fontSize:fontSize,
-            imgUrl:imgUrl
+            ownKey: ownKey,
+            type: type,
+            x: x,
+            y: y,
+            height: height,
+            width: width,
+            value: value,
+            fill: textColor,
+            verticalAlign: verticalAlign,
+            align: align,
+            fontFamily: fontFamily,
+            fontStyle: fontStyle,
+            textDecoration: textDecoration,
+            padding: padding,
+            wrap: wrap,
+            fontSize: fontSize,
+            imgUrl: imgUrl,
         }
 
         if (mergeRect.width) {
@@ -123,8 +117,6 @@ const Cell = React.memo((props: any) => {
                 return <NText {...p}></NText>
             }
         }
-
-
     }
 
     return (
@@ -143,7 +135,6 @@ const Cell = React.memo((props: any) => {
                 alpha={alpha}
             />
             {renderCell()}
-
         </Group>
     )
 })

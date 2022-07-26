@@ -183,12 +183,15 @@ const SelectAreaLayer = (props: any) => {
     }
 
     useEffect(() => {
-
         floatImageStore.currentTransformerId = ''
 
         if (dv?.type != 'normal') return
 
-        let cur = getCurrentCellByOwnKey(dv?.ownKey || '', cellStore.cellsMap, true)
+        let cur = getCurrentCellByOwnKey(
+            dv?.ownKey || '',
+            cellStore.cellsMap,
+            true
+        )
 
         setActiveCell(cur)
         setSelectArea(null)
@@ -204,9 +207,7 @@ const SelectAreaLayer = (props: any) => {
     }, [dv])
 
     useEffect(() => {
-
         if (isSelecting.current && !mouseEventStore.selectFilling) {
-
             // let cur = getCurrentCellByOwnKey(
             //     mv?.ownKey || '',
             //     cellStore.cellsMap,
@@ -256,7 +257,6 @@ const SelectAreaLayer = (props: any) => {
         }
     }, [mv])
 
-
     useEffect(() => {
         if (isSelecting.current && uv) {
             isSelecting.current = false
@@ -267,7 +267,6 @@ const SelectAreaLayer = (props: any) => {
         }
         expandScrollAreaCheck('stop', null)
     }, [uv])
-
 
     return (
         <div
@@ -289,17 +288,29 @@ const SelectAreaLayer = (props: any) => {
                     }px, -${mouseEventStore.scrollTop + 0}px,1px)`,
                 }}
             >
-                {selectArea ? <div
-                    style={getSelectAreaCell}
-                    className={styles['select-area']}
-                ></div>:null}
+                {selectArea ? (
+                    <div
+                        style={getSelectAreaCell}
+                        className={styles['select-area']}
+                    ></div>
+                ) : null}
 
                 <SelectFill></SelectFill>
 
                 <div
                     style={getActiveCellSelection}
                     className={styles['active-cell']}
-                ><div className={styles['active-cell-corner']} onMouseDown={()=>mouseEventStore.selectFilling = true} onMouseUp={()=>mouseEventStore.selectFilling = false}></div></div>
+                >
+                    <div
+                        className={styles['active-cell-corner']}
+                        onMouseDown={() =>
+                            (mouseEventStore.selectFilling = true)
+                        }
+                        onMouseUp={() =>
+                            (mouseEventStore.selectFilling = false)
+                        }
+                    ></div>
+                </div>
             </div>
         </div>
     )

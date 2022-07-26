@@ -41,7 +41,7 @@ const CellOverlay = React.memo((props: any) => {
     const cellStore = useContext(CellStoreContext)
     const cellsMap = cellStore.cellsMap
     var mergeRect: {
-        [key:string]:number
+        [key: string]: number
     } = {}
 
     if (isMerge) {
@@ -85,7 +85,6 @@ const CellOverlay = React.memo((props: any) => {
             sceneFunc={(context, shape) => {
                 /* Top border */
                 if (strokeTopColor) {
-
                     console.log(context)
                     context.beginPath()
                     context.moveTo(

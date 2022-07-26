@@ -146,8 +146,6 @@ export const getCurrentCellByPrevTop = (cell: CellAttrs, cellsMap: CellMap) => {
     return cellsMap[r + ':' + c]
 }
 export const clearCellFromat = (cell: CellAttrs) => {
-
-
     cell!.value = undefined
     cell!.borderStyle = undefined
     cell!.imgUrl = undefined
@@ -159,7 +157,6 @@ export const clearCellFromat = (cell: CellAttrs) => {
     cell!.fontSize = undefined
     cell!.fontItalic = undefined
     cell!.textDecoration = undefined
-    
 }
 export const generaCell = (prev: CellMap = {}) => {
     const getRowOffset = (
@@ -280,7 +277,7 @@ export const generaCell = (prev: CellMap = {}) => {
                 fontFamily: prev[k]?.fontFamily || undefined,
                 fontItalic: prev[k]?.fontItalic || undefined,
                 textDecoration: prev[k]?.textDecoration || undefined,
-                imgUrl:prev[k]?.imgUrl || undefined
+                imgUrl: prev[k]?.imgUrl || undefined,
             }
         }
     }
