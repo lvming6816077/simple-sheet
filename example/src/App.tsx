@@ -17,7 +17,7 @@ const App: React.FC = () => {
                 <span className="title"><span className='title-logo'></span>Simple Sheet</span>
                 <a className='git' target={'_blank'} href="https://github.com/lvming6816077/simple-sheet">GitHub</a>
             </div>
-            <div className='sub-title'><span className='logo'></span>Simple Sheet</div>
+            <div className='sub-title'><span className='logo'></span></div>
             <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
                 <SimpleSheet ref={simpleSheetRef}/>
             </div>
