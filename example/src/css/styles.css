@@ -28,7 +28,8 @@ body {
     margin-bottom:20px;
     font-size: 4.2rem;
     line-height: 110%;
-    color:rgba(0,0,0,0.87);
+    color:#3482f6;
+    font-family: system-ui;
 }
 .desc {
     
@@ -68,23 +69,23 @@ body {
     text-decoration: none;
 }
 .title-logo {
-    width: 53px;
-    height: 53px;
+    width: 73px;
+    height: 73px;
     display: inline-block;
     background-size: cover;
     margin-right: 10px;
     vertical-align: -5px;
-    background-image: url(../imgs/sheet_5.png);
+    /* background-image: url(../imgs/sheet_5.png); */
     display: none;
 }
 .logo {
-    width: 53px;
-    height: 53px;
+    width: 73px;
+    height: 73px;
     display: inline-block;
     background-size: cover;
     margin-right: 10px;
     vertical-align: -5px;
-    background-image: url(../imgs/sheet_5.png);
+    background-image: url(../imgs/2FB3B186-4C3D-4c51-B76C-36111C3BF908.png);
 }
 .power {
     position: absolute;
