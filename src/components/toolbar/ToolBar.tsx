@@ -20,10 +20,11 @@ import { CellAttrs, CellStoreContext } from '@/stores/CellStore'
 
 import _ from 'lodash'
 import ColorPanel from './components/ColorPanel'
-import { cellDash, normalCell } from '@/utils/constants'
+import { cellDash, floatImageStyle, normalCell } from '@/utils/constants'
 import Konva from 'konva'
 import { getScrollWidthAndHeight } from '@/utils'
 import { ToolBarStoreContext } from '@/stores/ToolBarStore'
+import { FloatImageStoreContext } from '@/stores/FloatImageStore'
 
 
 interface IProps {
@@ -33,6 +34,7 @@ interface IProps {
 const ToolBar = (props: IProps) => {
     const cellStore = useContext(CellStoreContext)
     const toolbarStore = useContext(ToolBarStoreContext)
+    const floatImageStore = useContext(FloatImageStoreContext)
 
     const mergeCell = () => {
         toolbarStore.mergeCell(cellStore)
@@ -148,6 +150,7 @@ const ToolBar = (props: IProps) => {
     }
 
     const inputRef = useRef<HTMLInputElement>(null)
+    let uploadImgType:string|null = null
     const selecteFileHandler = (event: any) => {
         let file = event.target.files[0]
 
@@ -164,20 +167,47 @@ const ToolBar = (props: IProps) => {
         reader.onload = function (e) {
            
             var base64 = reader.result||''
+            
+            if (uploadImgType == 'local') {
+                toolbarStore.uploadImgCell(base64?.toString(),cellStore)
+            }
+            if (uploadImgType == 'float') {
+                let x = floatImageStyle.initX,y = floatImageStyle.initY
+                if (cellStore.activeCell) {
+                    x = cellStore.activeCell.x
+                    y = cellStore.activeCell.y
+                }
+                floatImageStore.addFloatImage({
+                    id:Date.now().toString(),
+                    x:x,
+                    y:y,
+                    width:floatImageStyle.initWidth,
+                    height:floatImageStyle.initHeight,
+                    imgUrl:base64?.toString(),
+                    transformObj:null
+                })
+                cellStore.setActiveCell(null)
+            }
 
+            inputRef.current!.value = ''
 
-            toolbarStore.uploadImgCell(base64?.toString(),cellStore)
+            
         }
 
     }
+    
     const uploadImg = (type: string) => {
+        
+        uploadImgType = type
         if (type == 'local') {
             inputRef.current?.click()
-        } else {
+        } else if(type == 'net') {
             let str = prompt("请输入图片URL地址", "");
             if (str) {
                 toolbarStore.uploadImgCell(str,cellStore)
             }
+        } else {
+            inputRef.current?.click()
         }
         
     }
@@ -196,6 +226,7 @@ const ToolBar = (props: IProps) => {
             <div className={styles['btn-wrap']}>
                 <div className={styles['front-cell']} data-tip="前进"></div>
             </div>
+
 
             <div className={styles.divider}></div>
 
@@ -440,6 +471,12 @@ const ToolBar = (props: IProps) => {
                     <div className={styles['border-item']}>
                         <div className={`${styles['item-icon-insert-2']} ${styles['icon-item']}`}></div>
                         <div className={styles['item-text']}>网络图片</div>
+                    </div>
+                </MenuItem>
+                <MenuItem onClick={() => uploadImg('float')}>
+                    <div className={styles['border-item']}>
+                        <div className={`${styles['item-icon-insert-2']} ${styles['icon-item']}`}></div>
+                        <div className={styles['item-text']}>浮动图片</div>
                     </div>
                 </MenuItem>
 

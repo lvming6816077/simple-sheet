@@ -29,6 +29,7 @@ import {
     normalCell,
 } from '@/utils/constants'
 import SelectFill from './components/SelectFill'
+import { FloatImageStoreContext } from '@/stores/FloatImageStore'
 
 interface IProps {}
 
@@ -36,6 +37,7 @@ const SelectAreaLayer = (props: any) => {
     const isSelecting = useRef(false)
 
     const cellStore = useContext(CellStoreContext)
+    const floatImageStore = useContext(FloatImageStoreContext)
 
     const selectArea = cellStore.selectArea
     const setSelectArea = cellStore.setSelectArea
@@ -181,7 +183,8 @@ const SelectAreaLayer = (props: any) => {
     }
 
     useEffect(() => {
-        
+
+        floatImageStore.currentTransformerId = ''
 
         if (dv?.type != 'normal') return
 

@@ -64,6 +64,14 @@ export const defaultBorderStyle: BorderStyle = {
     strokeDash: [],
 }
 
+export const floatImageStyle = {
+    initWidth: 160,
+    initHeight: 160,
+    initX:10,
+    initY:10
+}
+
+
 export const initConstants = (props:GridProps)=>{
     containerHeight = props.height||containerHeight
     containerWidth = props.width||containerWidth

@@ -19,6 +19,8 @@ import {
 } from './CellStore'
 import { defaultBorderStyle } from '@/utils/constants'
 
+
+
 class ToolBarStore {
     @action.bound
     mergeCell(cellStore: CellStore) {
@@ -445,6 +447,8 @@ class ToolBarStore {
 
         cell!.imgUrl = img
     }
+
+
 
     //   @computed
     //   get getcells() {

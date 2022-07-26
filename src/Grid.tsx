@@ -10,7 +10,7 @@ import React, {
 } from 'react'
 // import styles from "./styles.module.css";
 
-import { Stage, Layer, Group, Line } from 'react-konva'
+import { Stage, Layer, Group, Text } from 'react-konva'
 import Cell from '@/components/cell/Cell'
 import { KonvaEventObject } from 'konva/lib/Node'
 import SelectAreaLayer from '@/components/layer/selectArea/SelectAreaLayer'
@@ -41,6 +41,9 @@ import {
 import { CellOverlay } from './components/cell/CellOverlay'
 import CornerArea from './components/layer/cornerArea/CornerArea'
 import Konva from 'konva'
+import { ToolBarStoreContext } from './stores/ToolBarStore'
+import FloatImage from './components/toolbar/components/FloatImage'
+import { FloatImageStoreContext } from './stores/FloatImageStore'
 
 export interface GridProps {
     width?:number,
@@ -76,9 +79,12 @@ const Grid = observer((props: GridProps,ref:any) => {
     const setDBC = mouseEventStore.mouseDBC
 
     const cellStore = useContext(CellStoreContext)
+    const toolbarStore = useContext(ToolBarStoreContext)
+    const floatImageStore = useContext(FloatImageStoreContext)
 
 
     var cellsMap = cellStore.cellsMap
+    
 
     if (props.initData) {
         cellsMap = generaCell(props.initData)
@@ -135,14 +141,18 @@ const Grid = observer((props: GridProps,ref:any) => {
         scrolRef.current!.scrollLeft = mouseEventStore.scrollLeft
     }, [mouseEventStore.scrollLeft])
 
+    // useEffect(()=>{
+    //     console.log(toolbarStore.floatImage)
+    // },[toolbarStore.floatImage])
+
     const stageRef = useRef<Konva.Stage>(null)
-    //
+
     return (
         <div
             style={{ width: width, height: height, position: 'relative' }}
             id="container"
         >
-            <ToolBar stageRef={stageRef}></ToolBar>
+            <ToolBar stageRef={stageRef} ></ToolBar>
             <div style={{ width: width, height: height, position: 'relative' }}>
                 <div
                     style={{
@@ -157,7 +167,9 @@ const Grid = observer((props: GridProps,ref:any) => {
                         width={width}
                         height={height}
                         ref={stageRef}
-                        onDblClick={(e: KonvaEventObject<MouseEvent>) => {
+
+                    >
+                        <Layer                        onDblClick={(e: KonvaEventObject<MouseEvent>) => {
                             setDBC({
                                 ...e.target.attrs,
                                 value: e.target.attrs.text,
@@ -181,9 +193,7 @@ const Grid = observer((props: GridProps,ref:any) => {
                                 ...e.target.attrs,
                                 value: e.target.attrs.text,
                             } as CellAttrs)
-                        }
-                    >
-                        <Layer>
+                        }>
                             <Group
                                 offsetY={mouseEventStore.scrollTop}
                                 offsetX={mouseEventStore.scrollLeft}
@@ -217,6 +227,11 @@ const Grid = observer((props: GridProps,ref:any) => {
                             {single.map((o) => (
                                 <Cell {...o} key={o?.ownKey}></Cell>
                             ))}
+
+                        </Layer>
+                        <Layer>
+                            
+                            {floatImageStore.floatImage.map(o=><FloatImage {...o} key={o.id}></FloatImage>)}
                         </Layer>
                     </Stage>
                     <div
