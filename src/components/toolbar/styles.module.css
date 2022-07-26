@@ -77,12 +77,19 @@
 }
 :global .border-menu {
     padding:0;
+    pointer-events: auto;
 }
 :global .no .szh-menu__item--hover {
     background-color: #fff;
 }
 
-
+:global .szh-menu {
+    min-width: 0px;
+}
+:global .font-size .szh-menu__item {
+    min-width: 30px;
+    justify-content: center;
+}
 
 .border-style {
     width: 15px;
@@ -98,13 +105,7 @@
     border-width: 0;
     transform: translateY(-4px);
 }
-:global .szh-menu {
-    min-width: 0px;
-}
-:global .font-size .szh-menu__item {
-    min-width: 30px;
-    justify-content: center;
-}
+
 .border-color {
     width: 15px;
     height: 15px;
@@ -230,4 +231,7 @@
 }
 .item-icon-insert-2 {
     background-image: url('./imgs/cloud-upload.png');
+}
+.item-icon-insert-3 {
+    background-image: url('./imgs/float-image.png');
 }

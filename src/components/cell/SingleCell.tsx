@@ -49,6 +49,7 @@ const SingleCell = React.memo(
                     width={width}
                     verticalAlign={'middle'}
                     align={'center'}
+                    fill={'#000'}
                     text={activeCell ? textS : ''}
                 ></Text>
             </>

@@ -39,6 +39,11 @@ export type CellAttrs = {
     noEdit?: boolean
 } | null
 
+export type RCCellAttrs = {
+    clientX:number
+    clientY:number
+} & CellAttrs | null
+
 export type CellMap = {
     [key: string]: CellAttrs
 }

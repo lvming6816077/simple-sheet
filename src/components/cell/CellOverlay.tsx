@@ -85,7 +85,6 @@ const CellOverlay = React.memo((props: any) => {
             sceneFunc={(context, shape) => {
                 /* Top border */
                 if (strokeTopColor) {
-                    console.log(context)
                     context.beginPath()
                     context.moveTo(
                         strokeLeftColor

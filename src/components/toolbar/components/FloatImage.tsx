@@ -99,6 +99,12 @@ const FloatImage = React.memo(
                     width={_width}
                     image={image}
                     draggable
+                    onMouseEnter={(e) => {
+                        document.body.style.cursor = 'move'
+                    }}
+                    onMouseLeave={(e) => {
+                        document.body.style.cursor = 'default'
+                    }}
                     onClick={onSelect}
                     onTap={onSelect}
                     onDragEnd={(e) => {
@@ -109,7 +115,7 @@ const FloatImage = React.memo(
                             height: height,
                         })
                     }}
-                    onDragStart={() => hideArea()}
+                    onMouseDown={() => hideArea()}
                     onTransformEnd={(e) => {
                         const node = imgRef.current
                         if (!node) return
@@ -131,6 +137,13 @@ const FloatImage = React.memo(
                 {isSelected && (
                     <Transformer
                         ref={trRef}
+                        anchorStroke='#fff'
+                        anchorFill='#4b89ff'
+                        anchorSize={8}
+                        anchorCornerRadius={8}
+                        anchorStrokeWidth={2}
+                        borderStroke='#4b89ff'
+                        borderDash={[1, 1]}
                         boundBoxFunc={(oldBox, newBox) => {
                             // limit resize
                             if (newBox.width < 5 || newBox.height < 5) {

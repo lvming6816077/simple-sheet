@@ -484,7 +484,7 @@ const ToolBar = (props: IProps) => {
                 <MenuItem onClick={() => uploadImg('float')}>
                     <div className={styles['border-item']}>
                         <div
-                            className={`${styles['item-icon-insert-2']} ${styles['icon-item']}`}
+                            className={`${styles['item-icon-insert-3']} ${styles['icon-item']}`}
                         ></div>
                         <div className={styles['item-text']}>浮动图片</div>
                     </div>

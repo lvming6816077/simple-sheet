@@ -44,6 +44,7 @@ import Konva from 'konva'
 import { ToolBarStoreContext } from './stores/ToolBarStore'
 import FloatImage from './components/toolbar/components/FloatImage'
 import { FloatImageStoreContext } from './stores/FloatImageStore'
+import ContextMenuLayer from './components/layer/contextMenuArea/ContextMenuLayer'
 
 export interface GridProps {
     width?: number
@@ -75,6 +76,7 @@ const Grid = observer(
         const setUV = mouseEventStore.mouseUp
         const setMV = mouseEventStore.mouseMove
         const setDBC = mouseEventStore.mouseDBC
+        const setRC = mouseEventStore.mouseRC
 
         const cellStore = useContext(CellStoreContext)
         const toolbarStore = useContext(ToolBarStoreContext)
@@ -165,40 +167,49 @@ const Grid = observer(
                         }}
                         ref={wheelRef}
                     >
-                        <Stage width={width} height={height} ref={stageRef}>
-                            <Layer
-                                onDblClick={(
-                                    e: KonvaEventObject<MouseEvent>
-                                ) => {
-                                    setDBC({
-                                        ...e.target.attrs,
-                                        value: e.target.attrs.text,
-                                    } as CellAttrs)
-                                }}
-                                onMouseUp={(e: KonvaEventObject<MouseEvent>) =>
-                                    setUV({
-                                        ...e.target.attrs,
-                                        value: e.target.attrs.text,
-                                    } as CellAttrs)
-                                }
-                                onMouseMove={(
-                                    e: KonvaEventObject<MouseEvent>
-                                ) => {
-                                    // console.log('xxx')
-                                    setMV({
-                                        ...e.target.attrs,
-                                        value: e.target.attrs.text,
-                                    } as CellAttrs)
-                                }}
-                                onMouseDown={(
-                                    e: KonvaEventObject<MouseEvent>
-                                ) =>
-                                    setDV({
-                                        ...e.target.attrs,
-                                        value: e.target.attrs.text,
-                                    } as CellAttrs)
-                                }
-                            >
+                        <Stage width={width} height={height} ref={stageRef}
+                            onContextMenu={(e: KonvaEventObject<PointerEvent>) => {
+                                e.evt.preventDefault()
+                                console.log(e)
+                                setRC({
+                                    clientX:e.evt.clientX,
+                                    clientY:e.evt.clientY,
+                                    ...e.target.attrs,
+                                    value: e.target.attrs.text,
+                                })
+                            }}
+                            onDblClick={(
+                                e: KonvaEventObject<MouseEvent>
+                            ) => {
+                                setDBC({
+                                    ...e.target.attrs,
+                                    value: e.target.attrs.text,
+                                } as CellAttrs)
+                            }}
+                            onMouseUp={(e: KonvaEventObject<MouseEvent>) =>
+                                setUV({
+                                    ...e.target.attrs,
+                                    value: e.target.attrs.text,
+                                } as CellAttrs)
+                            }
+                            onMouseMove={(
+                                e: KonvaEventObject<MouseEvent>
+                            ) => {
+                                // console.log('xxx')
+                                setMV({
+                                    ...e.target.attrs,
+                                    value: e.target.attrs.text,
+                                } as CellAttrs)
+                            }}
+                            onMouseDown={(
+                                e: KonvaEventObject<MouseEvent>
+                            ) =>
+                                setDV({
+                                    ...e.target.attrs,
+                                    value: e.target.attrs.text,
+                                } as CellAttrs)
+                            }>
+                            <Layer>
                                 <Group
                                     offsetY={mouseEventStore.scrollTop}
                                     offsetX={mouseEventStore.scrollLeft}
@@ -219,6 +230,15 @@ const Grid = observer(
                                         ></CellOverlay>
                                     ))}
                                 </Group>
+                                <Group
+                                    offsetY={mouseEventStore.scrollTop}
+                                    offsetX={mouseEventStore.scrollLeft}
+                                >
+                                    {floatImageStore.floatImage.map((o) => (
+                                        <FloatImage {...o} key={o.id}></FloatImage>
+                                    ))}
+                                </Group>
+
                                 <Group offsetX={mouseEventStore.scrollLeft}>
                                     {header.map((o) => (
                                         <Cell {...o} key={o?.ownKey}></Cell>
@@ -232,12 +252,9 @@ const Grid = observer(
                                 {single.map((o) => (
                                     <Cell {...o} key={o?.ownKey}></Cell>
                                 ))}
+
                             </Layer>
-                            <Layer>
-                                {floatImageStore.floatImage.map((o) => (
-                                    <FloatImage {...o} key={o.id}></FloatImage>
-                                ))}
-                            </Layer>
+
                         </Stage>
                         <div
                             style={{
@@ -252,6 +269,7 @@ const Grid = observer(
                         >
                             <SelectAreaLayer></SelectAreaLayer>
                             <EditAreaLayer></EditAreaLayer>
+                            <ContextMenuLayer></ContextMenuLayer>
                         </div>
                     </div>
                     <div
