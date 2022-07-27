@@ -278,6 +278,8 @@ export const generaCell = (prev: CellMap = {}) => {
                 fontItalic: prev[k]?.fontItalic || undefined,
                 textDecoration: prev[k]?.textDecoration || undefined,
                 imgUrl: prev[k]?.imgUrl || undefined,
+                imgLoaded: prev[k]?.imgLoaded || undefined,
+                noEdit: prev[k]?.noEdit|| undefined
             }
         }
     }

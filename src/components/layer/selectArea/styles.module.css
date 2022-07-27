@@ -34,3 +34,14 @@
     border: 1px solid #ffffff;
     background: #4b89ff;
 }
+.img-icon {
+    width: 16px;
+    height: 16px;
+    background-image: url(./imgs/img-full.svg);
+    background-size: cover;
+    position: absolute;
+    right: 0;
+    top:0;
+    cursor: pointer;
+    pointer-events: all;
+}

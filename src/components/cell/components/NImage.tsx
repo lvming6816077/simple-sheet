@@ -3,6 +3,7 @@ import { CellStoreContext } from '@/stores/CellStore'
 import { ToolBarStoreContext } from '@/stores/ToolBarStore'
 import { normalCell } from '@/utils/constants'
 import { observer } from 'mobx-react-lite'
+
 import React, {
     CSSProperties,
     useCallback,
@@ -15,11 +16,12 @@ import React, {
 
 import { Stage, Text, Group, Rect, Image } from 'react-konva'
 
-interface IProps {}
+interface IProps { }
 
 const NImage = React.memo((props: any) => {
     const toolbarStore = useContext(ToolBarStoreContext)
-    let { imgUrl, width, height, x, y, ...rest } = props
+    const cellStore = useContext(CellStoreContext)
+    let { imgUrl, width, height, x, y, ownKey, imgLoaded } = props
 
     const spacing = 3
 
@@ -34,9 +36,27 @@ const NImage = React.memo((props: any) => {
         )
     }, [imageWidth, imageHeight, width, height])
 
-    if (status !== 'loaded') {
+    // 动态调整单元格大小
+    if (status == 'loaded' && !imgLoaded) {
+
+        let maxw = 150, _w = 0, _h = 0
+        if (imageWidth > maxw) {
+            _w = maxw
+            _h = _w * imageHeight / imageWidth
+        } else {
+            _w = imageWidth
+            _h = _w * imageHeight / imageWidth
+        }
+        cellStore.changeWidth(ownKey, _w)
+        cellStore.changeHeight(ownKey, _h)
+
+        cellStore.imgLoadedCell(ownKey)
+    }
+
+    if (!imgLoaded) {
         return null
     }
+
 
     let _width = Math.min(imageWidth, aspectRatio * imageWidth)
     let _height = Math.min(imageHeight, aspectRatio * imageHeight)
@@ -56,12 +76,12 @@ const NImage = React.memo((props: any) => {
     }
 
 
-    const dbClick = ()=>{
+    const dbClick = () => {
 
+        toolbarStore.currentBigImg = [{ src: imgUrl, alt: '' }] as any
 
-        toolbarStore.currentBigImg = [{src:imgUrl,alt:''}] as any
-          console.log(toolbarStore.currentBigImg)
     }
+
 
     return (
         <>

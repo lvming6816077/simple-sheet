@@ -36,10 +36,10 @@ const EditAreaLayer = (props: any) => {
     const [editCell, setEditCell] = useState<CellAttrs>(null)
 
     useEffect(() => {
-        // console.log(dbc)
+
         if (!dbc || !dbc.ownKey || dbc.noEdit) return
         var cur = getCurrentCellByOwnKey(dbc!.ownKey, cellStore.cellsMap, true)
-        // dbc.value = '222'
+
         if (cur?.isMerge) {
             setEditCell({
                 ...cur,
@@ -48,13 +48,15 @@ const EditAreaLayer = (props: any) => {
             })
             return
         }
-        // console.log(dbc)
+
         setEditCell(dbc)
     }, [dbc])
 
     // useEffect(() => {
     //     setEditCell(null)
     // }, [mouseEventStore.downCellAttr])
+
+
 
     const editCellRenderer = (o: any) => {
         const style: CSSProperties = {
@@ -77,6 +79,13 @@ const EditAreaLayer = (props: any) => {
                     defaultValue={o.value}
                     className={styles['edit-textarea']}
                     autoFocus
+                    onFocus={(e)=>{
+                        e.target.style.height = e.target.scrollHeight + 'px';
+                    }}
+                    onInput={(e:any) => {
+                        e.target.style.height = e.target.scrollHeight + 'px';
+
+                    }}
                     onBlur={(e) => {
                         let cur = getCurrentCellByOwnKey(
                             o.ownKey,
@@ -84,10 +93,10 @@ const EditAreaLayer = (props: any) => {
                         )
                         if (cur) {
                             cur.value = e.target.value
-                            // cur.imgUrl = 'https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fd1ebc6f88746c390d6b87d766018d4~tplv-k3u1fbpfcp-zoom-1.image'
-                            // cur.imgUrl = 'https://qiniu.nihaoshijie.com.cn/qunmingp.jpg'
                         }
                         setEditCell(null)
+                        // let height = Math.max(Number(e.target.style.height.replace('px','')),normalCell.height)
+                        // cellStore.changeHeight(dbc!.ownKey,height)
                     }}
                 ></textarea>
             </div>

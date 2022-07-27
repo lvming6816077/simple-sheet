@@ -36,6 +36,7 @@ export type CellAttrs = {
     fontItalic?: string | boolean
     textDecoration?: string | boolean
     imgUrl?: string
+    imgLoaded?:boolean
     noEdit?: boolean
 } | null
 
@@ -172,7 +173,7 @@ export class CellStore {
     // tempx:number = 0
 
     @action.bound
-    changeWidth(ownKey: string, newwidth: number, newx: number) {
+    changeWidth(ownKey: string, newwidth: number) {
         var copy: CellMap = this.cellsMap
 
         for (var key in copy) {
@@ -237,7 +238,13 @@ export class CellStore {
             item!.fontSize = current?.fontSize
             item!.verticalAlign = current?.verticalAlign
             item!.textColor = current?.textColor
+            item!.imgUrl = current?.imgUrl
         })
+    }
+
+    @action.bound
+    imgLoadedCell(ownKey: string) {
+        this.cellsMap[ownKey]!.imgLoaded = true
     }
 
     // @action.bound

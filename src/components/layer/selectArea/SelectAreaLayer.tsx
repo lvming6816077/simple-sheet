@@ -30,6 +30,7 @@ import {
 } from '@/utils/constants'
 import SelectFill from './components/SelectFill'
 import { FloatImageStoreContext } from '@/stores/FloatImageStore'
+import { ToolBarStoreContext } from '@/stores/ToolBarStore'
 
 interface IProps {}
 
@@ -37,6 +38,7 @@ const SelectAreaLayer = (props: any) => {
     const isSelecting = useRef(false)
 
     const cellStore = useContext(CellStoreContext)
+    const toolbarStore = useContext(ToolBarStoreContext)
     const floatImageStore = useContext(FloatImageStoreContext)
 
     const selectArea = cellStore.selectArea
@@ -301,6 +303,7 @@ const SelectAreaLayer = (props: any) => {
                     style={getActiveCellSelection}
                     className={styles['active-cell']}
                 >
+                    {activeCell?.imgUrl ? <div className={styles['img-icon']} onClick={()=>toolbarStore.currentBigImg = [{ src: activeCell?.imgUrl, alt: '' }] as any}></div> : null}
                     <div
                         className={styles['active-cell-corner']}
                         onMouseDown={() =>

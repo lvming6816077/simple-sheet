@@ -18,6 +18,7 @@ import {
     SelectArea,
 } from './CellStore'
 import { defaultBorderStyle } from '@/utils/constants'
+import useImage from '@/hooks/useImage'
 
 class ToolBarStore {
     @action.bound
@@ -442,6 +443,8 @@ class ToolBarStore {
                 cellStore.cellsMap
             )
         }
+
+
 
         cell!.imgUrl = img
     }

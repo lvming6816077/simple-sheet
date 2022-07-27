@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 export interface UseImageProps {
     imgUrl: string
     crossOrigin?: string
+    ownKey?:string
 }
 
 export interface UseImageResults {
@@ -12,17 +13,19 @@ export interface UseImageResults {
     status: string
 }
 
-const useImage = ({ imgUrl, crossOrigin }: UseImageProps) => {
-    const [state, setState] = useState<UseImageResults>(() => ({
+const useImage = ({ imgUrl, crossOrigin,ownKey }: UseImageProps) => {
+    const defaultState = {
         image: undefined,
         status: 'loading',
         width: 0,
         height: 0,
-    }))
+    }
+    const [state, setState] = useState<UseImageResults>(() => (defaultState))
 
     useEffect(() => {
         if (!imgUrl) return
         var img = new Image()
+        setState(defaultState)
 
         function onload() {
             setState({

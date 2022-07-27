@@ -25,6 +25,7 @@ import Konva from 'konva'
 import { getScrollWidthAndHeight } from '@/utils'
 import { ToolBarStoreContext } from '@/stores/ToolBarStore'
 import { FloatImageStoreContext } from '@/stores/FloatImageStore'
+import useImage from '@/hooks/useImage'
 
 interface IProps {
     stageRef: React.MutableRefObject<Konva.Stage | null>
@@ -155,6 +156,7 @@ const ToolBar = (props: IProps) => {
 
     const inputRef = useRef<HTMLInputElement>(null)
     let uploadImgType: string | null = null
+
     const selecteFileHandler = (event: any) => {
         let file = event.target.files[0]
 
@@ -172,7 +174,10 @@ const ToolBar = (props: IProps) => {
             var base64 = reader.result || ''
 
             if (uploadImgType == 'local') {
-                toolbarStore.uploadImgCell(base64?.toString(), cellStore)
+                const img = base64?.toString()
+                toolbarStore.uploadImgCell(img, cellStore)
+                
+
             }
             if (uploadImgType == 'float') {
                 let x = floatImageStyle.initX,

@@ -87,6 +87,7 @@ const NText = React.memo((props: any) => {
                     width={width}
                     text={value}
                     fill={textColor}
+                    lineHeight={1.4}
                     verticalAlign={verticalAlign}
                     align={align}
                     fontFamily={fontFamily}

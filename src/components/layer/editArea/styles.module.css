@@ -10,8 +10,10 @@
     resize: none;
     overflow: hidden;
     vertical-align: top;
-    background: transparent;
+    background: #fff;
     pointer-events: all;
     line-height: 17px;
     text-indent: 1px;
+    white-space: normal;
+    word-wrap: break-word;
 }

@@ -43,6 +43,7 @@ const Cell = React.memo((props: any) => {
         isMerge,
         value,
         imgUrl,
+        imgLoaded
     } = props
 
     const cellStore = useContext(CellStoreContext)
@@ -98,6 +99,7 @@ const Cell = React.memo((props: any) => {
             wrap: wrap,
             fontSize: fontSize,
             imgUrl: imgUrl,
+            imgLoaded:imgLoaded
         }
 
         if (mergeRect.width) {
