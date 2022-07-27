@@ -18,9 +18,7 @@ import {
     leftCell,
     normalCell,
     singleCell,
-    rowStartIndex,
     rowStopIndex,
-    columnStartIndex,
     columnStopIndex,
 } from '@/utils/constants'
 import { getCurrentCellByOwnKey, getCurrentCellByXY } from '@/utils/index'

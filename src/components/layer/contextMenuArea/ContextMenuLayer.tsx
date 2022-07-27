@@ -11,28 +11,42 @@ import { MouseEventStoreContext } from '@/stores/MouseEventStore'
 import styles from './styles.module.css'
 import { observer } from 'mobx-react-lite'
 import { CellAttrs, CellStoreContext } from '@/stores/CellStore'
-import { getCurrentCellByXY } from '@/utils'
+import { getCurrentCellByOwnKey, getCurrentCellByXY } from '@/utils'
 import _ from 'lodash'
 import { headerCell, leftCell } from '@/utils/constants'
-import { ControlledMenu, Menu, MenuItem, useMenuState } from '@szhsin/react-menu'
+import { ControlledMenu, Menu, MenuDivider, MenuItem, useMenuState } from '@szhsin/react-menu'
 
 interface IProps {
-    swidth?: number
-    sheight?: number
+
 }
 
 const ContextMenuLayer = (props: IProps) => {
 
-
+    const cellStore = useContext(CellStoreContext)
     const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
-    const [menuProps, toggleMenu] = useMenuState(); 
+    const [menuProps, toggleMenu] = useMenuState();
     const mouseEventStore = useContext(MouseEventStoreContext)
     const rc = mouseEventStore.rcCellAttr
-    useEffect(()=>{
+    useEffect(() => {
         if (!rc) return
+
         setAnchorPoint({ x: rc.clientX, y: rc.clientY });
         toggleMenu(true)
-    },[rc])
+    }, [rc])
+
+
+    const addRow = (type:string)=>{
+        let cur = getCurrentCellByOwnKey(rc!.ownKey,cellStore.cellsMap,true)
+        console.log(cur)
+        // debugger
+        if (type == 'up') {
+
+        } else {
+            cellStore.addCellRowBelow(cur!.ownKey)
+        }
+        
+    }
+
     return (
         <div
             style={{
@@ -44,11 +58,49 @@ const ContextMenuLayer = (props: IProps) => {
                 right: 0,
             }}
         >          <ControlledMenu {...menuProps} anchorPoint={anchorPoint} menuClassName="border-menu"
-        onClose={() => toggleMenu(false)}>
-        <MenuItem>Cut</MenuItem>
-        <MenuItem>Copy</MenuItem>
-        <MenuItem>Paste</MenuItem>
-    </ControlledMenu></div>
+            onClose={() => toggleMenu(false)}>
+                <MenuItem>剪切（Ctrl+X）</MenuItem>
+                <MenuItem>复制（Ctrl+C）</MenuItem>
+                <MenuItem>粘贴（Ctrl+V）</MenuItem>
+                <MenuDivider />
+                <MenuItem>
+                    <div className={styles['border-item']} onClick={()=>addRow('up')}>
+                        <div
+                            className={`${styles['item-icon-insert-1']} ${styles['icon-item']}`}
+                        ></div>
+                        <div className={styles['item-text']}>插入一行（上）</div>
+                    </div>
+                
+                </MenuItem>
+                <MenuItem>
+                    <div className={styles['border-item']} onClick={()=>addRow('below')}>
+                        <div
+                            className={`${styles['item-icon-insert-2']} ${styles['icon-item']}`}
+                        ></div>
+                        <div className={styles['item-text']}>插入一行（下）</div>
+                    </div>
+                
+                </MenuItem>
+                <MenuItem>
+                    <div className={styles['border-item']}>
+                        <div
+                            className={`${styles['item-icon-insert-3']} ${styles['icon-item']}`}
+                        ></div>
+                        <div className={styles['item-text']}>插入一列（左）</div>
+                    </div>
+                
+                </MenuItem>
+                <MenuItem>
+                    <div className={styles['border-item']}>
+                        <div
+                            className={`${styles['item-icon-insert-4']} ${styles['icon-item']}`}
+                        ></div>
+                        <div className={styles['item-text']}>插入一列（右）</div>
+                    </div>
+                
+                </MenuItem>
+                
+            </ControlledMenu></div>
     )
 }
 

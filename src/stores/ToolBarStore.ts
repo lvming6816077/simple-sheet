@@ -444,8 +444,6 @@ class ToolBarStore {
             )
         }
 
-
-
         cell!.imgUrl = img
     }
 

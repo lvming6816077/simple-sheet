@@ -61,12 +61,7 @@ const SelectFill = (props: any) => {
     const uv = mouseEventStore.upCellAttr
     const mv = mouseEventStore.moveCellAttr
 
-    // const cellsMap = cellStore.cellsMap
 
-    let { swidth, sheight } = useMemo(
-        () => getScrollWidthAndHeight(cellStore.cellsMap),
-        [cellStore.cellsMap]
-    )
 
     useEffect(() => {
         if (mouseEventStore.selectFilling) {

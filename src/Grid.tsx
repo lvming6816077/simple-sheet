@@ -30,9 +30,7 @@ import {
     leftCell,
     normalCell,
     singleCell,
-    rowStartIndex,
     rowStopIndex,
-    columnStartIndex,
     columnStopIndex,
     containerWidth,
     containerHeight,
@@ -46,6 +44,7 @@ import FloatImage from './components/toolbar/components/FloatImage'
 import { FloatImageStoreContext } from './stores/FloatImageStore'
 import ContextMenuLayer from './components/layer/contextMenuArea/ContextMenuLayer'
 import Viewer from 'react-viewer';
+import { useSize } from './hooks/useSize'
 
 export interface GridProps {
     width?: number
@@ -86,7 +85,7 @@ const Grid = observer(
         var cellsMap = cellStore.cellsMap
 
         if (props.initData) {
-            cellsMap = generaCell(props.initData)
+            cellsMap = generaCell(props.initData,cellStore.rowStopIndex,cellStore.columnStopIndex)
         }
 
         const cells = _.values(cellsMap)
@@ -97,10 +96,8 @@ const Grid = observer(
         const normal = cells.filter((i) => i?.type == 'normal')
         const border = cells.filter((i) => i?.borderStyle)
 
-        let { swidth, sheight } = useMemo(
-            () => getScrollWidthAndHeight(cellsMap),
-            [cellsMap]
-        )
+
+        let { swidth, sheight } = useSize()
         const scrolRef = useRef<HTMLDivElement>(null)
 
         const onScroll = (e: any) => {

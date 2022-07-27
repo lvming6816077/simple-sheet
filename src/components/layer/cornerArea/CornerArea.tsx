@@ -16,10 +16,7 @@ import { getCurrentCellByXY } from '@/utils'
 import _ from 'lodash'
 import { headerCell, leftCell } from '@/utils/constants'
 
-// interface IProps {
-//     swidth: number
-//     sheight: number
-// }
+
 
 const CornerArea = () => {
     const cellStore = useContext(CellStoreContext)

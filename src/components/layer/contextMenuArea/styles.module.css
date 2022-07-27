@@ -1,1 +1,25 @@
-
+.border-item {
+    display: flex;
+}
+.icon-item {
+    width: 19px;
+    height:19px;
+    background-size: cover;
+    margin-right: 4px;
+}
+.border-item .item-text {
+    font-size: 13px;
+    margin-top: -1px;
+}
+.item-icon-insert-1 {
+    background-image: url('./imgs/insert1.png');
+}
+.item-icon-insert-2 {
+    background-image: url('./imgs/insert4.png');
+}
+.item-icon-insert-3 {
+    background-image: url('./imgs/insert2.png');
+}
+.item-icon-insert-4 {
+    background-image: url('./imgs/insert3.png');
+}

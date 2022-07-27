@@ -31,6 +31,7 @@ import {
 import SelectFill from './components/SelectFill'
 import { FloatImageStoreContext } from '@/stores/FloatImageStore'
 import { ToolBarStoreContext } from '@/stores/ToolBarStore'
+import { useSize } from '@/hooks/useSize'
 
 interface IProps {}
 
@@ -87,10 +88,7 @@ const SelectAreaLayer = (props: any) => {
 
     // const cellsMap = cellStore.cellsMap
 
-    let { swidth, sheight } = useMemo(
-        () => getScrollWidthAndHeight(cellStore.cellsMap),
-        [cellStore.cellsMap]
-    )
+    let { swidth, sheight } = useSize()
 
     useEffect(() => {
         if (activeCell) {
@@ -186,7 +184,7 @@ const SelectAreaLayer = (props: any) => {
 
     useEffect(() => {
         floatImageStore.currentTransformerId = ''
-
+        
         if (dv?.type != 'normal') return
 
         let cur = getCurrentCellByOwnKey(
@@ -194,6 +192,7 @@ const SelectAreaLayer = (props: any) => {
             cellStore.cellsMap,
             true
         )
+        console.log(cur)
 
         setActiveCell(cur)
         setSelectArea(null)

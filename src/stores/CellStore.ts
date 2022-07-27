@@ -9,7 +9,7 @@ import {
     getCurrentCellByXY,
     getCurrentCellsByArea,
 } from '@/utils'
-import { headerCell, leftCell } from '@/utils/constants'
+import { columnStopIndex, headerCell, leftCell, rowStopIndex } from '@/utils/constants'
 
 export type BorderStyle = {
     color?: string
@@ -188,7 +188,7 @@ export class CellStore {
             }
         }
 
-        this.cellsMap = generaCell(copy)
+        this.cellsMap = generaCell(copy,this.rowStopIndex,this.columnStopIndex)
     }
 
     @action.bound
@@ -207,7 +207,7 @@ export class CellStore {
             }
         }
 
-        this.cellsMap = generaCell(copy)
+        this.cellsMap = generaCell(copy,this.rowStopIndex,this.columnStopIndex)
     }
 
     @action.bound
@@ -245,6 +245,43 @@ export class CellStore {
     @action.bound
     imgLoadedCell(ownKey: string) {
         this.cellsMap[ownKey]!.imgLoaded = true
+    }
+
+    @action.bound
+    addCellRowBelow(ownKey: string) {
+
+        var row = Number(ownKey.split(':')[0])
+        var col = ownKey.split(':')[1]
+
+        // var prevK = (l-1)+':'+r
+        this.rowStopIndex++
+
+        var _copy: CellMap = this.cellsMap
+
+        this.cellsMap = generaCell(_copy,this.rowStopIndex,this.columnStopIndex,(rowIndex:number,columnIndex:number,type?:string)=>{
+            if (type) {
+                if (type == 'first') {
+                    if (rowIndex > row) {
+                        return (rowIndex+1)+':'+(columnIndex)
+                    }
+                }
+                if (type == 'last') {
+                    if (rowIndex > row) {
+                        return (rowIndex+1)+':'+(columnIndex)
+                    }
+                }
+                return (rowIndex)+':'+(columnIndex)
+            }
+            if (rowIndex-1 == row) {
+                return 'x:x'
+            }
+            if (rowIndex >= row+1) {
+                return (rowIndex-1)+':'+columnIndex
+            }
+
+            return (rowIndex)+':'+columnIndex
+        })
+        
     }
 
     // @action.bound
@@ -295,7 +332,15 @@ export class CellStore {
     }
 
     @observable
-    cellsMap: CellMap = generaCell()
+    rowStopIndex: number = rowStopIndex
+
+    @observable
+    columnStopIndex: number = columnStopIndex
+
+    @observable
+    cellsMap: CellMap = generaCell({},this.rowStopIndex,this.columnStopIndex)
+
+
 
     @observable
     selectArea: SelectArea = null

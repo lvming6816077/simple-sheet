@@ -31,11 +31,11 @@ export const singleCell = {
     height: 20,
 }
 
-export const rowStartIndex: number = 0
+// export const rowStartIndex: number = 0
 
 export const rowStopIndex: number = 40
 
-export const columnStartIndex: number = 0
+// export const columnStartIndex: number = 0
 
 export const columnStopIndex: number = 26
 

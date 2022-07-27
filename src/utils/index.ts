@@ -12,10 +12,8 @@ import {
     leftCell,
     normalCell,
     singleCell,
-    rowStartIndex,
-    rowStopIndex,
-    columnStartIndex,
-    columnStopIndex,
+    // rowStopIndex,
+    // columnStopIndex,
 } from './constants'
 
 export const getCurrentCellByXY = (x: number, y: number, cellsMap: CellMap) => {
@@ -101,15 +99,23 @@ export const getCurrentCellsByArea = (o: SelectArea, cellsMap: CellMap) => {
     })
 }
 
-export const getScrollWidthAndHeight = (cellsMap: CellMap) => {
+export const getScrollWidthAndHeight = (cellsMap: CellMap,rowStopIndex:number,columnStopIndex:number) => {
     var key1 = '0:' + columnStopIndex
     var key2 = rowStopIndex + ':0'
     var w: any = cellsMap[key1]
     var h: any = cellsMap[key2]
-    return {
-        swidth: w.x + w.width,
-        sheight: h.y + h.height,
+    if (w && h) {
+        return {
+            swidth: w.x + w.width,
+            sheight: h.y + h.height,
+        }
+    } else {
+        return {
+            swidth: 0,
+            sheight: 0
+        }
     }
+    
 }
 
 export const getCurrentCellByNextRight = (
@@ -158,7 +164,7 @@ export const clearCellFromat = (cell: CellAttrs) => {
     cell!.fontItalic = undefined
     cell!.textDecoration = undefined
 }
-export const generaCell = (prev: CellMap = {}) => {
+export const generaCell = (prev: CellMap = {},rowStopIndex:number,columnStopIndex:number,getPrevK?:any) => {
     const getRowOffset = (
         rowIndex: number,
         columnIndex: number,
@@ -209,7 +215,7 @@ export const generaCell = (prev: CellMap = {}) => {
             v = normalCell.width
         }
 
-        const cur = prev[k]
+        const cur = prev['0:'+k.split(':')[1]]
         return cur ? cur.width : v
     }
 
@@ -234,14 +240,28 @@ export const generaCell = (prev: CellMap = {}) => {
         return singleCell.fill
     }
 
+    const getMerge = (arr:string[]|undefined)=>{
+        let res = arr||[]
+        if (arr && arr.length && getPrevK) {
+            var first = arr[0]
+            res[0] = getPrevK(Number(first.split(':')[0]),Number(first.split(':')[1]),'first')
+            var last = arr[1]
+            res[1] = getPrevK(Number(last.split(':')[0]),Number(last.split(':')[1]),'last')
+
+        }
+        
+
+        return res.length == 0 ? undefined : res
+    }
+
     var map: CellMap = {}
     for (
-        let rowIndex: number = rowStartIndex;
+        let rowIndex: number = 0;
         rowIndex <= rowStopIndex;
         rowIndex++
     ) {
         for (
-            let columnIndex: number = columnStartIndex;
+            let columnIndex: number = 0;
             columnIndex <= columnStopIndex;
             columnIndex++
         ) {
@@ -251,23 +271,28 @@ export const generaCell = (prev: CellMap = {}) => {
 
             const y = getRowOffset(rowIndex, columnIndex, map)
 
-            const k = rowIndex + ':' + columnIndex
+        
+            let ownKey = rowIndex + ':' + columnIndex
 
-            const width = getColumnWidth(type, k)
+            let k = ownKey
+            if (getPrevK) {
+                k = getPrevK(rowIndex,columnIndex)
+            }
 
-            const height = getRowHeight(type, k)
+            const width = getColumnWidth(type, ownKey)
 
-            map[k] = {
+            const height = getRowHeight(type, ownKey)
+
+            map[ownKey] = {
                 x,
                 y,
                 width,
                 height,
-                value: prev[k]?.value || '',
                 type: type,
-                // key: k,
-                ownKey: k,
+                ownKey: ownKey,
+                value: ownKey,//prev[k]?.value || '',
                 fill: prev[k]?.fill || getFill(type),
-                isMerge: prev[k]?.isMerge || undefined,
+                isMerge: getMerge(prev[k]?.isMerge) || undefined,
                 borderStyle: prev[k]?.borderStyle || undefined,
                 verticalAlign: prev[k]?.verticalAlign || undefined,
                 textColor: prev[k]?.textColor || undefined,

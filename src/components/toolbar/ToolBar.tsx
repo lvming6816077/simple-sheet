@@ -26,6 +26,7 @@ import { getScrollWidthAndHeight } from '@/utils'
 import { ToolBarStoreContext } from '@/stores/ToolBarStore'
 import { FloatImageStoreContext } from '@/stores/FloatImageStore'
 import useImage from '@/hooks/useImage'
+import { useSize } from '@/hooks/useSize'
 
 interface IProps {
     stageRef: React.MutableRefObject<Konva.Stage | null>
@@ -127,10 +128,8 @@ const ToolBar = (props: IProps) => {
         toolbarStore.fontSizeCell(size, cellStore)
     }
 
-    let { swidth, sheight } = useMemo(
-        () => getScrollWidthAndHeight(cellStore.cellsMap),
-        [cellStore.cellsMap]
-    )
+    let { swidth, sheight } = useSize()
+    
 
     const exportImage = () => {
         function downloadURI(uri: string, name: string) {
