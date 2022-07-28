@@ -16,8 +16,6 @@ import { getCurrentCellByXY } from '@/utils'
 import _ from 'lodash'
 import { headerCell, leftCell } from '@/utils/constants'
 
-
-
 const CornerArea = () => {
     const cellStore = useContext(CellStoreContext)
     const selectArea = cellStore.selectArea

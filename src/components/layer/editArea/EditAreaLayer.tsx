@@ -34,7 +34,6 @@ const EditAreaLayer = (props: any) => {
     const [editCell, setEditCell] = useState<CellAttrs>(null)
 
     useEffect(() => {
-
         if (!dbc || !dbc.ownKey || dbc.noEdit) return
         var cur = getCurrentCellByOwnKey(dbc!.ownKey, cellStore.cellsMap, true)
 
@@ -53,8 +52,6 @@ const EditAreaLayer = (props: any) => {
     // useEffect(() => {
     //     setEditCell(null)
     // }, [mouseEventStore.downCellAttr])
-
-
 
     const editCellRenderer = (o: any) => {
         const style: CSSProperties = {
@@ -77,12 +74,11 @@ const EditAreaLayer = (props: any) => {
                     defaultValue={o.value}
                     className={styles['edit-textarea']}
                     autoFocus
-                    onFocus={(e)=>{
-                        e.target.style.height = e.target.scrollHeight + 'px';
+                    onFocus={(e) => {
+                        e.target.style.height = e.target.scrollHeight + 'px'
                     }}
-                    onInput={(e:any) => {
-                        e.target.style.height = e.target.scrollHeight + 'px';
-
+                    onInput={(e: any) => {
+                        e.target.style.height = e.target.scrollHeight + 'px'
                     }}
                     onBlur={(e) => {
                         let cur = getCurrentCellByOwnKey(

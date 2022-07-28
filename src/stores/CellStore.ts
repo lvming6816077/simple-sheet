@@ -9,7 +9,12 @@ import {
     getCurrentCellByXY,
     getCurrentCellsByArea,
 } from '@/utils'
-import { columnStopIndex, headerCell, leftCell, rowStopIndex } from '@/utils/constants'
+import {
+    columnStopIndex,
+    headerCell,
+    leftCell,
+    rowStopIndex,
+} from '@/utils/constants'
 
 export type BorderStyle = {
     color?: string
@@ -40,10 +45,12 @@ export type CellAttrs = {
     noEdit?: boolean
 } | null
 
-export type RCCellAttrs = {
-    clientX: number
-    clientY: number
-} & CellAttrs | null
+export type RCCellAttrs =
+    | ({
+          clientX: number
+          clientY: number
+      } & CellAttrs)
+    | null
 
 export type CellMap = {
     [key: string]: CellAttrs
@@ -188,7 +195,11 @@ export class CellStore {
             }
         }
 
-        this.cellsMap = generaCell(copy, this.rowStopIndex, this.columnStopIndex)
+        this.cellsMap = generaCell(
+            copy,
+            this.rowStopIndex,
+            this.columnStopIndex
+        )
     }
 
     @action.bound
@@ -207,7 +218,11 @@ export class CellStore {
             }
         }
 
-        this.cellsMap = generaCell(copy, this.rowStopIndex, this.columnStopIndex)
+        this.cellsMap = generaCell(
+            copy,
+            this.rowStopIndex,
+            this.columnStopIndex
+        )
     }
 
     @action.bound
@@ -251,31 +266,32 @@ export class CellStore {
     addCellRowBelow(ownKey: string) {
         var row = Number(ownKey.split(':')[0])
 
-
         this.rowStopIndex++
 
         var _copy: CellMap = this.cellsMap
 
-        const getPrevMergeK = (rowIndex: number, columnIndex: number, type: string) => {
-
+        const getPrevMergeK = (
+            rowIndex: number,
+            columnIndex: number,
+            type: string
+        ) => {
             if (type == 'first') {
                 if (rowIndex > row) {
-                    return (rowIndex + 1) + ':' + (columnIndex)
+                    return rowIndex + 1 + ':' + columnIndex
                 }
             }
             if (type == 'last') {
                 if (rowIndex > row) {
-                    return (rowIndex + 1) + ':' + (columnIndex)
+                    return rowIndex + 1 + ':' + columnIndex
                 }
             }
-            return (rowIndex) + ':' + (columnIndex)
+            return rowIndex + ':' + columnIndex
         }
 
         const getMerge = (ov: string[], rowIndex: number) => {
-
             let res = ov || []
             if (res && res.length) {
-                var first = res[0];
+                var first = res[0]
                 var firstRow = Number(first.split(':')[0])
                 var fristCol = Number(first.split(':')[1])
                 res[0] = getPrevMergeK(firstRow, fristCol, 'first')
@@ -295,7 +311,6 @@ export class CellStore {
             return res.length == 2 ? res : undefined
         }
 
-
         const getPrevV = (ov: any, rowIndex: number) => {
             if (rowIndex - 1 == row) {
                 return undefined
@@ -306,47 +321,55 @@ export class CellStore {
 
         const getPrevK = (rowIndex: number, columnIndex: number) => {
             if (rowIndex >= row + 1) {
-                return (rowIndex - 1) + ':' + columnIndex
+                return rowIndex - 1 + ':' + columnIndex
             }
 
-            return (rowIndex) + ':' + columnIndex
+            return rowIndex + ':' + columnIndex
         }
 
-        this.cellsMap = generaCell(_copy, this.rowStopIndex, this.columnStopIndex, { getPrevK, getMerge, getPrevV })
-
-
+        this.cellsMap = generaCell(
+            _copy,
+            this.rowStopIndex,
+            this.columnStopIndex,
+            { getPrevK, getMerge, getPrevV }
+        )
     }
 
     @action.bound
     addCellRowRight(ownKey: string) {
         var col = Number(ownKey.split(':')[1])
 
-
         this.columnStopIndex++
         // this.cellsMap = generaCell(copy,this.rowStopIndex,this.columnStopIndex)
 
         var _copy: CellMap = this.cellsMap
 
-        const getPrevMergeK = (rowIndex: number, columnIndex: number, type: string) => {
-
+        const getPrevMergeK = (
+            rowIndex: number,
+            columnIndex: number,
+            type: string
+        ) => {
             if (type == 'first') {
                 if (columnIndex > col) {
-                    return (rowIndex) + ':' + (columnIndex+1)
+                    return rowIndex + ':' + (columnIndex + 1)
                 }
             }
             if (type == 'last') {
                 if (columnIndex > col) {
-                    return (rowIndex) + ':' + (columnIndex + 1)
+                    return rowIndex + ':' + (columnIndex + 1)
                 }
             }
-            return (rowIndex) + ':' + (columnIndex)
+            return rowIndex + ':' + columnIndex
         }
 
-        const getMerge = (ov: string[], rowIndex: number,columnIndex:number) => {
-
+        const getMerge = (
+            ov: string[],
+            rowIndex: number,
+            columnIndex: number
+        ) => {
             let res = ov || []
             if (res && res.length) {
-                var first = res[0];
+                var first = res[0]
                 var firstRow = Number(first.split(':')[0])
                 var fristCol = Number(first.split(':')[1])
                 res[0] = getPrevMergeK(firstRow, fristCol, 'first')
@@ -366,8 +389,7 @@ export class CellStore {
             return res.length == 2 ? res : undefined
         }
 
-
-        const getPrevV = (ov: any, rowIndex: number,columnIndex:number) => {
+        const getPrevV = (ov: any, rowIndex: number, columnIndex: number) => {
             if (columnIndex - 1 == col) {
                 return undefined
             }
@@ -377,15 +399,18 @@ export class CellStore {
 
         const getPrevK = (rowIndex: number, columnIndex: number) => {
             if (columnIndex >= col + 1) {
-                return (rowIndex) + ':' + (columnIndex-1)
+                return rowIndex + ':' + (columnIndex - 1)
             }
 
-            return (rowIndex) + ':' + columnIndex
+            return rowIndex + ':' + columnIndex
         }
 
-        this.cellsMap = generaCell(_copy, this.rowStopIndex, this.columnStopIndex, { getPrevK, getMerge, getPrevV })
-
-
+        this.cellsMap = generaCell(
+            _copy,
+            this.rowStopIndex,
+            this.columnStopIndex,
+            { getPrevK, getMerge, getPrevV }
+        )
     }
 
     // @action.bound
@@ -444,8 +469,6 @@ export class CellStore {
     @observable
     cellsMap: CellMap = generaCell({}, this.rowStopIndex, this.columnStopIndex)
 
-
-
     @observable
     selectArea: SelectArea = null
 
@@ -460,7 +483,6 @@ export class CellStore {
 
     @observable
     selectEnd: CellAttrs = null
-
 
     //   @computed
     //   get getcells() {

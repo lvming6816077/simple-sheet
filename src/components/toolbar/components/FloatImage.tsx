@@ -137,12 +137,12 @@ const FloatImage = React.memo(
                 {isSelected && (
                     <Transformer
                         ref={trRef}
-                        anchorStroke='#fff'
-                        anchorFill='#4b89ff'
+                        anchorStroke="#fff"
+                        anchorFill="#4b89ff"
                         anchorSize={8}
                         anchorCornerRadius={8}
                         anchorStrokeWidth={2}
-                        borderStroke='#4b89ff'
+                        borderStroke="#4b89ff"
                         borderDash={[1, 1]}
                         boundBoxFunc={(oldBox, newBox) => {
                             // limit resize

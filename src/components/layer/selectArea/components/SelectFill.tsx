@@ -61,8 +61,6 @@ const SelectFill = (props: any) => {
     const uv = mouseEventStore.upCellAttr
     const mv = mouseEventStore.moveCellAttr
 
-
-
     useEffect(() => {
         if (mouseEventStore.selectFilling) {
             let cur = mv

@@ -43,7 +43,7 @@ import { ToolBarStoreContext } from './stores/ToolBarStore'
 import FloatImage from './components/toolbar/components/FloatImage'
 import { FloatImageStoreContext } from './stores/FloatImageStore'
 import ContextMenuLayer from './components/layer/contextMenuArea/ContextMenuLayer'
-import Viewer from 'react-viewer';
+import Viewer from 'react-viewer'
 import { useSize } from './hooks/useSize'
 
 export interface GridProps {
@@ -85,7 +85,11 @@ const Grid = observer(
         var cellsMap = cellStore.cellsMap
 
         if (props.initData) {
-            cellsMap = generaCell(props.initData,cellStore.rowStopIndex,cellStore.columnStopIndex)
+            cellsMap = generaCell(
+                props.initData,
+                cellStore.rowStopIndex,
+                cellStore.columnStopIndex
+            )
         }
 
         const cells = _.values(cellsMap)
@@ -95,7 +99,6 @@ const Grid = observer(
         const single = cells.filter((i) => i?.type == 'single')
         const normal = cells.filter((i) => i?.type == 'normal')
         const border = cells.filter((i) => i?.borderStyle)
-
 
         let { swidth, sheight } = useSize()
         const scrolRef = useRef<HTMLDivElement>(null)
@@ -144,33 +147,26 @@ const Grid = observer(
         const stageRef = useRef<Konva.Stage>(null)
 
         const mouseEventProp = {
-            onMouseUp:((e: KonvaEventObject<MouseEvent>) =>
+            onMouseUp: (e: KonvaEventObject<MouseEvent>) =>
                 setUV({
                     ...e.target.attrs,
                     value: e.target.attrs.text,
-                } as CellAttrs)
-            ),
-            onMouseMove:(
-                e: KonvaEventObject<MouseEvent>
-            ) => {
-
+                } as CellAttrs),
+            onMouseMove: (e: KonvaEventObject<MouseEvent>) => {
                 setMV({
                     ...e.target.attrs,
                     value: e.target.attrs.text,
                 } as CellAttrs)
             },
-            onMouseDown:(
-                e: KonvaEventObject<MouseEvent>
-            ) =>{
+            onMouseDown: (e: KonvaEventObject<MouseEvent>) => {
                 setDV({
                     ...e.target.attrs,
                     value: e.target.attrs.text,
                 } as CellAttrs)
-            }
-                
+            },
         }
 
-        const [ visible, setVisible ] = React.useState(false);
+        const [visible, setVisible] = React.useState(false)
 
         return (
             <div
@@ -194,18 +190,23 @@ const Grid = observer(
                         }}
                         ref={wheelRef}
                     >
-                        <Stage width={width} height={height} ref={stageRef} zIndex={4}
-                            onContextMenu={(e: KonvaEventObject<PointerEvent>) => {
+                        <Stage
+                            width={width}
+                            height={height}
+                            ref={stageRef}
+                            zIndex={4}
+                            onContextMenu={(
+                                e: KonvaEventObject<PointerEvent>
+                            ) => {
                                 e.evt.preventDefault()
                                 setRC({
-                                    clientX:e.evt.clientX,
-                                    clientY:e.evt.clientY,
+                                    clientX: e.evt.clientX,
+                                    clientY: e.evt.clientY,
                                     ...e.target.attrs,
                                     value: e.target.attrs.text,
                                 })
                             }}
-                            
-                            >
+                        >
                             <Layer>
                                 <Group
                                     offsetY={mouseEventStore.scrollTop}
@@ -214,7 +215,7 @@ const Grid = observer(
                                     onDblClick={(
                                         e: KonvaEventObject<MouseEvent>
                                     ) => {
-                                        if ((e.evt.button == 2)) return // 鼠标左键
+                                        if (e.evt.button == 2) return // 鼠标左键
                                         setDBC({
                                             ...e.target.attrs,
                                             value: e.target.attrs.text,
@@ -237,16 +238,25 @@ const Grid = observer(
                                     offsetX={mouseEventStore.scrollLeft}
                                 >
                                     {floatImageStore.floatImage.map((o) => (
-                                        <FloatImage {...o} key={o.id}></FloatImage>
+                                        <FloatImage
+                                            {...o}
+                                            key={o.id}
+                                        ></FloatImage>
                                     ))}
                                 </Group>
 
-                                <Group offsetX={mouseEventStore.scrollLeft} {...mouseEventProp}>
+                                <Group
+                                    offsetX={mouseEventStore.scrollLeft}
+                                    {...mouseEventProp}
+                                >
                                     {header.map((o) => (
                                         <Cell {...o} key={o?.ownKey}></Cell>
                                     ))}
                                 </Group>
-                                <Group offsetY={mouseEventStore.scrollTop} {...mouseEventProp}>
+                                <Group
+                                    offsetY={mouseEventStore.scrollTop}
+                                    {...mouseEventProp}
+                                >
                                     {left.map((o) => (
                                         <Cell {...o} key={o?.ownKey}></Cell>
                                     ))}
@@ -254,9 +264,7 @@ const Grid = observer(
                                 {single.map((o) => (
                                     <Cell {...o} key={o?.ownKey}></Cell>
                                 ))}
-
                             </Layer>
-
                         </Stage>
                         <div
                             style={{
@@ -306,14 +314,15 @@ const Grid = observer(
                     >
                         <CornerArea></CornerArea>
                         <ContextMenuLayer></ContextMenuLayer>
-                        
                     </div>
                 </div>
                 <Viewer
                     noNavbar={true}
                     showTotal={false}
                     visible={toolbarStore.currentBigImg.length > 0}
-                    onClose={() => { toolbarStore.currentBigImg = [] } }
+                    onClose={() => {
+                        toolbarStore.currentBigImg = []
+                    }}
                     images={toolbarStore.currentBigImg}
                 />
             </div>

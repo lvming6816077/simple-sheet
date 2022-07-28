@@ -448,7 +448,7 @@ class ToolBarStore {
     }
 
     @observable
-    currentBigImg:[] = []
+    currentBigImg: [] = []
 
     //   @computed
     //   get getcells() {

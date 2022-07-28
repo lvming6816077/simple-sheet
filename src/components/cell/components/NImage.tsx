@@ -16,7 +16,7 @@ import React, {
 
 import { Stage, Text, Group, Rect, Image } from 'react-konva'
 
-interface IProps { }
+interface IProps {}
 
 const NImage = React.memo((props: any) => {
     const toolbarStore = useContext(ToolBarStoreContext)
@@ -38,14 +38,15 @@ const NImage = React.memo((props: any) => {
 
     // 动态调整单元格大小
     if (status == 'loaded' && !imgLoaded) {
-
-        let maxw = 150, _w = 0, _h = 0
+        let maxw = 150,
+            _w = 0,
+            _h = 0
         if (imageWidth > maxw) {
             _w = maxw
-            _h = _w * imageHeight / imageWidth
+            _h = (_w * imageHeight) / imageWidth
         } else {
             _w = imageWidth
-            _h = _w * imageHeight / imageWidth
+            _h = (_w * imageHeight) / imageWidth
         }
         cellStore.changeWidth(ownKey, _w)
         cellStore.changeHeight(ownKey, _h)
@@ -56,7 +57,6 @@ const NImage = React.memo((props: any) => {
     if (!imgLoaded) {
         return null
     }
-
 
     let _width = Math.min(imageWidth, aspectRatio * imageWidth)
     let _height = Math.min(imageHeight, aspectRatio * imageHeight)
@@ -75,13 +75,9 @@ const NImage = React.memo((props: any) => {
         _x = _x + spacing / 2
     }
 
-
     const dbClick = () => {
-
         toolbarStore.currentBigImg = [{ src: imgUrl, alt: '' }] as any
-
     }
-
 
     return (
         <>

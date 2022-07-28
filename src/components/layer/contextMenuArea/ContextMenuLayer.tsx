@@ -14,46 +14,44 @@ import { CellAttrs, CellStoreContext } from '@/stores/CellStore'
 import { getCurrentCellByOwnKey, getCurrentCellByXY } from '@/utils'
 import _ from 'lodash'
 import { headerCell, leftCell } from '@/utils/constants'
-import { ControlledMenu, Menu, MenuDivider, MenuItem, useMenuState } from '@szhsin/react-menu'
+import {
+    ControlledMenu,
+    Menu,
+    MenuDivider,
+    MenuItem,
+    useMenuState,
+} from '@szhsin/react-menu'
 
-interface IProps {
-
-}
+interface IProps {}
 
 const ContextMenuLayer = (props: IProps) => {
-
     const cellStore = useContext(CellStoreContext)
-    const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
-    const [menuProps, toggleMenu] = useMenuState();
+    const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 })
+    const [menuProps, toggleMenu] = useMenuState()
     const mouseEventStore = useContext(MouseEventStoreContext)
     const rc = mouseEventStore.rcCellAttr
     useEffect(() => {
         if (!rc) return
 
-        setAnchorPoint({ x: rc.clientX, y: rc.clientY });
+        setAnchorPoint({ x: rc.clientX, y: rc.clientY })
         toggleMenu(true)
     }, [rc])
 
-
-    const addRow = (type:string)=>{
-        let cur = getCurrentCellByOwnKey(rc!.ownKey,cellStore.cellsMap,true)
+    const addRow = (type: string) => {
+        let cur = getCurrentCellByOwnKey(rc!.ownKey, cellStore.cellsMap, true)
 
         if (type == 'up') {
-
         } else {
             cellStore.addCellRowBelow(cur!.ownKey)
         }
-        
     }
-    const addCol = (type:string)=>{
-        let cur = getCurrentCellByOwnKey(rc!.ownKey,cellStore.cellsMap,true)
+    const addCol = (type: string) => {
+        let cur = getCurrentCellByOwnKey(rc!.ownKey, cellStore.cellsMap, true)
 
         if (type == 'right') {
             cellStore.addCellRowRight(cur!.ownKey)
         } else {
-            
         }
-        
     }
 
     return (
@@ -66,8 +64,14 @@ const ContextMenuLayer = (props: IProps) => {
                 bottom: 0,
                 right: 0,
             }}
-        >          <ControlledMenu {...menuProps} anchorPoint={anchorPoint} menuClassName="border-menu"
-            onClose={() => toggleMenu(false)}>
+        >
+            {' '}
+            <ControlledMenu
+                {...menuProps}
+                anchorPoint={anchorPoint}
+                menuClassName="border-menu"
+                onClose={() => toggleMenu(false)}
+            >
                 <MenuItem>剪切（Ctrl+X）</MenuItem>
                 <MenuItem>复制（Ctrl+C）</MenuItem>
                 <MenuItem>粘贴（Ctrl+V）</MenuItem>
@@ -82,13 +86,17 @@ const ContextMenuLayer = (props: IProps) => {
                 
                 </MenuItem> */}
                 <MenuItem>
-                    <div className={styles['border-item']} onClick={()=>addRow('below')}>
+                    <div
+                        className={styles['border-item']}
+                        onClick={() => addRow('below')}
+                    >
                         <div
                             className={`${styles['item-icon-insert-2']} ${styles['icon-item']}`}
                         ></div>
-                        <div className={styles['item-text']}>插入一行（下）</div>
+                        <div className={styles['item-text']}>
+                            插入一行（下）
+                        </div>
                     </div>
-                
                 </MenuItem>
                 {/* <MenuItem>
                     <div className={styles['border-item']}>
@@ -100,16 +108,20 @@ const ContextMenuLayer = (props: IProps) => {
                 
                 </MenuItem> */}
                 <MenuItem>
-                    <div className={styles['border-item']} onClick={()=>addCol('right')}>
+                    <div
+                        className={styles['border-item']}
+                        onClick={() => addCol('right')}
+                    >
                         <div
                             className={`${styles['item-icon-insert-4']} ${styles['icon-item']}`}
                         ></div>
-                        <div className={styles['item-text']}>插入一列（右）</div>
+                        <div className={styles['item-text']}>
+                            插入一列（右）
+                        </div>
                     </div>
-                
                 </MenuItem>
-                
-            </ControlledMenu></div>
+            </ControlledMenu>
+        </div>
     )
 }
 

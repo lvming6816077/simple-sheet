@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx'
 import { createContext } from 'react'
-import { CellAttrs,RCCellAttrs } from './CellStore'
+import { CellAttrs, RCCellAttrs } from './CellStore'
 
 class MouseEventStore {
     lastMoveCellAttr: CellAttrs = null
@@ -51,6 +51,7 @@ class MouseEventStore {
     mouseDBC(obj: CellAttrs) {
         this.dbcCellAttr = obj
     }
+
     @action.bound
     mouseRC(obj: RCCellAttrs) {
         this.rcCellAttr = obj

@@ -129,7 +129,6 @@ const ToolBar = (props: IProps) => {
     }
 
     let { swidth, sheight } = useSize()
-    
 
     const exportImage = () => {
         function downloadURI(uri: string, name: string) {
@@ -175,8 +174,6 @@ const ToolBar = (props: IProps) => {
             if (uploadImgType == 'local') {
                 const img = base64?.toString()
                 toolbarStore.uploadImgCell(img, cellStore)
-                
-
             }
             if (uploadImgType == 'float') {
                 let x = floatImageStyle.initX,

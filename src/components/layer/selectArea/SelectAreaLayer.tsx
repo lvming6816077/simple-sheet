@@ -184,7 +184,7 @@ const SelectAreaLayer = (props: any) => {
 
     useEffect(() => {
         floatImageStore.currentTransformerId = ''
-        
+
         if (dv?.type != 'normal') return
 
         let cur = getCurrentCellByOwnKey(
@@ -301,7 +301,16 @@ const SelectAreaLayer = (props: any) => {
                     style={getActiveCellSelection}
                     className={styles['active-cell']}
                 >
-                    {activeCell?.imgUrl ? <div className={styles['img-icon']} onClick={()=>toolbarStore.currentBigImg = [{ src: activeCell?.imgUrl, alt: '' }] as any}></div> : null}
+                    {activeCell?.imgUrl ? (
+                        <div
+                            className={styles['img-icon']}
+                            onClick={() =>
+                                (toolbarStore.currentBigImg = [
+                                    { src: activeCell?.imgUrl, alt: '' },
+                                ] as any)
+                            }
+                        ></div>
+                    ) : null}
                     <div
                         className={styles['active-cell-corner']}
                         onMouseDown={() =>

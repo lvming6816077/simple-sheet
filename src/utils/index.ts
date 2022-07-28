@@ -8,9 +8,9 @@ import _ from 'lodash'
 import { useContext } from 'react'
 
 type PrevFunc = {
-    getPrevK?:(rowIndex:number,columnIndex:number)=>string
-    getMerge?:(ov:any,rowIndex:number,columnIndex:number)=>any
-    getPrevV?:(ov:any,rowIndex:number,columnIndex:number)=>any
+    getPrevK?: (rowIndex: number, columnIndex: number) => string
+    getMerge?: (ov: any, rowIndex: number, columnIndex: number) => any
+    getPrevV?: (ov: any, rowIndex: number, columnIndex: number) => any
 }
 
 import {
@@ -105,7 +105,11 @@ export const getCurrentCellsByArea = (o: SelectArea, cellsMap: CellMap) => {
     })
 }
 
-export const getScrollWidthAndHeight = (cellsMap: CellMap,rowStopIndex:number,columnStopIndex:number) => {
+export const getScrollWidthAndHeight = (
+    cellsMap: CellMap,
+    rowStopIndex: number,
+    columnStopIndex: number
+) => {
     var key1 = '0:' + columnStopIndex
     var key2 = rowStopIndex + ':0'
     var w: any = cellsMap[key1]
@@ -118,10 +122,9 @@ export const getScrollWidthAndHeight = (cellsMap: CellMap,rowStopIndex:number,co
     } else {
         return {
             swidth: 0,
-            sheight: 0
+            sheight: 0,
         }
     }
-    
 }
 
 export const getCurrentCellByNextRight = (
@@ -170,7 +173,12 @@ export const clearCellFromat = (cell: CellAttrs) => {
     cell!.fontItalic = undefined
     cell!.textDecoration = undefined
 }
-export const generaCell = (prev: CellMap = {},rowStopIndex:number,columnStopIndex:number,prevFunc:PrevFunc = {}) => {
+export const generaCell = (
+    prev: CellMap = {},
+    rowStopIndex: number,
+    columnStopIndex: number,
+    prevFunc: PrevFunc = {}
+) => {
     const getRowOffset = (
         rowIndex: number,
         columnIndex: number,
@@ -209,7 +217,7 @@ export const generaCell = (prev: CellMap = {},rowStopIndex:number,columnStopInde
         return cur ? cur.height : v
     }
 
-    const getColumnWidth = (type: string, k: string,isFirst?:boolean) => {
+    const getColumnWidth = (type: string, k: string, isFirst?: boolean) => {
         let v = 0
         if (type == 'header') {
             v = headerCell.width
@@ -221,8 +229,8 @@ export const generaCell = (prev: CellMap = {},rowStopIndex:number,columnStopInde
             v = normalCell.width
         }
 
-        const cur = prev['0:'+k.split(':')[1]]
-        return cur&&!isFirst ? cur.width : v
+        const cur = prev['0:' + k.split(':')[1]]
+        return cur && !isFirst ? cur.width : v
     }
 
     const getType = (rowIndex: number, columnIndex: number) => {
@@ -246,13 +254,8 @@ export const generaCell = (prev: CellMap = {},rowStopIndex:number,columnStopInde
         return singleCell.fill
     }
 
-
     var map: CellMap = {}
-    for (
-        let rowIndex: number = 0;
-        rowIndex <= rowStopIndex;
-        rowIndex++
-    ) {
+    for (let rowIndex: number = 0; rowIndex <= rowStopIndex; rowIndex++) {
         for (
             let columnIndex: number = 0;
             columnIndex <= columnStopIndex;
@@ -264,53 +267,50 @@ export const generaCell = (prev: CellMap = {},rowStopIndex:number,columnStopInde
 
             const y = getRowOffset(rowIndex, columnIndex, map)
 
-        
             const ownKey = rowIndex + ':' + columnIndex
-
-
-
 
             let k = ownKey
             if (prevFunc.getPrevK) {
-                k = prevFunc.getPrevK(rowIndex,columnIndex)
+                k = prevFunc.getPrevK(rowIndex, columnIndex)
             }
 
-            const dealFirst = prevFunc.getPrevV && (rowIndex == 1 || columnIndex == 1)
+            const dealFirst =
+                prevFunc.getPrevV && (rowIndex == 1 || columnIndex == 1)
 
-            const width = getColumnWidth(type, k,dealFirst)
+            const width = getColumnWidth(type, k, dealFirst)
 
             const height = getRowHeight(type, k)
 
-            let isMerge = prev[k]?.isMerge||undefined
+            let isMerge = prev[k]?.isMerge || undefined
             if (prevFunc.getMerge) {
-                isMerge = prevFunc.getMerge(isMerge,rowIndex,columnIndex)
+                isMerge = prevFunc.getMerge(isMerge, rowIndex, columnIndex)
             }
 
             // 增加单元格时不需要复制得内容
-            let noCopyAttr:any = {
-                
-                verticalAlign:  prev[k]?.verticalAlign || undefined,
-                textColor:  prev[k]?.textColor || undefined,
-                fontWeight:  prev[k]?.fontWeight || undefined,
-                align:  prev[k]?.align || undefined,
-                fontSize:  prev[k]?.fontSize || undefined,
-                fontFamily:  prev[k]?.fontFamily || undefined,
+            let noCopyAttr: any = {
+                verticalAlign: prev[k]?.verticalAlign || undefined,
+                textColor: prev[k]?.textColor || undefined,
+                fontWeight: prev[k]?.fontWeight || undefined,
+                align: prev[k]?.align || undefined,
+                fontSize: prev[k]?.fontSize || undefined,
+                fontFamily: prev[k]?.fontFamily || undefined,
                 fontItalic: prev[k]?.fontItalic || undefined,
-                textDecoration:  prev[k]?.textDecoration || undefined,
-                imgUrl:  prev[k]?.imgUrl || undefined,
-                imgLoaded:  prev[k]?.imgLoaded || undefined,
-                noEdit:  prev[k]?.noEdit || undefined,
-                value :  prev[k]?.value || undefined
+                textDecoration: prev[k]?.textDecoration || undefined,
+                imgUrl: prev[k]?.imgUrl || undefined,
+                imgLoaded: prev[k]?.imgLoaded || undefined,
+                noEdit: prev[k]?.noEdit || undefined,
+                value: prev[k]?.value || undefined,
             }
-
 
             if (prevFunc.getPrevV) {
                 for (var key in noCopyAttr) {
-                    noCopyAttr[key] = prevFunc.getPrevV(noCopyAttr[key],rowIndex,columnIndex)
+                    noCopyAttr[key] = prevFunc.getPrevV(
+                        noCopyAttr[key],
+                        rowIndex,
+                        columnIndex
+                    )
                 }
             }
-
-
 
             map[ownKey] = {
                 x,
@@ -320,9 +320,13 @@ export const generaCell = (prev: CellMap = {},rowStopIndex:number,columnStopInde
                 type: type,
                 ownKey: ownKey,
                 isMerge: dealFirst ? undefined : isMerge,
-                fill: dealFirst ? getFill(type) : prev[k]?.fill || getFill(type),
-                borderStyle :  dealFirst ? undefined : prev[k]?.borderStyle || undefined,
-                ...noCopyAttr
+                fill: dealFirst
+                    ? getFill(type)
+                    : prev[k]?.fill || getFill(type),
+                borderStyle: dealFirst
+                    ? undefined
+                    : prev[k]?.borderStyle || undefined,
+                ...noCopyAttr,
             }
         }
     }

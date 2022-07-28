@@ -44,21 +44,17 @@ const HeaderCell = React.memo((props: any) => {
         y = props.y + 0
 
     let num = Number(ownKey.split(':')[1])
-    
 
     let text = String.fromCharCode(num + 64)
     let c = Math.ceil(num / 26)
     if (c > 1) {
         var str = ''
-        for (var i = 1 ; i <= c ; i++) {
-
-            str = str + String.fromCharCode((num>26 ? 1 : num) + 64)
+        for (var i = 1; i <= c; i++) {
+            str = str + String.fromCharCode((num > 26 ? 1 : num) + 64)
             num = num - 26
         }
         text = str
     }
-
-    
 
     const cellStore = useContext(CellStoreContext)
 
