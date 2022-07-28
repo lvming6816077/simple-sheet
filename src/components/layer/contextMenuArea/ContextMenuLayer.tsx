@@ -72,9 +72,9 @@ const ContextMenuLayer = (props: IProps) => {
                 menuClassName="border-menu"
                 onClose={() => toggleMenu(false)}
             >
-                <MenuItem>剪切（Ctrl+X）</MenuItem>
-                <MenuItem>复制（Ctrl+C）</MenuItem>
-                <MenuItem>粘贴（Ctrl+V）</MenuItem>
+                <MenuItem disabled={true}>剪切（Ctrl+X）</MenuItem>
+                <MenuItem disabled={true}>复制（Ctrl+C）</MenuItem>
+                <MenuItem disabled={true}>粘贴（Ctrl+V）</MenuItem>
                 <MenuDivider />
                 {/* <MenuItem>
                     <div className={styles['border-item']} onClick={()=>addRow('up')}>

@@ -427,7 +427,7 @@ const ToolBar = (props: IProps) => {
                     </div>
                 }
             >
-                <MenuItem onClick={() => verticalAlignCell('top')}>
+                <MenuItem  onClick={() => verticalAlignCell('top')}>
                     <div className={styles['cell-v-align-top']}></div>
                 </MenuItem>
                 <MenuItem onClick={() => verticalAlignCell('middle')}>
