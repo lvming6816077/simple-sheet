@@ -43,7 +43,22 @@ const HeaderCell = React.memo((props: any) => {
     let x = props.x + 0,
         y = props.y + 0
 
-    let text = String.fromCharCode(Number(ownKey.split(':')[1]) + 64)
+    let num = Number(ownKey.split(':')[1])
+    
+
+    let text = String.fromCharCode(num + 64)
+    let c = Math.ceil(num / 26)
+    if (c > 1) {
+        var str = ''
+        for (var i = 1 ; i <= c ; i++) {
+
+            str = str + String.fromCharCode((num>26 ? 1 : num) + 64)
+            num = num - 26
+        }
+        text = str
+    }
+
+    
 
     const cellStore = useContext(CellStoreContext)
 
@@ -89,6 +104,7 @@ const HeaderCell = React.memo((props: any) => {
                 fontSize={fontSize}
                 hitStrokeWidth={0}
                 type={type}
+                ownKey={ownKey}
             />
 
             <DraggableRect

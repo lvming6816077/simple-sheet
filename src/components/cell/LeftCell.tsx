@@ -89,6 +89,7 @@ const LeftCell = React.memo((props: any) => {
                 type={type}
                 fontSize={fontSize}
                 hitStrokeWidth={0}
+                ownKey={ownKey}
             />
             <DraggableRect
                 {...props}

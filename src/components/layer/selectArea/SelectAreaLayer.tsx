@@ -192,7 +192,6 @@ const SelectAreaLayer = (props: any) => {
             cellStore.cellsMap,
             true
         )
-        console.log(cur)
 
         setActiveCell(cur)
         setSelectArea(null)

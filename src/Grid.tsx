@@ -153,6 +153,7 @@ const Grid = observer(
             onMouseMove:(
                 e: KonvaEventObject<MouseEvent>
             ) => {
+
                 setMV({
                     ...e.target.attrs,
                     value: e.target.attrs.text,
@@ -213,6 +214,7 @@ const Grid = observer(
                                     onDblClick={(
                                         e: KonvaEventObject<MouseEvent>
                                     ) => {
+                                        if ((e.evt.button == 2)) return // 鼠标左键
                                         setDBC({
                                             ...e.target.attrs,
                                             value: e.target.attrs.text,

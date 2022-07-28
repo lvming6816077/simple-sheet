@@ -37,12 +37,21 @@ const ContextMenuLayer = (props: IProps) => {
 
     const addRow = (type:string)=>{
         let cur = getCurrentCellByOwnKey(rc!.ownKey,cellStore.cellsMap,true)
-        console.log(cur)
-        // debugger
+
         if (type == 'up') {
 
         } else {
             cellStore.addCellRowBelow(cur!.ownKey)
+        }
+        
+    }
+    const addCol = (type:string)=>{
+        let cur = getCurrentCellByOwnKey(rc!.ownKey,cellStore.cellsMap,true)
+
+        if (type == 'right') {
+            cellStore.addCellRowRight(cur!.ownKey)
+        } else {
+            
         }
         
     }
@@ -63,7 +72,7 @@ const ContextMenuLayer = (props: IProps) => {
                 <MenuItem>复制（Ctrl+C）</MenuItem>
                 <MenuItem>粘贴（Ctrl+V）</MenuItem>
                 <MenuDivider />
-                <MenuItem>
+                {/* <MenuItem>
                     <div className={styles['border-item']} onClick={()=>addRow('up')}>
                         <div
                             className={`${styles['item-icon-insert-1']} ${styles['icon-item']}`}
@@ -71,7 +80,7 @@ const ContextMenuLayer = (props: IProps) => {
                         <div className={styles['item-text']}>插入一行（上）</div>
                     </div>
                 
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem>
                     <div className={styles['border-item']} onClick={()=>addRow('below')}>
                         <div
@@ -81,7 +90,7 @@ const ContextMenuLayer = (props: IProps) => {
                     </div>
                 
                 </MenuItem>
-                <MenuItem>
+                {/* <MenuItem>
                     <div className={styles['border-item']}>
                         <div
                             className={`${styles['item-icon-insert-3']} ${styles['icon-item']}`}
@@ -89,9 +98,9 @@ const ContextMenuLayer = (props: IProps) => {
                         <div className={styles['item-text']}>插入一列（左）</div>
                     </div>
                 
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem>
-                    <div className={styles['border-item']}>
+                    <div className={styles['border-item']} onClick={()=>addCol('right')}>
                         <div
                             className={`${styles['item-icon-insert-4']} ${styles['icon-item']}`}
                         ></div>
