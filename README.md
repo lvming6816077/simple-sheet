@@ -4,7 +4,7 @@
 </div>
 
 # 【Simple Sheet】一款高性能的在线表格EXCEL文档系统
-[![React](https://img.shields.io/badge/React-17.0.0-brightgreen)](https://redis.io/)
+[![React](https://img.shields.io/badge/React-18.0.0-brightgreen)](https://reactjs.org/)
 [![Mobx](https://img.shields.io/badge/Mobx-5.9.0-brightgreen)](https://mobx.js.org/react-integration.html)
 [![React Konva](https://img.shields.io/badge/React%20Konva-18.3.2-brightgreen)](https://konvajs.org/docs/react/index.html)
 
@@ -20,7 +20,9 @@
 ## 技术栈
 
 
-React.js+Mobx+TypeScript 
+React.js+Mobx+TypeScript
+
+相关博文：[前端在线文档技术解析](https://juejin.cn/post/7125360490347397127)
 
 
 ## 展示效果
