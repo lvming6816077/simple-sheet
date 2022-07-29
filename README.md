@@ -20,7 +20,9 @@
 ## 技术栈
 
 
-React.js+Mobx+TypeScript 
+React.js+Mobx+TypeScript
+
+相关博文：[前端在线文档技术解析](https://juejin.cn/post/7125360490347397127)
 
 
 ## 展示效果
