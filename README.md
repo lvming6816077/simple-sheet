@@ -4,7 +4,7 @@
 </div>
 
 # 【Simple Sheet】一款高性能的在线表格EXCEL文档系统
-[![React](https://img.shields.io/badge/React-17.0.0-brightgreen)](https://redis.io/)
+[![React](https://img.shields.io/badge/React-18.0.0-brightgreen)](https://reactjs.org/)
 [![Mobx](https://img.shields.io/badge/Mobx-5.9.0-brightgreen)](https://mobx.js.org/react-integration.html)
 [![React Konva](https://img.shields.io/badge/React%20Konva-18.3.2-brightgreen)](https://konvajs.org/docs/react/index.html)
 
