@@ -154,6 +154,16 @@ export const getCurrentCellByPrevLeft = (
 
     return cellsMap[r + ':' + c]
 }
+const checkLeftByKey = (ownKey:string)=>{
+    var c = Number(ownKey.split(':')[1])
+
+    return c == 0
+}
+const checkHeaderByKey = (ownKey:string)=>{
+    var r = Number(ownKey.split(':')[0])
+
+    return r == 0 
+}
 export const getCurrentCellByPrevTop = (cell: CellAttrs, cellsMap: CellMap) => {
     var r = Number(cell?.ownKey.split(':')[0]) - 1
     var c = Number(cell?.ownKey.split(':')[1])
@@ -213,11 +223,11 @@ export const generaCell = (
             v = normalCell.height
         }
 
-        const cur = prev[k]
+        const cur = prev[k.split(':')[0] + ':0']
         return cur ? cur.height : v
     }
 
-    const getColumnWidth = (type: string, k: string, isFirst?: boolean) => {
+    const getColumnWidth = (type: string, k: string, isFirst?:boolean) => {
         let v = 0
         if (type == 'header') {
             v = headerCell.width
@@ -228,9 +238,12 @@ export const generaCell = (
         } else {
             v = normalCell.width
         }
+        if (checkLeftByKey(k) && isFirst) {
+            return v
+        }
 
         const cur = prev['0:' + k.split(':')[1]]
-        return cur && !isFirst ? cur.width : v
+        return cur ? cur.width : v
     }
 
     const getType = (rowIndex: number, columnIndex: number) => {
@@ -275,7 +288,7 @@ export const generaCell = (
             }
 
             const dealFirst =
-                prevFunc.getPrevV && (rowIndex == 1 || columnIndex == 1)
+                prevFunc.getPrevV && (checkHeaderByKey(k)||checkLeftByKey(k))
 
             const width = getColumnWidth(type, k, dealFirst)
 

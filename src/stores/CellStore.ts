@@ -381,7 +381,7 @@ export class CellStore {
                 res[1] = getPrevMergeK(lastRow, lastCol, 'last')
 
                 // 发现上一个是merge，就清除
-                if (columnIndex - 1 == col && columnIndex == col) {
+                if (columnIndex - 1 == col && lastCol == col) {
                     return undefined
                 }
             }
