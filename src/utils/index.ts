@@ -105,6 +105,58 @@ export const getCurrentCellsByArea = (o: SelectArea, cellsMap: CellMap) => {
     })
 }
 
+export const getCellCopyAttr = (cur?:CellAttrs) =>{
+    const o = {
+        verticalAlign:cur!.verticalAlign,
+        textColor:cur!.textColor,
+        textDecoration:cur!.textDecoration,
+        value:cur!.value,
+        borderStyle:cur!.borderStyle,
+        align:cur!.align,
+        fill:cur!.fill,
+        fontFamily:cur!.fontFamily,
+        fontItalic:cur!.fontItalic,
+        fontSize:cur!.fontSize,
+        fontWeight:cur!.fontWeight,
+        imgLoaded:cur!.imgLoaded,
+        imgUrl:cur!.imgUrl,
+        ownKey:cur!.ownKey
+
+    }
+
+    return o
+}
+
+// 二维矩阵cell数据
+export const getCurrentCellsRectByArea = (o: SelectArea, cellsMap: CellMap) => {
+
+    let list = getCurrentCellsByArea(o,cellsMap)
+    let first = list[0],last = list[list.length-1];
+
+    let firstRow = Number(first!.ownKey.split(':')[0])
+    let firstCol = Number(first!.ownKey.split(':')[1])
+
+    let lastRow = Number(last!.ownKey.split(':')[0])
+
+    let lastCol = Number(last!.ownKey.split(':')[1])
+
+
+    let m = lastRow - firstRow
+    let n = lastCol - firstCol
+    let arr = []
+
+    for (var i = 0 ; i <= m ; i++) {
+        var k = []
+        for (var j = 0 ; j <= n ; j++) {
+
+            k.push(getCellCopyAttr(_.find(list,{ownKey:(i+firstRow)+':'+(j+firstCol)})))
+        }
+        arr.push(k)
+    }
+
+    return arr
+}
+
 export const getScrollWidthAndHeight = (
     cellsMap: CellMap,
     rowStopIndex: number,
@@ -154,15 +206,15 @@ export const getCurrentCellByPrevLeft = (
 
     return cellsMap[r + ':' + c]
 }
-const checkLeftByKey = (ownKey:string)=>{
+const checkLeftByKey = (ownKey: string) => {
     var c = Number(ownKey.split(':')[1])
 
     return c == 0
 }
-const checkHeaderByKey = (ownKey:string)=>{
+const checkHeaderByKey = (ownKey: string) => {
     var r = Number(ownKey.split(':')[0])
 
-    return r == 0 
+    return r == 0
 }
 export const getCurrentCellByPrevTop = (cell: CellAttrs, cellsMap: CellMap) => {
     var r = Number(cell?.ownKey.split(':')[0]) - 1
@@ -183,6 +235,34 @@ export const clearCellFromat = (cell: CellAttrs) => {
     cell!.fontItalic = undefined
     cell!.textDecoration = undefined
 }
+// export const copyToClipboard = (text:string) => {
+//     // 创建一个文本域 
+//     const textArea = document.createElement('textarea')
+//     // 隐藏掉这个文本域，使其在页面上不显示	
+//     textArea.style.position = 'fixed'
+//     textArea.style.visibility = '-10000px'
+//     // 将需要复制的内容赋值给文本域
+//     textArea.value = text
+//     // 将这个文本域添加到页面上
+//     document.body.appendChild(textArea)
+//     // 添加聚焦事件，写了可以鼠标选取要复制的内容
+//     textArea.focus()
+//     // 选取文本域内容
+//     textArea.select()
+  
+//     if (!document.execCommand('copy')) { // 检测浏览器是否支持这个方法
+//       console.warn('浏览器不支持 document.execCommand("copy")')
+//       // 复制失败将构造的标签 移除
+//       document.body.removeChild(textArea)
+//       return false
+//     } else {
+//         console.log("复制成功")
+//         // 复制成功后再将构造的标签 移除
+//       document.body.removeChild(textArea)
+//       return true
+//     }
+//   }
+
 export const generaCell = (
     prev: CellMap = {},
     rowStopIndex: number,
@@ -227,7 +307,7 @@ export const generaCell = (
         return cur ? cur.height : v
     }
 
-    const getColumnWidth = (type: string, k: string, isFirst?:boolean) => {
+    const getColumnWidth = (type: string, k: string, isFirst?: boolean) => {
         let v = 0
         if (type == 'header') {
             v = headerCell.width
@@ -261,7 +341,7 @@ export const generaCell = (
             return leftCell.fill
         }
         if (type == 'normal') {
-            return normalCell.fill
+            return undefined
         }
 
         return singleCell.fill
@@ -288,7 +368,7 @@ export const generaCell = (
             }
 
             const dealFirst =
-                prevFunc.getPrevV && (checkHeaderByKey(k)||checkLeftByKey(k))
+                prevFunc.getPrevV && (checkHeaderByKey(k) || checkLeftByKey(k))
 
             const width = getColumnWidth(type, k, dealFirst)
 
@@ -312,7 +392,7 @@ export const generaCell = (
                 imgUrl: prev[k]?.imgUrl || undefined,
                 imgLoaded: prev[k]?.imgLoaded || undefined,
                 noEdit: prev[k]?.noEdit || undefined,
-                value: prev[k]?.value || undefined,
+                value:prev[k]?.value || undefined,
             }
 
             if (prevFunc.getPrevV) {

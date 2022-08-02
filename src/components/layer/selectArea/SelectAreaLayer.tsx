@@ -28,10 +28,12 @@ import {
     leftCell,
     normalCell,
 } from '@/utils/constants'
-import SelectFill from './components/SelectFill'
+import SelectFill from './components/selectFill/SelectFill'
 import { FloatImageStoreContext } from '@/stores/FloatImageStore'
 import { ToolBarStoreContext } from '@/stores/ToolBarStore'
 import { useSize } from '@/hooks/useSize'
+import { CopyStoreContext } from '@/stores/CopyStore'
+import CopyArea from './components/copyArea/CopyArea'
 
 interface IProps {}
 
@@ -41,9 +43,12 @@ const SelectAreaLayer = (props: any) => {
     const cellStore = useContext(CellStoreContext)
     const toolbarStore = useContext(ToolBarStoreContext)
     const floatImageStore = useContext(FloatImageStoreContext)
+    // const copyStore = useContext(CopyStoreContext)
 
     const selectArea = cellStore.selectArea
     const setSelectArea = cellStore.setSelectArea
+
+    // const copyArea = copyStore.currentCopyArea
 
     const getSelectAreaCell: CSSProperties = useMemo(() => {
         var style: CSSProperties = {
@@ -321,6 +326,8 @@ const SelectAreaLayer = (props: any) => {
                         }
                     ></div>
                 </div>
+
+                <CopyArea></CopyArea>
             </div>
         </div>
     )

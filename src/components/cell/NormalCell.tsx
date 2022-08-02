@@ -26,7 +26,7 @@ const Cell = React.memo((props: any) => {
         y = 0,
         width,
         height,
-        fill = 'white',
+        fill = normalCell.fill,
         strokeWidth = 1,
         stroke = '#d9d9d9',
         align = 'left',

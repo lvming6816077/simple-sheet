@@ -22,6 +22,7 @@ import {
     columnStopIndex,
 } from '@/utils/constants'
 import { getCurrentCellByOwnKey, getCurrentCellByXY } from '@/utils/index'
+import { CopyStoreContext } from '@/stores/CopyStore'
 
 interface IProps {}
 

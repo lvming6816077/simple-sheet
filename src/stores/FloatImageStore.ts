@@ -52,7 +52,6 @@ class FloatImageStore {
     changeFloatImage(o: FloatImage) {
         const index = _.findIndex(this.floatImage, { id: o.id })
         this.floatImage[index] = o
-
     }
 }
 

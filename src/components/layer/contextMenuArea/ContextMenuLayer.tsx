@@ -21,6 +21,7 @@ import {
     MenuItem,
     useMenuState,
 } from '@szhsin/react-menu'
+import { CopyStoreContext } from '@/stores/CopyStore'
 
 interface IProps {}
 
@@ -30,6 +31,7 @@ const ContextMenuLayer = (props: IProps) => {
     const [menuProps, toggleMenu] = useMenuState()
     const mouseEventStore = useContext(MouseEventStoreContext)
     const rc = mouseEventStore.rcCellAttr
+    const copyStore = useContext(CopyStoreContext)
     useEffect(() => {
         if (!rc) return
 
@@ -73,8 +75,8 @@ const ContextMenuLayer = (props: IProps) => {
                 onClose={() => toggleMenu(false)}
             >
                 <MenuItem disabled={true}>剪切（Ctrl+X）</MenuItem>
-                <MenuItem disabled={true}>复制（Ctrl+C）</MenuItem>
-                <MenuItem disabled={true}>粘贴（Ctrl+V）</MenuItem>
+                <MenuItem onClick={()=>copyStore.copyCurrentCells(cellStore)}>复制（Ctrl+C）</MenuItem>
+                <MenuItem onClick={()=>copyStore.pasteCurrentCells(cellStore)}>粘贴（Ctrl+V）</MenuItem>
                 <MenuDivider />
                 {/* <MenuItem>
                     <div className={styles['border-item']} onClick={()=>addRow('up')}>

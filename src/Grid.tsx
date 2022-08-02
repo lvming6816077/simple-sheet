@@ -1,5 +1,6 @@
 import React, {
     CSSProperties,
+    KeyboardEventHandler,
     useCallback,
     useContext,
     useEffect,
@@ -45,6 +46,7 @@ import { FloatImageStoreContext } from './stores/FloatImageStore'
 import ContextMenuLayer from './components/layer/contextMenuArea/ContextMenuLayer'
 import Viewer from 'react-viewer'
 import { useSize } from './hooks/useSize'
+import { CopyStoreContext } from './stores/CopyStore'
 
 export interface GridProps {
     width?: number
@@ -81,6 +83,7 @@ const Grid = observer(
         const cellStore = useContext(CellStoreContext)
         const toolbarStore = useContext(ToolBarStoreContext)
         const floatImageStore = useContext(FloatImageStoreContext)
+        const copyStore = useContext(CopyStoreContext)
 
         var cellsMap = cellStore.cellsMap
 
@@ -166,7 +169,17 @@ const Grid = observer(
             },
         }
 
-        const [visible, setVisible] = React.useState(false)
+        const onKeyDown = (event:React.KeyboardEvent<HTMLDivElement>) => {
+
+            if (event.ctrlKey && event.keyCode === 67) {
+                // console.log('你按下了CTRL+C')
+                copyStore.copyCurrentCells(cellStore)
+            }
+            if (event.ctrlKey && event.keyCode === 86) {
+                // console.log('你按下了CTRL+V')
+                copyStore.pasteCurrentCells(cellStore)
+            }
+        }
 
         return (
             <div
@@ -179,7 +192,10 @@ const Grid = observer(
                         width: width,
                         height: height,
                         position: 'relative',
+                        outline: 'none',
                     }}
+                    tabIndex={1}
+                    onKeyDown={onKeyDown}
                 >
                     <div
                         style={{
@@ -191,6 +207,7 @@ const Grid = observer(
                         ref={wheelRef}
                     >
                         <Stage
+                            onKeyDown={onKeyDown}
                             width={width}
                             height={height}
                             ref={stageRef}

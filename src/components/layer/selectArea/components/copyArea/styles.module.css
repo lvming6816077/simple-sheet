@@ -1,0 +1,19 @@
+.copy-area {
+
+    position: absolute
+}
+
+:global .dash-animation :local {
+    animation-name:ring;
+    animation-duration:160s;
+    animation-timing-function: linear;
+    animation-iteration-count:infinite;
+}
+@keyframes ring {
+    from {
+        stroke-dashoffset:0;
+    }
+    to {
+        stroke-dashoffset:6000;
+    }
+}
