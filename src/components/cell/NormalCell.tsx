@@ -21,14 +21,13 @@ import SingleCell from './SingleCell'
 interface IProps {}
 
 const Cell = React.memo((props: any) => {
+    console.log(props.fill)
     const {
         x = 0,
         y = 0,
         width,
         height,
-        fill = normalCell.fill,
-        strokeWidth = 1,
-        stroke = '#d9d9d9',
+        fill,
         align = 'left',
         verticalAlign = 'middle',
         textColor = '#333',
@@ -131,7 +130,7 @@ const Cell = React.memo((props: any) => {
                 height={height}
                 width={width}
                 fill={fill}
-                stroke={stroke}
+                stroke={fill || '#d9d9d9'}
                 type={type}
                 strokeWidth={isMerge ? 0 : 0.5}
                 isMerge={isMerge}

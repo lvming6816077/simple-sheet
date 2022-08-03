@@ -229,6 +229,12 @@
     background-image: url('./imgs/insert-img.png');
     background-size: cover;
 }
+.clear-cell {
+    width: 16px;
+    height: 16px;
+    background-image: url('./imgs/clear.png');
+    background-size: cover;
+}
 .item-icon-insert-1 {
     background-image: url('./imgs/computer.png');
 }

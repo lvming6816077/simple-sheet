@@ -233,7 +233,7 @@ export const clearCellFromat = (cell: CellAttrs) => {
     cell!.fontFamily = undefined
     cell!.textColor = undefined
     cell!.verticalAlign = undefined
-    cell!.fill = normalCell.fill
+    cell!.fill = undefined
     cell!.align = undefined
     cell!.fontSize = undefined
     cell!.fontItalic = undefined

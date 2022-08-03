@@ -65,6 +65,9 @@ const ToolBar = (props: IProps) => {
     const textItalicCell = () => {
         toolbarStore.textItalicCell(cellStore)
     }
+    const clearCell = ()=>{
+        toolbarStore.clearCell(cellStore)
+    }
 
     const textUnderLineCell = () => {
         toolbarStore.textUnderlineCell(cellStore)
@@ -273,6 +276,7 @@ const ToolBar = (props: IProps) => {
 
             <div className={styles.divider}></div>
 
+
             <Menu
                 menuClassName="border-menu no"
                 menuButton={
@@ -323,6 +327,9 @@ const ToolBar = (props: IProps) => {
                     onClick={textUnderLineCell}
                     data-tip="下划线"
                 ></div>
+            </div>
+            <div className={styles['btn-wrap']}>
+                <div className={styles['clear-cell']} data-tip="清除格式" onClick={clearCell}></div>
             </div>
             <div className={styles['btn-wrap']}>
                 <div

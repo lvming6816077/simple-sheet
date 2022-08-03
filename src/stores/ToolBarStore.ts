@@ -7,6 +7,7 @@ import {
     getCurrentCellByOwnKey,
     getCurrentCellByXY,
     getCellsByMergeKey,
+    clearCellFromat,
 } from '@/utils'
 
 import {
@@ -445,6 +446,32 @@ class ToolBarStore {
         }
 
         cell!.imgUrl = img
+    }
+
+    @action.bound
+    clearCell(cellStore: CellStore){
+        if (cellStore.selectArea) {
+            let cells = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            cells.forEach((i) => {
+                clearCellFromat(i)
+            })
+        } else if (cellStore.activeCell) {
+            var isMerge = cellStore.activeCell.isMerge
+            let cell = null
+            if (isMerge) {
+                cell = getCurrentCellByOwnKey(isMerge[1], cellStore.cellsMap)
+            } else {
+                cell = getCurrentCellByOwnKey(
+                    cellStore.activeCell.ownKey,
+                    cellStore.cellsMap
+                )
+            }
+            clearCellFromat(cell)
+
+        }
     }
 
     @observable

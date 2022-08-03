@@ -11,7 +11,7 @@ import React, {
 } from 'react'
 // import styles from "./styles.module.css";
 
-import { Stage, Layer, Group, Text } from 'react-konva'
+import { Stage, Layer, Group, Text, Rect } from 'react-konva'
 import Cell from '@/components/cell/Cell'
 import { KonvaEventObject } from 'konva/lib/Node'
 import SelectAreaLayer from '@/components/layer/selectArea/SelectAreaLayer'
@@ -230,6 +230,7 @@ const Grid = observer(
                             width={width}
                             height={height}
                             ref={stageRef}
+                            
                             zIndex={4}
                             onContextMenu={(
                                 e: KonvaEventObject<PointerEvent>
@@ -258,6 +259,12 @@ const Grid = observer(
                                         } as CellAttrs)
                                     }}
                                 >
+                                    {/* // 白色背景 */}
+                                    <Rect
+                                        width={swidth}
+                                        height={sheight}
+                                        fill={'#fff'}
+                                    ></Rect>
                                     {normal.map((o) => (
                                         <Cell {...o} key={o?.ownKey}></Cell>
                                     ))}
