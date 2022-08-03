@@ -105,23 +105,22 @@ export const getCurrentCellsByArea = (o: SelectArea, cellsMap: CellMap) => {
     })
 }
 
-export const getCellCopyAttr = (cur?:CellAttrs) =>{
+export const getCellCopyAttr = (cur?: CellAttrs) => {
     const o = {
-        verticalAlign:cur!.verticalAlign,
-        textColor:cur!.textColor,
-        textDecoration:cur!.textDecoration,
-        value:cur!.value,
-        borderStyle:cur!.borderStyle,
-        align:cur!.align,
-        fill:cur!.fill,
-        fontFamily:cur!.fontFamily,
-        fontItalic:cur!.fontItalic,
-        fontSize:cur!.fontSize,
-        fontWeight:cur!.fontWeight,
+        verticalAlign: cur!.verticalAlign,
+        textColor: cur!.textColor,
+        textDecoration: cur!.textDecoration,
+        value: cur!.value,
+        borderStyle: cur!.borderStyle,
+        align: cur!.align,
+        fill: cur!.fill,
+        fontFamily: cur!.fontFamily,
+        fontItalic: cur!.fontItalic,
+        fontSize: cur!.fontSize,
+        fontWeight: cur!.fontWeight,
         // imgLoaded:cur!.imgLoaded,
-        imgUrl:cur!.imgUrl,
-        ownKey:cur!.ownKey
-
+        imgUrl: cur!.imgUrl,
+        ownKey: cur!.ownKey,
     }
 
     return o
@@ -129,9 +128,9 @@ export const getCellCopyAttr = (cur?:CellAttrs) =>{
 
 // 二维矩阵cell数据
 export const getCurrentCellsRectByArea = (o: SelectArea, cellsMap: CellMap) => {
-
-    let list = getCurrentCellsByArea(o,cellsMap)
-    let first = list[0],last = list[list.length-1];
+    let list = getCurrentCellsByArea(o, cellsMap)
+    let first = list[0],
+        last = list[list.length - 1]
 
     let firstRow = Number(first!.ownKey.split(':')[0])
     let firstCol = Number(first!.ownKey.split(':')[1])
@@ -140,16 +139,20 @@ export const getCurrentCellsRectByArea = (o: SelectArea, cellsMap: CellMap) => {
 
     let lastCol = Number(last!.ownKey.split(':')[1])
 
-
     let m = lastRow - firstRow
     let n = lastCol - firstCol
     let arr = []
 
-    for (var i = 0 ; i <= m ; i++) {
+    for (var i = 0; i <= m; i++) {
         var k = []
-        for (var j = 0 ; j <= n ; j++) {
-
-            k.push(getCellCopyAttr(_.find(list,{ownKey:(i+firstRow)+':'+(j+firstCol)})))
+        for (var j = 0; j <= n; j++) {
+            k.push(
+                getCellCopyAttr(
+                    _.find(list, {
+                        ownKey: i + firstRow + ':' + (j + firstCol),
+                    })
+                )
+            )
         }
         arr.push(k)
     }
@@ -236,9 +239,9 @@ export const clearCellFromat = (cell: CellAttrs) => {
     cell!.textDecoration = undefined
 }
 // export const copyToClipboard = (text:string) => {
-//     // 创建一个文本域 
+//     // 创建一个文本域
 //     const textArea = document.createElement('textarea')
-//     // 隐藏掉这个文本域，使其在页面上不显示	
+//     // 隐藏掉这个文本域，使其在页面上不显示
 //     textArea.style.position = 'fixed'
 //     textArea.style.visibility = '-10000px'
 //     // 将需要复制的内容赋值给文本域
@@ -249,7 +252,7 @@ export const clearCellFromat = (cell: CellAttrs) => {
 //     textArea.focus()
 //     // 选取文本域内容
 //     textArea.select()
-  
+
 //     if (!document.execCommand('copy')) { // 检测浏览器是否支持这个方法
 //       console.warn('浏览器不支持 document.execCommand("copy")')
 //       // 复制失败将构造的标签 移除
@@ -392,7 +395,7 @@ export const generaCell = (
                 imgUrl: prev[k]?.imgUrl || undefined,
                 imgLoaded: prev[k]?.imgLoaded || undefined,
                 noEdit: prev[k]?.noEdit || undefined,
-                value:prev[k]?.value || undefined,
+                value: prev[k]?.value || undefined,
             }
 
             if (prevFunc.getPrevV) {

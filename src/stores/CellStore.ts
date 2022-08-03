@@ -45,11 +45,9 @@ export type CellAttrs = {
     noEdit?: boolean
 } | null
 
-
-
 export type MouseClick =
     | ({
-        rightClick?:boolean
+          rightClick?: boolean
       } & CellAttrs)
     | null
 
@@ -455,7 +453,6 @@ export class CellStore {
 
     @action.bound
     setSelectArea(o: SelectArea) {
-        
         this.selectArea = o
     }
 
@@ -499,9 +496,7 @@ export class CellStore {
     selectEnd: CellAttrs = null
 
     @observable
-    editCell:CellAttrs = null
-
-
+    editCell: CellAttrs = null
 
     //   @computed
     //   get getcells() {

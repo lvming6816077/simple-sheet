@@ -20,7 +20,12 @@ import { MouseEventStoreContext } from '@/stores/MouseEventStore'
 import { observer } from 'mobx-react-lite'
 import { toJS } from 'mobx'
 import EditAreaLayer from './components/layer/editArea/EditAreaLayer'
-import { CellAttrs, CellMap, CellStoreContext, MouseClick } from './stores/CellStore'
+import {
+    CellAttrs,
+    CellMap,
+    CellStoreContext,
+    MouseClick,
+} from './stores/CellStore'
 import _ from 'lodash'
 import ScrollArea from './components/layer/scrollArea/ScrollArea'
 import { generaCell, getScrollWidthAndHeight } from './utils'
@@ -167,12 +172,12 @@ const Grid = observer(
                 setDV({
                     ...e.target.attrs,
                     value: e.target.attrs.text,
-                    rightClick:e.evt.button == 2
+                    rightClick: e.evt.button == 2,
                 } as MouseClick)
             },
         }
 
-        const onKeyDown = (event:React.KeyboardEvent<HTMLDivElement>) => {
+        const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
             if (cellStore.editCell) return
             if (event.ctrlKey && event.keyCode === 67) {
                 console.log('你按下了CTRL+C')
@@ -191,9 +196,8 @@ const Grid = observer(
             if (event.keyCode == 46 || event.keyCode == 8) {
                 console.log('delete')
 
-                copyStore.delCurrentCells(cellStore,floatImageStore)
+                copyStore.delCurrentCells(cellStore, floatImageStore)
             }
-
         }
 
         return (

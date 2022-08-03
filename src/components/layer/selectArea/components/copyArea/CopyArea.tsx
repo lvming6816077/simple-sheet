@@ -89,7 +89,6 @@ const CopyArea = (props: any) => {
     }, [copyStore.currentCopyArea])
 
     useEffect(() => {
-
         // if (copyStore.currentCopyArea) {
         //     var first = getCurrentCellByOwnKey(
         //         cellStore.selectStart!.ownKey,
@@ -108,11 +107,8 @@ const CopyArea = (props: any) => {
         //         left: first!.x,
         //         right: last!.x + last!.width,
         //     }
-
         //     setSelectArea(o)
         // }
-
-
     }, [cellStore.cellsMap])
 
     const mouseEventStore = useContext(MouseEventStoreContext)
@@ -121,7 +117,6 @@ const CopyArea = (props: any) => {
         if (!dbc || !dbc.ownKey || dbc.noEdit) return
 
         copyStore.currentCopyArea = null
-
     }, [dbc])
 
     return <>{getCopyArea}</>

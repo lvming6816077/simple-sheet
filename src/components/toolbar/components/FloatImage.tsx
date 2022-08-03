@@ -90,8 +90,6 @@ const FloatImage = React.memo(
             })
         }
 
-
-
         return (
             <>
                 <Image

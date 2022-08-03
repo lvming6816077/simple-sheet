@@ -50,7 +50,7 @@ export class FloatImageStore {
 
     @action.bound
     removeFloatImage(id: string) {
-        _.remove(this.floatImage,{id:id})
+        _.remove(this.floatImage, { id: id })
     }
 
     @action.bound

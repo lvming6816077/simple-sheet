@@ -73,9 +73,17 @@ const ContextMenuLayer = (props: IProps) => {
                 menuClassName="border-menu"
                 onClose={() => toggleMenu(false)}
             >
-                <MenuItem onClick={()=>copyStore.cutCurrentCells(cellStore)}>剪切（Ctrl+X）</MenuItem>
-                <MenuItem onClick={()=>copyStore.copyCurrentCells(cellStore)}>复制（Ctrl+C）</MenuItem>
-                <MenuItem onClick={()=>copyStore.pasteCurrentCells(cellStore)}>粘贴（Ctrl+V）</MenuItem>
+                <MenuItem onClick={() => copyStore.cutCurrentCells(cellStore)}>
+                    剪切（Ctrl+X）
+                </MenuItem>
+                <MenuItem onClick={() => copyStore.copyCurrentCells(cellStore)}>
+                    复制（Ctrl+C）
+                </MenuItem>
+                <MenuItem
+                    onClick={() => copyStore.pasteCurrentCells(cellStore)}
+                >
+                    粘贴（Ctrl+V）
+                </MenuItem>
                 <MenuDivider />
                 {/* <MenuItem>
                     <div className={styles['border-item']} onClick={()=>addRow('up')}>

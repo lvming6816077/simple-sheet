@@ -190,7 +190,7 @@ const SelectAreaLayer = (props: any) => {
     useEffect(() => {
         floatImageStore.currentTransformerId = ''
         // console.log(mouseEventStore.rcCellAttr)
-        
+
         if (dv?.type != 'normal') return
 
         let cur = getCurrentCellByOwnKey(
@@ -199,10 +199,8 @@ const SelectAreaLayer = (props: any) => {
             true
         )
 
-        
         if (dv?.rightClick) {
             if (activeCell) {
-
             } else {
                 setActiveCell(cur)
             }
@@ -210,7 +208,7 @@ const SelectAreaLayer = (props: any) => {
             setActiveCell(cur)
             setSelectArea(null)
         }
-        
+
         isSelecting.current = true
         cellStore.selectEnd = null
         cellStore.selectStart = cur

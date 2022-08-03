@@ -33,19 +33,20 @@ class CopyStore {
     @observable
     currentCopyArea: CopyCurrentArea = null
 
-    cutFlag:boolean = false
+    cutFlag: boolean = false
 
     @action.bound
     async copyCurrentCells(cellStore: CellStore) {
         this.cutFlag = false
-        let arr:any = [[]]
+        let arr: any = [[]]
         if (cellStore.selectArea) {
             this.currentCopyArea = cellStore.selectArea
-            arr = getCurrentCellsRectByArea(cellStore.selectArea,cellStore.cellsMap)
+            arr = getCurrentCellsRectByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
 
             await navigator.clipboard.writeText(JSON.stringify(arr))
-
-
         } else if (cellStore.activeCell) {
             let cur = getCurrentCellByOwnKey(
                 cellStore.activeCell?.ownKey || '',
@@ -53,26 +54,27 @@ class CopyStore {
                 true
             )
             this.currentCopyArea = {
-                left:cur!.x,
-                top:cur!.y,
-                bottom:cur!.y+cur!.height,
-                right:cur!.x+cur!.width
+                left: cur!.x,
+                top: cur!.y,
+                bottom: cur!.y + cur!.height,
+                right: cur!.x + cur!.width,
             }
 
-            arr = getCurrentCellsRectByArea(this.currentCopyArea,cellStore.cellsMap)
-
+            arr = getCurrentCellsRectByArea(
+                this.currentCopyArea,
+                cellStore.cellsMap
+            )
         }
 
         try {
             await navigator.clipboard.writeText(JSON.stringify(arr))
-        }catch(e){
+        } catch (e) {
             console.log('用户取消权限')
         }
     }
 
     @action.bound
     async pasteCurrentCells(cellStore: CellStore) {
-        
         let first = null
         let text = null
         let o = null
@@ -81,22 +83,24 @@ class CopyStore {
             text = await navigator.clipboard.readText()
 
             o = JSON.parse(text)
-        }catch(e){
-            o = [[{value:text}]]
+        } catch (e) {
+            o = [[{ value: text }]]
         }
-        
+
         if (cellStore.activeCell) {
-            let cur:any = getCurrentCellByOwnKey(
+            let cur: any = getCurrentCellByOwnKey(
                 cellStore.activeCell?.ownKey || '',
                 cellStore.cellsMap,
                 true
             )
             first = cur
-            
 
             if (this.cutFlag) {
-                var list = getCurrentCellsByArea(this.currentCopyArea,cellStore.cellsMap)
-                list.forEach(i=>{
+                var list = getCurrentCellsByArea(
+                    this.currentCopyArea,
+                    cellStore.cellsMap
+                )
+                list.forEach((i) => {
                     i!.value = undefined
                 })
                 this.currentCopyArea = null
@@ -105,14 +109,16 @@ class CopyStore {
         }
 
         if (o && o.length && first) {
-            var m = o.length,n = o[0].length
+            var m = o.length,
+                n = o[0].length
 
             var firstRow = Number(first.ownKey.split(':')[0])
             var firstCol = Number(first.ownKey.split(':')[1])
-    
-            for (var i = 0 ; i < m ; i++) {
-                for (var j = 0 ; j < n ; j++) {
-                    var c:CellAttrs|any = cellStore.cellsMap[(i+firstRow)+':'+(j+firstCol)]
+
+            for (var i = 0; i < m; i++) {
+                for (var j = 0; j < n; j++) {
+                    var c: CellAttrs | any =
+                        cellStore.cellsMap[i + firstRow + ':' + (j + firstCol)]
                     if (!c) break
                     var _o = o[i][j]
                     delete _o.ownKey // 把原来的ownkey清除
@@ -121,53 +127,52 @@ class CopyStore {
                             c[key] = _o[key]
                         }
                     }
-                    
                 }
             }
         }
-
     }
 
     @action.bound
     async cutCurrentCells(cellStore: CellStore) {
         this.copyCurrentCells(cellStore)
         this.cutFlag = true
-
     }
 
     @action.bound
-    async delCurrentCells(cellStore: CellStore,floatImageStore:FloatImageStore) {
-
+    async delCurrentCells(
+        cellStore: CellStore,
+        floatImageStore: FloatImageStore
+    ) {
         // 删除图片
         if (floatImageStore.currentTransformerId) {
-            floatImageStore.removeFloatImage(floatImageStore.currentTransformerId)
+            floatImageStore.removeFloatImage(
+                floatImageStore.currentTransformerId
+            )
             return
         }
 
         if (cellStore.selectArea) {
-
-            let list = getCurrentCellsByArea(cellStore.selectArea,cellStore.cellsMap)
-            list.forEach(i=>{
+            let list = getCurrentCellsByArea(
+                cellStore.selectArea,
+                cellStore.cellsMap
+            )
+            list.forEach((i) => {
                 i!.value = undefined
                 i!.imgUrl = undefined
                 i!.imgLoaded = undefined
             })
-
         } else if (cellStore.activeCell) {
             let cur = getCurrentCellByOwnKey(
                 cellStore.activeCell?.ownKey || '',
                 cellStore.cellsMap,
                 true
             )
-            
+
             cur!.value = undefined
             cur!.imgUrl = undefined
             cur!.imgLoaded = undefined
-
         }
-
     }
-    
 
     @action.bound
     changeFloatImage(o: any) {}
