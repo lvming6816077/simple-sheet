@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx'
 import { createContext } from 'react'
-import { CellAttrs, RCCellAttrs } from './CellStore'
+import { CellAttrs, MouseClick, RCCellAttrs } from './CellStore'
 
 class MouseEventStore {
     lastMoveCellAttr: CellAttrs = null
@@ -9,7 +9,7 @@ class MouseEventStore {
     upCellAttr: CellAttrs = null
 
     @observable
-    downCellAttr: CellAttrs = null
+    downCellAttr: MouseClick = null
 
     @observable
     moveCellAttr: CellAttrs = null
@@ -26,13 +26,13 @@ class MouseEventStore {
     }
 
     @action.bound
-    mouseDown(obj: CellAttrs) {
+    mouseDown(obj: MouseClick) {
         this.downCellAttr = obj
     }
 
     @action.bound
     mouseMove(obj: CellAttrs) {
-        // console.log('yyy')
+
         // 优化，缓存上一次的move结果，使其不会触发多次
         if (this.lastMoveCellAttr == null) {
             this.moveCellAttr = obj

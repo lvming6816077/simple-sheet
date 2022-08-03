@@ -9,6 +9,7 @@ import {
     getCellsByMergeKey,
     getCurrentCellsRectByArea,
     clearCellFromat,
+    getLastCell,
 } from '@/utils'
 
 import {
@@ -91,8 +92,8 @@ class CopyStore {
             let cur: any = getCurrentCellByOwnKey(
                 cellStore.activeCell?.ownKey || '',
                 cellStore.cellsMap,
-                true
             )
+
             first = cur
 
             if (this.cutFlag) {
@@ -112,19 +113,62 @@ class CopyStore {
             var m = o.length,
                 n = o[0].length
 
+            var oldFirst = o[0][0]
+
+            var oldFirstRow = Number(oldFirst.ownKey.split(':')[0])
+            var oldFirstCol = Number(oldFirst.ownKey.split(':')[1])
+
+
             var firstRow = Number(first.ownKey.split(':')[0])
             var firstCol = Number(first.ownKey.split(':')[1])
+            
+            var originCellMap = JSON.parse(JSON.stringify(cellStore.cellsMap))
+
+            var lastCell = getLastCell(cellStore.cellsMap)
+
 
             for (var i = 0; i < m; i++) {
                 for (var j = 0; j < n; j++) {
                     var c: CellAttrs | any =
                         cellStore.cellsMap[i + firstRow + ':' + (j + firstCol)]
                     if (!c) break
+                    if (c.isMerge) {
+                        alert('不能对合并单元格做部分修改')
+                        // 回复到之前的状态
+                        cellStore.cellsMap = originCellMap
+                        return
+                        break
+                    }
                     var _o = o[i][j]
                     delete _o.ownKey // 把原来的ownkey清除
                     for (var key in c) {
                         if (_o[key]) {
-                            c[key] = _o[key]
+                            if (key == 'isMerge') {
+
+
+                                var oldFirstKey = _o.isMerge[0]
+                                var oldLastKey = _o.isMerge[1]
+                                var l1 = Number(oldFirstKey.split(':')[0])+(firstRow-oldFirstRow)
+                                var l2 = (Number(oldFirstKey.split(':')[1])+(firstCol-oldFirstCol))
+
+                                // 处理边界
+                                l1 = Math.min(Number(lastCell?.ownKey.split(':')[0]),l1)
+                                l2 = Math.min(Number(lastCell?.ownKey.split(':')[1]),l2)
+
+                                var c1 = Number(oldLastKey.split(':')[0])+(firstRow-oldFirstRow)
+                                var c2 = (Number(oldLastKey.split(':')[1])+(firstCol-oldFirstCol))
+
+                                // 处理边界
+                                c1 = Math.min(Number(lastCell?.ownKey.split(':')[0]),c1)
+                                c2 = Math.min(Number(lastCell?.ownKey.split(':')[1]),c2)
+
+
+                                c[key] = [l1 + ':' + l2,c1 + ':' + c2]
+
+                            } else {
+                                c[key] = _o[key]
+                            }
+                            
                         }
                     }
                 }

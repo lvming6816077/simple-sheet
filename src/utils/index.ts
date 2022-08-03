@@ -73,7 +73,7 @@ export const getCurrentCellsByRow = (rowkey: string, cellsMap: CellMap) => {
 
     return _cells.filter((i) => {
         return i?.ownKey.split(':')[0] == rowkey
-    })
+    }) 
 }
 
 export const getCellsByMergeKey = (isMerge: string[], cellsMap: CellMap) => {
@@ -119,6 +119,7 @@ export const getCellCopyAttr = (cur?: CellAttrs) => {
         fontSize: cur!.fontSize,
         fontWeight: cur!.fontWeight,
         // imgLoaded:cur!.imgLoaded,
+        isMerge:cur!.isMerge,
         imgUrl: cur!.imgUrl,
         ownKey: cur!.ownKey,
     }
@@ -237,6 +238,13 @@ export const clearCellFromat = (cell: CellAttrs) => {
     cell!.fontSize = undefined
     cell!.fontItalic = undefined
     cell!.textDecoration = undefined
+}
+
+export const getLastCell = (cellsMap: CellMap)=>{
+    let arr = _.values(cellsMap)
+
+    return arr[arr.length-1]
+
 }
 // export const copyToClipboard = (text:string) => {
 //     // 创建一个文本域

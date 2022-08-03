@@ -89,26 +89,21 @@ const CopyArea = (props: any) => {
     }, [copyStore.currentCopyArea])
 
     useEffect(() => {
-        // if (copyStore.currentCopyArea) {
-        //     var first = getCurrentCellByOwnKey(
-        //         cellStore.selectStart!.ownKey,
-        //         cellStore.cellsMap,
-        //         true
-        //     )
-        //     var last = getCurrentCellByOwnKey(
-        //         cellStore.selectEnd!.ownKey,
-        //         cellStore.cellsMap,
-        //         true
-        //     )
-        //     // console.log(first,last)
-        //     const o = {
-        //         top: first!.y,
-        //         bottom: last!.y + last!.height,
-        //         left: first!.x,
-        //         right: last!.x + last!.width,
-        //     }
-        //     setSelectArea(o)
-        // }
+        if (copyStore.currentCopyArea) {
+            var list = getCurrentCellsByArea(copyStore.currentCopyArea,cellStore.cellsMap)
+            var first = list[0]
+            var last = list[list.length-1]
+            // console.log(first,last)
+            const o = {
+                top: first!.y,
+                bottom: last!.y + last!.height,
+                left: first!.x,
+                right: last!.x + last!.width,
+            }
+
+            copyStore.currentCopyArea = o
+
+        }
     }, [cellStore.cellsMap])
 
     const mouseEventStore = useContext(MouseEventStoreContext)

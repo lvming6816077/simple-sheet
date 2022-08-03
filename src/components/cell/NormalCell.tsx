@@ -90,6 +90,7 @@ const Cell = React.memo((props: any) => {
             width: width,
             value: value,
             fill: textColor,
+            textColor:textColor,
             verticalAlign: verticalAlign,
             align: align,
             fontFamily: fontFamily,
