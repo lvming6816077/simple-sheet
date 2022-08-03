@@ -76,11 +76,16 @@ export class CellStore {
     @action.bound
     mergeCell(list: CellAttrs[]) {
         if (list.length < 2) return
+        
         var mergekey: string[] = [
             list[0]!.ownKey,
             list[list.length - 1]!.ownKey,
         ]
+        if (list.some(i=>i?.value)) {
+            alert('合并单元格操作仅会保留右下角数据')
+        }
         list.forEach((i, index) => {
+
             if (index != list.length - 1) {
                 // i!.value = ''
                 clearCellFromat(i)
