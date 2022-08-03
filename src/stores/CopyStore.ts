@@ -8,6 +8,7 @@ import {
     getCurrentCellByXY,
     getCellsByMergeKey,
     getCurrentCellsRectByArea,
+    clearCellFromat,
 } from '@/utils'
 
 import {
@@ -31,13 +32,15 @@ class CopyStore {
     @observable
     currentCopyArea: CopyCurrentArea = null
 
-
+    cutFlag:boolean = false
 
     @action.bound
     async copyCurrentCells(cellStore: CellStore) {
+        this.cutFlag = false
+        let arr:any = [[]]
         if (cellStore.selectArea) {
             this.currentCopyArea = cellStore.selectArea
-            let arr = getCurrentCellsRectByArea(cellStore.selectArea,cellStore.cellsMap)
+            arr = getCurrentCellsRectByArea(cellStore.selectArea,cellStore.cellsMap)
 
             await navigator.clipboard.writeText(JSON.stringify(arr))
 
@@ -55,9 +58,14 @@ class CopyStore {
                 right:cur!.x+cur!.width
             }
 
-            let arr = getCurrentCellsRectByArea(this.currentCopyArea,cellStore.cellsMap)
+            arr = getCurrentCellsRectByArea(this.currentCopyArea,cellStore.cellsMap)
 
+        }
+
+        try {
             await navigator.clipboard.writeText(JSON.stringify(arr))
+        }catch(e){
+            console.log('用户取消权限')
         }
     }
 
@@ -65,18 +73,37 @@ class CopyStore {
     async pasteCurrentCells(cellStore: CellStore) {
         
         let first = null
-        if (cellStore.selectArea) {
-            first = getCurrentCellsByArea(cellStore.selectArea,cellStore.cellsMap)[0]
-        } else if (cellStore.activeCell) {
+        let text = null
+        let o = null
+
+        try {
+            text = await navigator.clipboard.readText()
+
+            o = JSON.parse(text)
+        }catch(e){
+            o = [[{value:text}]]
+        }
+        
+        if (cellStore.activeCell) {
             let cur:any = getCurrentCellByOwnKey(
                 cellStore.activeCell?.ownKey || '',
                 cellStore.cellsMap,
                 true
             )
             first = cur
+            
+
+            if (this.cutFlag) {
+                var list = getCurrentCellsByArea(this.currentCopyArea,cellStore.cellsMap)
+                list.forEach(i=>{
+                    i!.value = undefined
+                })
+                this.currentCopyArea = null
+                await navigator.clipboard.writeText('[]')
+            }
         }
 
-        const o = JSON.parse(await navigator.clipboard.readText())
+        
 
         if (o && o.length && first) {
             var m = o.length,n = o[0].length
@@ -86,7 +113,8 @@ class CopyStore {
     
             for (var i = 0 ; i < m ; i++) {
                 for (var j = 0 ; j < n ; j++) {
-                    var c:any = cellStore.cellsMap[(i+firstRow)+':'+(j+firstCol)]
+                    var c:CellAttrs|any = cellStore.cellsMap[(i+firstRow)+':'+(j+firstCol)]
+                    if (!c) break
                     var _o = o[i][j]
                     delete _o.ownKey // 把原来的ownkey清除
                     for (var key in c) {
@@ -100,6 +128,14 @@ class CopyStore {
         }
 
     }
+
+    @action.bound
+    async cutCurrentCells(cellStore: CellStore) {
+        this.copyCurrentCells(cellStore)
+        this.cutFlag = true
+
+    }
+    
 
     @action.bound
     changeFloatImage(o: any) {}

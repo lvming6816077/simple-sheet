@@ -32,7 +32,9 @@ const EditAreaLayer = (props: any) => {
 
     const cellStore = useContext(CellStoreContext)
 
-    const [editCell, setEditCell] = useState<CellAttrs>(null)
+    const setEditCell = cellStore.setEditCell
+
+    const editCell = cellStore.editCell
 
     useEffect(() => {
         if (!dbc || !dbc.ownKey || dbc.noEdit) return

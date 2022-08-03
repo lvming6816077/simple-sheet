@@ -170,14 +170,19 @@ const Grid = observer(
         }
 
         const onKeyDown = (event:React.KeyboardEvent<HTMLDivElement>) => {
-
+            if (cellStore.editCell) return
             if (event.ctrlKey && event.keyCode === 67) {
-                // console.log('你按下了CTRL+C')
+                console.log('你按下了CTRL+C')
                 copyStore.copyCurrentCells(cellStore)
             }
             if (event.ctrlKey && event.keyCode === 86) {
-                // console.log('你按下了CTRL+V')
+                console.log('你按下了CTRL+V')
                 copyStore.pasteCurrentCells(cellStore)
+            }
+
+            if (event.ctrlKey && event.keyCode === 88) {
+                console.log('你按下了CTRL+X')
+                copyStore.cutCurrentCells(cellStore)
             }
         }
 

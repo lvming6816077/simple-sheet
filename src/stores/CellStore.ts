@@ -460,6 +460,11 @@ export class CellStore {
         this.selectFillArea = o
     }
 
+    @action.bound
+    setEditCell(o: CellAttrs) {
+        this.editCell = o
+    }
+
     @observable
     rowStopIndex: number = rowStopIndex
 
@@ -483,6 +488,11 @@ export class CellStore {
 
     @observable
     selectEnd: CellAttrs = null
+
+    @observable
+    editCell:CellAttrs = null
+
+
 
     //   @computed
     //   get getcells() {
