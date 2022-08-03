@@ -17,6 +17,7 @@ import React, {
 } from 'react'
 
 import { Stage, Text, Group, Rect, Image, Transformer } from 'react-konva'
+import _ from 'lodash'
 
 // interface InnerImage extends Pick<_FloatImage, 'x' | 'y'> {width?:number,height?:number}
 
@@ -88,6 +89,8 @@ const FloatImage = React.memo(
                 }
             })
         }
+
+
 
         return (
             <>

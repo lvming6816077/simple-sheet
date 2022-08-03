@@ -35,7 +35,7 @@ export type Pick<T, K extends keyof T> = {
 
 export type TransformObj = {} & Pick<FloatImage, 'x' | 'y' | 'width' | 'height'>
 
-class FloatImageStore {
+export class FloatImageStore {
     @observable
     currentTransformerId: string = ''
 
@@ -46,6 +46,11 @@ class FloatImageStore {
     addFloatImage(o: FloatImage) {
         this.currentTransformerId = o.id
         this.floatImage = [...this.floatImage, o]
+    }
+
+    @action.bound
+    removeFloatImage(id: string) {
+        _.remove(this.floatImage,{id:id})
     }
 
     @action.bound

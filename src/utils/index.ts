@@ -118,7 +118,7 @@ export const getCellCopyAttr = (cur?:CellAttrs) =>{
         fontItalic:cur!.fontItalic,
         fontSize:cur!.fontSize,
         fontWeight:cur!.fontWeight,
-        imgLoaded:cur!.imgLoaded,
+        // imgLoaded:cur!.imgLoaded,
         imgUrl:cur!.imgUrl,
         ownKey:cur!.ownKey
 

@@ -67,14 +67,13 @@ const ContextMenuLayer = (props: IProps) => {
                 right: 0,
             }}
         >
-            {' '}
             <ControlledMenu
                 {...menuProps}
                 anchorPoint={anchorPoint}
                 menuClassName="border-menu"
                 onClose={() => toggleMenu(false)}
             >
-                <MenuItem disabled={true}>剪切（Ctrl+X）</MenuItem>
+                <MenuItem onClick={()=>copyStore.cutCurrentCells(cellStore)}>剪切（Ctrl+X）</MenuItem>
                 <MenuItem onClick={()=>copyStore.copyCurrentCells(cellStore)}>复制（Ctrl+C）</MenuItem>
                 <MenuItem onClick={()=>copyStore.pasteCurrentCells(cellStore)}>粘贴（Ctrl+V）</MenuItem>
                 <MenuDivider />

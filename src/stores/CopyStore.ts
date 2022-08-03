@@ -20,6 +20,7 @@ import {
     // SelectArea,
 } from './CellStore'
 import { defaultBorderStyle } from '@/utils/constants'
+import { FloatImageStore } from './FloatImageStore'
 
 export type CopyCurrentArea = {
     left: number
@@ -103,8 +104,6 @@ class CopyStore {
             }
         }
 
-        
-
         if (o && o.length && first) {
             var m = o.length,n = o[0].length
 
@@ -133,6 +132,39 @@ class CopyStore {
     async cutCurrentCells(cellStore: CellStore) {
         this.copyCurrentCells(cellStore)
         this.cutFlag = true
+
+    }
+
+    @action.bound
+    async delCurrentCells(cellStore: CellStore,floatImageStore:FloatImageStore) {
+
+        // 删除图片
+        if (floatImageStore.currentTransformerId) {
+            floatImageStore.removeFloatImage(floatImageStore.currentTransformerId)
+            return
+        }
+
+        if (cellStore.selectArea) {
+
+            let list = getCurrentCellsByArea(cellStore.selectArea,cellStore.cellsMap)
+            list.forEach(i=>{
+                i!.value = undefined
+                i!.imgUrl = undefined
+                i!.imgLoaded = undefined
+            })
+
+        } else if (cellStore.activeCell) {
+            let cur = getCurrentCellByOwnKey(
+                cellStore.activeCell?.ownKey || '',
+                cellStore.cellsMap,
+                true
+            )
+            
+            cur!.value = undefined
+            cur!.imgUrl = undefined
+            cur!.imgLoaded = undefined
+
+        }
 
     }
     

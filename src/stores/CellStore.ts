@@ -45,6 +45,14 @@ export type CellAttrs = {
     noEdit?: boolean
 } | null
 
+
+
+export type MouseClick =
+    | ({
+        rightClick?:boolean
+      } & CellAttrs)
+    | null
+
 export type RCCellAttrs =
     | ({
           clientX: number
@@ -447,6 +455,7 @@ export class CellStore {
 
     @action.bound
     setSelectArea(o: SelectArea) {
+        
         this.selectArea = o
     }
 

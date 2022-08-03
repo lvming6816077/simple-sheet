@@ -20,7 +20,7 @@ import { MouseEventStoreContext } from '@/stores/MouseEventStore'
 import { observer } from 'mobx-react-lite'
 import { toJS } from 'mobx'
 import EditAreaLayer from './components/layer/editArea/EditAreaLayer'
-import { CellAttrs, CellMap, CellStoreContext } from './stores/CellStore'
+import { CellAttrs, CellMap, CellStoreContext, MouseClick } from './stores/CellStore'
 import _ from 'lodash'
 import ScrollArea from './components/layer/scrollArea/ScrollArea'
 import { generaCell, getScrollWidthAndHeight } from './utils'
@@ -162,10 +162,13 @@ const Grid = observer(
                 } as CellAttrs)
             },
             onMouseDown: (e: KonvaEventObject<MouseEvent>) => {
+                // console.log(e.evt.button)
+                // if (e.evt.button == 2) return // 鼠标左键
                 setDV({
                     ...e.target.attrs,
                     value: e.target.attrs.text,
-                } as CellAttrs)
+                    rightClick:e.evt.button == 2
+                } as MouseClick)
             },
         }
 
@@ -184,6 +187,13 @@ const Grid = observer(
                 console.log('你按下了CTRL+X')
                 copyStore.cutCurrentCells(cellStore)
             }
+
+            if (event.keyCode == 46 || event.keyCode == 8) {
+                console.log('delete')
+
+                copyStore.delCurrentCells(cellStore,floatImageStore)
+            }
+
         }
 
         return (
