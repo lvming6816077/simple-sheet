@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx'
-import { createContext } from 'react'
+import { createContext, startTransition } from 'react'
 import _ from 'lodash'
 
 import {
@@ -211,6 +211,7 @@ export class CellStore {
             this.rowStopIndex,
             this.columnStopIndex
         )
+
     }
 
     @action.bound

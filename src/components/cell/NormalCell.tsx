@@ -21,7 +21,6 @@ import SingleCell from './SingleCell'
 interface IProps {}
 
 const Cell = React.memo((props: any) => {
-    console.log(props.fill)
     const {
         x = 0,
         y = 0,

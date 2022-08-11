@@ -6,6 +6,10 @@ import SimpleSheet from '../../src/index';
 import './css/styles.css'
 const App: React.FC = () => {
     const simpleSheetRef = useRef(null)
+
+    var isChrome =  navigator.userAgent.indexOf('Chrome') > -1  // 是否是谷歌 
+    
+
     
     return (
         <>
@@ -18,8 +22,13 @@ const App: React.FC = () => {
                 <a className='git' target={'_blank'} href="https://github.com/lvming6816077/simple-sheet">GitHub</a>
             </div>
             <div className='sub-title'><span className='logo'></span>Simple Sheet</div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-                <SimpleSheet ref={simpleSheetRef}/>
+            <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' ,position:'relative'}}>
+                
+                    <SimpleSheet ref={simpleSheetRef}/>
+                {!isChrome ? <div className='wrapper'>
+                    请使用Chrome浏览器体验
+                </div>: null}
+                
             </div>
             <div className='desc'>
                 <div className='desc-inner'>

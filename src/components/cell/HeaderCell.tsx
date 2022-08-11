@@ -86,6 +86,7 @@ const HeaderCell = React.memo((props: any) => {
                 onClick={clickHeader}
                 onMouseEnter={(e) => {
                     document.body.style.cursor = 'pointer'
+
                 }}
                 onMouseLeave={(e) => {
                     document.body.style.cursor = 'default'

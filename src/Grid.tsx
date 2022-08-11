@@ -223,6 +223,7 @@ const Grid = observer(
                             position: 'relative',
                             zIndex: 4,
                         }}
+                        id={'canvasWrap'}
                         ref={wheelRef}
                     >
                         <Stage

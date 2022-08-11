@@ -57,8 +57,7 @@ const DraggableRect = React.memo((props: any) => {
 
                         cellStore.changeWidth(
                             k,
-                            Math.max(newWidth, dragMinWidth),
-                            node.x() + props.width
+                            Math.max(newWidth, dragMinWidth)
                         )
 
                         node.opacity(0)

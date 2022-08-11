@@ -97,3 +97,14 @@ body {
 .power a{
     text-decoration: none;
 }
+.wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -71px;
+    top: 0;
+    text-align: center;
+    line-height: 280px;
+    z-index: 999;
+    background-color: #dbdbdb5c;
+}

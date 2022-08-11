@@ -314,6 +314,7 @@ const SelectAreaLayer = (props: any) => {
                 <div
                     style={getActiveCellSelection}
                     className={styles['active-cell']}
+                    
                 >
                     {activeCell?.imgUrl && activeCell?.imgLoaded ? (
                         <div

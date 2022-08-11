@@ -45,3 +45,8 @@
     cursor: pointer;
     pointer-events: all;
 }
+
+/* :global #canvasWrap  { */
+    /* cursor: url('./imgs/cur.png'); */
+    /* cursor:url("./imgs/cur.png") 7 7, default; */
+/* } */
