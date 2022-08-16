@@ -1,0 +1,11 @@
+.right-bottom-triangle {
+    position: absolute;
+    right: 3px;
+    bottom: 2px;
+    width: 0;
+    height: 0;
+    border-top: 15px solid #fff;
+    border-right: 15px solid #ecedee;
+    border-left: 15px solid #fff;
+    cursor: pointer;
+}

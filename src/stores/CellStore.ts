@@ -188,6 +188,34 @@ export class CellStore {
         this.setActiveCell(null)
     }
 
+    @action.bound
+    areaAllCell() {
+        
+        var first = this.cellsMap['1:1']
+        var last = this.cellsMap[(this.rowStopIndex)+':'+(this.columnStopIndex)]
+        var list = [first,last]
+
+
+        var o = {
+            left: list[0]!.x,
+            top: list[0]!.y,
+            bottom: list[list.length - 1]!.y + list[list.length - 1]!.height,
+            right: list[list.length - 1]!.x + list[list.length - 1]!.width,
+            border: true,
+        }
+
+        this.selectStart = getCurrentCellByXY(o.left, o.top, this.cellsMap)
+        this.selectEnd = getCurrentCellByXY(
+            list[list.length - 1]!.x,
+            list[list.length - 1]!.y,
+            this.cellsMap
+        )
+
+        this.setSelectArea(o)
+        this.setActiveCell(null)
+
+    }
+
     // tempx:number = 0
 
     @action.bound

@@ -27,7 +27,7 @@ const CellOverlay = React.memo((props: any) => {
         strokeRightDash = strokeDash,
         strokeBottomDash = strokeDash,
         strokeLeftDash = strokeDash,
-        strokeWidth = 1,
+        strokeWidth = 0.5,
         strokeTopWidth = strokeWidth,
         strokeRightWidth = strokeWidth,
         strokeBottomWidth = strokeWidth,

@@ -52,6 +52,7 @@ import ContextMenuLayer from './components/layer/contextMenuArea/ContextMenuLaye
 import Viewer from 'react-viewer'
 import { useSize } from './hooks/useSize'
 import { CopyStoreContext } from './stores/CopyStore'
+import SingleArea from './components/layer/singleArea/SingleArea'
 
 export interface GridProps {
     width?: number
@@ -358,6 +359,8 @@ const Grid = observer(
                     >
                         <CornerArea></CornerArea>
                         <ContextMenuLayer></ContextMenuLayer>
+                        <SingleArea></SingleArea>
+                        
                     </div>
                 </div>
                 <Viewer
