@@ -15,7 +15,9 @@
 * 支持行、列宽度高度、自动筛选视图、单元格样式和格式设置等
 * 计算公式
 
-相关功能还在持续开发中，欢迎[体验](https://www.nihaoshijie.com.cn/mypro/simple-sheet/index.html)。
+[体验地址](https://www.nihaoshijie.com.cn/mypro/simple-sheet/index.html)。
+
+
 
 ## 技术栈
 
@@ -31,6 +33,8 @@ React.js+Mobx+TypeScript
 
 
 ## 交流和建议
+
+目前来说该项目只是作为一个开源项目并且只有我个人在业余时间开发，所以很多功能（实时协作，后端服务，复杂公式等等）都没有完善，其实目的是为了给一些对 web sheet 感兴趣的同学入门，当然有兴趣的同学也可以深入进来一起参与，感谢支持！
 
 相关建议+共同开发联系：*441403517@qq.com*
 
