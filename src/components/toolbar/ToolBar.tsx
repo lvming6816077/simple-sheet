@@ -154,6 +154,30 @@ const ToolBar = (props: IProps) => {
         })
         downloadURI(dataURL || '', `sheet-${Date.now()}.png`)
     }
+    const exportXlsx = () => {
+        fetch('https://www.nihaoshijie.com.cn/simple-sheet/sheet/downloadxlsx',{
+            method: 'POST',
+            headers: {
+             'Content-Type': 'application/json;charset=utf-8'
+            }, 
+            body: JSON.stringify({desc:JSON.stringify(cellStore.cellsMap)}) 
+          })
+            .then(response => {
+                return response.blob()
+            })
+            .then((blob) => {
+                
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = "simple-sheet-"+Date.now()+".xlsx";
+                document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+                a.click();    
+                a.remove();  //afterwards we remove the element again  
+            })
+            .catch(err => console.log('Request Failed', err)); 
+    }
+    
 
     const inputRef = useRef<HTMLInputElement>(null)
     let uploadImgType: string | null = null
@@ -507,13 +531,32 @@ const ToolBar = (props: IProps) => {
 
             <div className={styles.divider}></div>
 
-            <div className={styles['btn-wrap']}>
-                <div
-                    className={styles['export-image']}
-                    onClick={exportImage}
-                    data-tip="导出图片"
-                ></div>
-            </div>
+            <Menu
+                menuClassName="border-menu"
+                menuButton={
+                    <div className={styles['btn-wrap']} data-tip="导出">
+                        <div className={styles['export']}></div>
+                    </div>
+                }
+            >
+
+                <MenuItem onClick={() => exportImage()}>
+                    <div className={styles['border-item']}>
+                        <div
+                            className={`${styles['export-image']} ${styles['icon-item']}`}
+                        ></div>
+                        <div className={styles['item-text']}>导出图片</div>
+                    </div>
+                </MenuItem>
+                <MenuItem onClick={() => exportXlsx()}>
+                    <div className={styles['border-item']}>
+                        <div
+                            className={`${styles['export-xlsx']} ${styles['icon-item']}`}
+                        ></div>
+                        <div className={styles['item-text']}>导出.xlsx</div>
+                    </div>
+                </MenuItem>
+            </Menu>
         </div>
     )
 }

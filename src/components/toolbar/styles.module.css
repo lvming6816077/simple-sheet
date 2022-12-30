@@ -217,10 +217,22 @@
     background-image: url('./imgs/front.png');
     background-size: cover;
 }
-.export-image {
+.export {
     width: 17px;
     height: 17px;
     background-image: url('./imgs/file-export.png');
+    background-size: cover;
+}
+.export-image {
+    width: 16px;
+    height: 16px;
+    background-image: url('./imgs/image.png');
+    background-size: cover;
+}
+.export-xlsx {
+    width: 16px;
+    height: 16px;
+    background-image: url('./imgs/xlsx.png');
     background-size: cover;
 }
 .insert-img {
